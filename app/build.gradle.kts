@@ -26,7 +26,7 @@ android {
         // 프로젝트 내에서 언제든지 사용이 가능한 변수들이다.
         // 타입 - 키 - 값으로 저장된다.
         buildConfigField("String", "KAKAO_NATIVE_KEY", getLocalProperties("KAKAO_NATIVE_KEY"))
-        manifestPlaceholders["KAKAO_NATIVE_KEY"] = getLocalProperties("KAKAO_NATIVE_KEY")
+        manifestPlaceholders["KAKAO_NATIVE_KEY"] = getLocalProperties("KAKAO_NATIVE_KEY").replace("\"", "")
     }
 
     buildTypes {
