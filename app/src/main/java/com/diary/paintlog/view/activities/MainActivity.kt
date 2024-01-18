@@ -1,15 +1,28 @@
-package com.diary.paintlog
+package com.diary.paintlog.view.activities
 
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
+import com.diary.paintlog.GlobalApplication
+import com.diary.paintlog.R
 import com.diary.paintlog.databinding.ActivityMainBinding
+import com.diary.paintlog.model.data.ApiToken
+import com.diary.paintlog.model.repository.TokenRepository
+import com.diary.paintlog.utils.Kakao
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,14 +37,27 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+        val dataStore = (application as GlobalApplication).dataStore
+
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            val repo = TokenRepository(dataStore)
+            CoroutineScope(Dispatchers.Main).launch {
+
+                Log.i("MY", repo.getToken())
+                Log.i("MY", repo.getTokenExpireAt())
+                Log.i("MY", repo.getRefreshToken())
+                Log.i("MY", repo.getRefreshTokenExpireAt())
+
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show()
+            }
         }
+
+        Kakao.openKakaoLogin(binding.root.context)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

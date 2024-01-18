@@ -8,6 +8,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.kakao.sdk.common.KakaoSdk
 
 class GlobalApplication : Application() {
+    val dataStore: DataStore<Preferences> by preferencesDataStore(name = "apiToken")
+
     override fun onCreate() {
         super.onCreate()
         // 다른 초기화 코드들
