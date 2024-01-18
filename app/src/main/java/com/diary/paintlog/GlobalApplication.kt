@@ -25,7 +25,7 @@ class GlobalApplication : Application() {
             applicationContext,
             AppDatabase::class.java,
             "diary"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
         // Kakao SDK 초기화
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)

@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity
 data class User(
-    @PrimaryKey(autoGenerate = false) val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "kakao_user_id") val kakaoUserId: Long,
     @ColumnInfo(name = "google_user_id") val googleUserId: Long,

@@ -1,5 +1,6 @@
 package com.diary.paintlog.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,6 +11,9 @@ import com.diary.paintlog.data.entities.User
 interface UserDao {
     @Query("SELECT * FROM user")
     fun getAll(): List<User>
+
+    @Query("SELECT * FROM user ORDER BY id DESC")
+    fun getAllLive(): LiveData<List<User>>
 
     @Query("SELECT * FROM user WHERE id IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<User>
