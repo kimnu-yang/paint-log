@@ -1,4 +1,4 @@
-package com.diary.paintlog.model.data
+package com.diary.paintlog.model
 
 data class ApiToken(
     val accessToken: String,

@@ -5,13 +5,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.protobuf.Api
 import com.diary.paintlog.GlobalApplication
-import com.diary.paintlog.model.data.ApiToken
+import com.diary.paintlog.model.ApiToken
 import com.diary.paintlog.model.repository.TokenRepository
-import com.example.myapplication.retrofit.KakaoClient
-import com.example.myapplication.retrofit.model.ApiRegisterResponse
-import com.example.myapplication.retrofit.model.KakaoRegisterRequest
+import com.diary.paintlog.utils.retrofit.ApiServerClient
+import com.diary.paintlog.utils.retrofit.model.ApiRegisterResponse
+import com.diary.paintlog.utils.retrofit.model.KakaoRegisterRequest
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -38,7 +37,10 @@ object Kakao {
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
 
-                apiKakaoLogin(token.accessToken, (context.applicationContext as GlobalApplication).dataStore)
+                apiKakaoLogin(
+                    token.accessToken,
+                    (context.applicationContext as GlobalApplication).dataStore
+                )
 
                 moveSubActivity(context)
             }
@@ -77,7 +79,7 @@ object Kakao {
     fun apiKakaoLogin(token: String, dataStore: DataStore<Preferences>) {
         val tagApi = TAG + "_API"
         var repo = TokenRepository(dataStore)
-        KakaoClient.api.kakaoLogin(KakaoRegisterRequest(token)).enqueue(object :
+        ApiServerClient.api.kakaoLogin(KakaoRegisterRequest(token)).enqueue(object :
             Callback<ApiRegisterResponse> {
             override fun onResponse(
                 call: Call<ApiRegisterResponse>,

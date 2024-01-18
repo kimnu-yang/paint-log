@@ -1,6 +1,5 @@
-package com.example.myapplication.retrofit.model
+package com.diary.paintlog.utils.retrofit.model
 
-import com.diary.paintlog.utils.retrofit.model.ApiResult
 import com.google.gson.annotations.SerializedName
 
 data class ApiRegisterResponse(
