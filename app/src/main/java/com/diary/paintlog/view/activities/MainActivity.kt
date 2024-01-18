@@ -1,28 +1,23 @@
 package com.diary.paintlog.view.activities
 
-import android.app.Application
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.diary.paintlog.GlobalApplication
 import com.diary.paintlog.R
+import com.diary.paintlog.data.entities.User
 import com.diary.paintlog.databinding.ActivityMainBinding
-import com.diary.paintlog.model.data.ApiToken
 import com.diary.paintlog.model.repository.TokenRepository
-import com.diary.paintlog.utils.Kakao
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,7 +52,49 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Kakao.openKakaoLogin(binding.root.context)
+//        Kakao.openKakaoLogin(binding.root.context)
+
+        val userDao = GlobalApplication.database.userDao()
+
+        var user1 = User(
+            1L,
+            "REGISTERED",
+            134513L,
+            135315L,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        )
+        var user2 = User(
+            2L,
+            "REGISTERED",
+            134513L,
+            135315L,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        )
+        var user3 = User(
+            3L,
+            "REGISTERED",
+            134513L,
+            135315L,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        )
+
+        // 코루틴을 사용한 예시
+        CoroutineScope(Dispatchers.IO).launch {
+//            userDao.insertAll(user1, user2, user3, user4, user5, user6, user7)
+
+            val users = userDao.getAll()
+
+            for (user in users) {
+                Log.i("MY", user.toString())
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
