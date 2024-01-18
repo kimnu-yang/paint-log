@@ -77,7 +77,6 @@ object Kakao {
 
 
     fun apiKakaoLogin(token: String, dataStore: DataStore<Preferences>) {
-        val tagApi = TAG + "_API"
         var repo = TokenRepository(dataStore)
         ApiServerClient.api.kakaoLogin(KakaoRegisterRequest(token)).enqueue(object :
             Callback<ApiRegisterResponse> {
@@ -86,7 +85,7 @@ object Kakao {
                 response: Response<ApiRegisterResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.i(tagApi, "${response.body()}")
+                    Log.i(TAG, "${response.body()}")
 
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -101,12 +100,12 @@ object Kakao {
                         )
                     }
                 } else {
-                    Log.i(tagApi, response.toString())
+                    Log.i(TAG, response.toString())
                 }
             }
 
             override fun onFailure(call: Call<ApiRegisterResponse>, t: Throwable) {
-                Log.i(tagApi, t.localizedMessage?.toString() ?: "ERROR")
+                Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
             }
         })
     }

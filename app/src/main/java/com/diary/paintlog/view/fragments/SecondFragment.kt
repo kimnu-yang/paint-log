@@ -20,6 +20,10 @@ import kotlinx.coroutines.launch
  */
 class SecondFragment : Fragment() {
 
+    companion object {
+        const val TAG = "SecondFragment"
+    }
+
     private var _binding: FragmentSecondBinding? = null
 
     // This property is only valid between onCreateView and
@@ -36,7 +40,7 @@ class SecondFragment : Fragment() {
         val token = TokenRepository((binding.root.context.applicationContext as GlobalApplication).dataStore)
 
         CoroutineScope(Dispatchers.Main).launch {
-            Log.i("SECOND", token.getToken())
+            Log.i(TAG, token.getToken())
         }
 
         return binding.root

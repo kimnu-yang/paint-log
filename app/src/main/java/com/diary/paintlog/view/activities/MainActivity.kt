@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
+    companion object {
+        const val TAG = "MainActivity"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,10 +46,10 @@ class MainActivity : AppCompatActivity() {
             val repo = TokenRepository(dataStore)
             CoroutineScope(Dispatchers.Main).launch {
 
-                Log.i("MY", repo.getToken())
-                Log.i("MY", repo.getTokenExpireAt())
-                Log.i("MY", repo.getRefreshToken())
-                Log.i("MY", repo.getRefreshTokenExpireAt())
+                Log.i(TAG, repo.getToken())
+                Log.i(TAG, repo.getTokenExpireAt())
+                Log.i(TAG, repo.getRefreshToken())
+                Log.i(TAG, repo.getRefreshTokenExpireAt())
 
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
@@ -91,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             val users = userDao.getAll()
 
             for (user in users) {
-                Log.i("MY", user.toString())
+                Log.i(TAG, user.toString())
             }
         }
 
