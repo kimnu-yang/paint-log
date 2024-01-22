@@ -73,25 +73,25 @@ class SecondFragment : Fragment() {
         })
 
         // activity_main.xml에서 정의한 FloatingActionButton에 접근
-        val fab: FloatingActionButton = requireActivity().findViewById(R.id.fab)
+//        val fab: FloatingActionButton = requireActivity().findViewById(R.id.fab)
 
         // fab을 사용하여 작업 수행
-        fab.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                // 클릭 이벤트 처리
-                viewModel.saveUser(
-                    User(
-                        0L,
-                        "REGISTERED",
-                        43643436L,
-                        64364363643L,
-                        LocalDateTime.now(),
-                        LocalDateTime.now(),
-                        LocalDateTime.now()
-                    )
-                )
-            }
-        }
+//        fab.setOnClickListener {
+//            CoroutineScope(Dispatchers.IO).launch {
+//                // 클릭 이벤트 처리
+//                viewModel.saveUser(
+//                    User(
+//                        0L,
+//                        "REGISTERED",
+//                        43643436L,
+//                        64364363643L,
+//                        LocalDateTime.now(),
+//                        LocalDateTime.now(),
+//                        LocalDateTime.now()
+//                    )
+//                )
+//            }
+//        }
 
         binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
