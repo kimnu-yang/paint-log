@@ -10,9 +10,6 @@ import com.diary.paintlog.model.ApiToken
 import kotlinx.coroutines.flow.first
 
 class TokenRepository(private val dataStore: DataStore<Preferences>) {
-    private val KEY = "apiToken"
-
-    private val Context.dataStore by preferencesDataStore(KEY)
 
     companion object DataKeys {
         private val accessTokenKey = stringPreferencesKey("access_token")
