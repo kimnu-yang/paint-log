@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         val dataStore = (application as GlobalApplication).dataStore
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        appBarConfiguration = AppBarConfiguration(navController.graph)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.fab.setOnClickListener { view ->
             val repo = TokenRepository(dataStore)
@@ -111,6 +111,13 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        if (item.itemId == R.id.action_settings) {
+            val navController = findNavController(R.id.nav_host_fragment_content_main)
+            navController.popBackStack(R.id.action_global_settingsFragment, true);
+            navController.navigate(R.id.action_global_settingsFragment)
+        }
+
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
