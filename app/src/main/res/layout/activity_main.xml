@@ -9,87 +9,76 @@
     tools:context=".view.activities.MainActivity">
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/header"
         layout="@layout/header" />
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:paddingHorizontal="15dp"
+        android:paddingHorizontal="10dp"
         android:theme="@style/CalenderViewCustom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
         app:mcv_firstDayOfWeek="monday"
         app:mcv_showOtherDates="all"
         app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText" />
 
-    <ImageView
-        android:id="@+id/topicCanvas"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="136dp"
-        android:background="@drawable/canvas_small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
+        android:id="@+id/topic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="336dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/bm_yeon_sung"
         android:text="추천 주제"
         android:textColor="@color/deep"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <ImageView
+        android:id="@+id/topicCanvas"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/canvas_small"
+        app:layout_constraintTop_toBottomOf="@+id/topic" />
 
     <TextView
         android:id="@+id/todayTopic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="224dp"
+        android:layout_marginTop="80dp"
         android:fontFamily="@font/bm_yeon_sung"
         android:text="내가 가장 좋아하는 음악은?"
         android:textColor="@color/deep"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/topicCanvas"
+        app:layout_constraintEnd_toEndOf="@id/topicCanvas"
+        app:layout_constraintStart_toStartOf="@id/topicCanvas" />
 
     <ImageButton
         android:id="@+id/addDiaryButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="44dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/add_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:onClick="goToDiaryActivity"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/topicCanvas" />
 
     <TextView
-        android:id="@+id/add_diary_button_text"
+        android:id="@+id/addDiaryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addDiaryButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
         android:fontFamily="@font/bm_yeon_sung"
         android:text="새 일기"
         android:textColor="@color/main"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addDiaryButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
