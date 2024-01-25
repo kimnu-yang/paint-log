@@ -1,3 +1,4 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="calendar_height_per_week">18dp</dimen>
 </resources>

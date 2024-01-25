@@ -3,8 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.diary.paintlog.view.activities.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/menu_home"
+        android:title="홈" />
+    <item
+        android:id="@+id/menu_week"
+        android:title="이번주 일기" />
+    <item
+        android:id="@+id/menu_art"
+        android:title="내 작품" />
+    <item
+        android:id="@+id/menu_search"
+        android:title="태그 별 검색" />
+    <item
+        android:id="@+id/menu_summary"
+        android:title="통계" />
 </menu>

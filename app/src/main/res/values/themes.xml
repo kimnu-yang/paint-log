@@ -6,4 +6,39 @@
     </style>
 
     <style name="Theme.PaintLog" parent="Base.Theme.PaintLog" />
+
+    <!-- 팝업 메뉴 스타일 -->
+    <style name="PopupMenuCustom" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:textColor">@color/deep</item>
+        <item name="android:fontFamily">@font/bm_yeon_sung</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <!-- 여기서 요일, 달력 안 숫자들의 폰트 설정을 수행할 수 있다 -->
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/main</item>
+    </style>
+
+    <!-- 달력 안의 숫자들에 적용되는 스타일 -->
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/deep</item>
+        <item name="android:weekNumberColor">@android:color/holo_red_light</item>
+        <item name="android:fontFamily">@font/bm_yeon_sung</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <!-- 달력 안의 요일들에 적용되는 스타일 -->
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/deep</item>
+        <item name="android:weekNumberColor">@android:color/holo_red_light</item>
+        <item name="android:fontFamily">@font/bm_yeon_sung</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <!-- 연, 월을 표시하는 헤더에 적용되는 스타일 -->
+    <style name="CalendarWidgetHeader">
+        <item name="android:textColor">@color/deep</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:fontFamily">@font/bm_yeon_sung</item>
+    </style>
 </resources>
