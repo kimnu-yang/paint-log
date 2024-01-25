@@ -6,9 +6,40 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-// local.properties에 정의된 값을 가져오는 함수
-fun getLocalProperties(propertyKey: String): String {
-    return gradleLocalProperties(rootDir).getProperty(propertyKey)
+dependencies {
+
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+//    implementation("com.kakao.sdk:v2-all:2.19.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
+    implementation("com.kakao.sdk:v2-user:2.19.0") // 카카오 로그인
+//    implementation("com.kakao.sdk:v2-cert:2.19.0") // 카카오 인증서비스
+
+    // http request
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Room
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+
+    implementation("com.github.prolificinteractive:material-calendarview:2.0.0")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.1.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
 }
 
 android {
@@ -53,35 +84,7 @@ android {
     }
 }
 
-dependencies {
-
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-//    implementation("com.kakao.sdk:v2-all:2.19.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
-    implementation("com.kakao.sdk:v2-user:2.19.0") // 카카오 로그인
-//    implementation("com.kakao.sdk:v2-cert:2.19.0") // 카카오 인증서비스
-
-    // http request
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // DataStore
-    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-
-    // Room
-    val room_version = "2.6.1"
-
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
-
+// local.properties에 정의된 값을 가져오는 함수
+fun getLocalProperties(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
