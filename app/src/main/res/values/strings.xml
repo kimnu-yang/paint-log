@@ -43,28 +43,20 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="alarm_title">알람</string>
-    <string name="alarm_summary">설정된 시간에 일기 작성 알람을 보냅니다.</string>
-    <string name="hour">시</string>
-    <string name="minute">분</string>
+    <string name="setting_alarm_title">알람</string>
+    <string name="setting_alarm_summary">설정된 시간에 일기 작성 알람을 보냅니다.</string>
+    <string name="setting_hour">시</string>
+    <string name="setting_minute">분</string>
+    <string name="setting_sync_title">동기화</string>
+    <string name="setting_sync_summary">마지막 동기화 시간: %s</string>
+    <string name="setting_sync_summary_none">없음</string>
+    <string name="setting_sync_description">Sync Button</string>
     <string name="network_setting_title">네트워크 설정</string>
     <string name="network_setting_summary">동기화 시 사용할 네트워크 설정</string>
-    <string name="kakao_login_description">카카오 로그인 버튼</string>
+    <string name="setting_kakao_logout_button">카카오 로그아웃</string>
+    <string name="setting_kakao_login_description">카카오 로그인 버튼</string>
+    <string name="setting_quit_text"><u>회원탈퇴하기</u></string>
+
 
 </resources>

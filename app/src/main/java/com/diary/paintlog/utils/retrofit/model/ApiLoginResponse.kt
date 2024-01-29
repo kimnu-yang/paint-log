@@ -2,7 +2,7 @@ package com.diary.paintlog.utils.retrofit.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiRegisterResponse(
+data class ApiLoginResponse(
     @SerializedName("result") val result: ApiResult,
     @SerializedName("body") val data: Body
 ) {

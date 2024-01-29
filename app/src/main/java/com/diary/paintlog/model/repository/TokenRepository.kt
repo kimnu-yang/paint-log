@@ -1,13 +1,13 @@
 package com.diary.paintlog.model.repository
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.diary.paintlog.GlobalApplication
 import com.diary.paintlog.model.ApiToken
 import kotlinx.coroutines.flow.first
 
-class TokenRepository(private val dataStore: DataStore<Preferences>) {
+class TokenRepository() {
+    private val dataStore = GlobalApplication.getInstance().dataStore
 
     companion object DataKeys {
         private val accessTokenKey = stringPreferencesKey("access_token")

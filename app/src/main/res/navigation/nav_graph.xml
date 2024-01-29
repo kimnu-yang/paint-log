@@ -5,9 +5,14 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FirstFragment">
 
-    <fragment android:id="@+id/action_global_settingsFragment"
-        android:name="com.diary.paintlog.view.preferences.SettingsFragment"
-        app:destination="@xml/root_preferences"/>
+    <fragment
+        android:id="@+id/action_global_settingsFragment"
+        android:name="com.diary.paintlog.view.fragments.SettingsFragment"
+        app:destination="@id/fragment_settings">
+        <action
+            android:id="@+id/action_global_action_global_settingsFragment"
+            app:destination="@id/action_global_settingsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -26,5 +31,5 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
-    </fragment><action android:id="@+id/action_global_action_global_settingsFragment" app:destination="@id/action_global_settingsFragment"/>
+    </fragment>
 </navigation>
