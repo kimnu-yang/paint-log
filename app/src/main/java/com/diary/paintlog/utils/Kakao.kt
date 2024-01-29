@@ -4,10 +4,16 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
 import android.widget.Toast
+import com.diary.paintlog.utils.retrofit.ApiServerClient
+import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
+import com.diary.paintlog.utils.retrofit.model.KakaoRegisterRequest
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 object Kakao {
     const val TAG = "KAKAO"
@@ -18,6 +24,11 @@ object Kakao {
             return
         }
 
+        val failureFunc: () -> Unit = {
+            kakaoLogout(context)
+        }
+
+
         // 로그인 조합 예제
 
         // 카카오계정으로 로그인 공통 callback 구성
@@ -27,7 +38,9 @@ object Kakao {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+
                 successFunc()
+                apiKakaoLogin(token.accessToken, failureFunc)
             }
         }
 
@@ -47,7 +60,9 @@ object Kakao {
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+
                     successFunc()
+                    apiKakaoLogin(token.accessToken, failureFunc)
                 }
             }
         } else {
@@ -85,5 +100,29 @@ object Kakao {
         }
 
         return true
+    }
+
+    private fun apiKakaoLogin(
+        token: String,
+        onFailureFunc: () -> Unit = {}
+    ) {
+        ApiServerClient.api.kakaoLogin(KakaoRegisterRequest(token)).enqueue(object :
+            Callback<ApiLoginResponse> {
+            override fun onResponse(
+                call: Call<ApiLoginResponse>,
+                response: Response<ApiLoginResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.i(TAG, "${response.body()}")
+                } else {
+                    Log.i(TAG, response.toString())
+                    onFailureFunc()
+                }
+            }
+
+            override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
+                Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
+            }
+        })
     }
 }

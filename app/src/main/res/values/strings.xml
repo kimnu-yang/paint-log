@@ -56,7 +56,8 @@
     <string name="network_setting_summary">동기화 시 사용할 네트워크 설정</string>
     <string name="setting_kakao_logout_button">카카오 로그아웃</string>
     <string name="setting_kakao_login_description">카카오 로그인 버튼</string>
-    <string name="setting_quit_text"><u>회원탈퇴하기</u></string>
+    <string name="setting_unregist_text"><u>회원탈퇴하기</u></string>
+    <string name="setting_unregist_error">회원 탈퇴 오류 (%s)</string>
 
 
 </resources>

@@ -7,9 +7,11 @@ data class ApiLoginResponse(
     @SerializedName("body") val data: Body
 ) {
     data class Body(
-        @SerializedName("access_token") val accessToken: String,
-        @SerializedName("access_token_expired_at") val accessTokenExpiredAt: String,
-        @SerializedName("refresh_token") val refreshToken: String,
-        @SerializedName("refresh_token_expired_at") val refreshTokenExpiredAt: String
+        @SerializedName("id") val id: Long,
+        @SerializedName("status") val status: UserStatus,
+        @SerializedName("kakao_user_id") val kakaoUserId: Long,
+        @SerializedName("google_user_id") val googleUserId: Long,
+        @SerializedName("registered_at") val registeredAt: String,
+        @SerializedName("unregistered_at") val unregisteredAt: String
     )
 }

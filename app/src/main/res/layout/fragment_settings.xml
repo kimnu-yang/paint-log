@@ -54,11 +54,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:contextClickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:padding="15dp">
 
         <TextView
@@ -110,24 +105,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/setting_quit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/setting_quit_text"
-            android:textColor="@android:color/darker_gray"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <Button
             android:id="@+id/setting_kakao_logout_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/setting_kakao_logout_button"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/setting_quit_text"
+            app:layout_constraintBottom_toTopOf="@id/setting_unregist_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/setting_unregist_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_unregist_text"
+            android:textColor="@android:color/darker_gray"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
