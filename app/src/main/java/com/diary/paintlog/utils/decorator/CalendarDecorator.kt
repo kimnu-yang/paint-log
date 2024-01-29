@@ -1,6 +1,10 @@
 package com.diary.paintlog.utils.decorator
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PixelFormat
+import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
@@ -15,6 +19,16 @@ import org.threeten.bp.DayOfWeek
 
 class CalendarDecorator(private val context: Context) {
 
+    /* 오늘 날짜의 색상을 설정 */
+    inner class TodayDecorator(): DayViewDecorator {
+        override fun shouldDecorate(day: CalendarDay): Boolean {
+            return day == CalendarDay.today()
+        }
+        override fun decorate(view: DayViewFacade?) {
+            context.getDrawable(R.drawable.today_circle)?.let { view?.setBackgroundDrawable(it) }
+        }
+
+    }
 
     /* 토요일 색상을 설정 */
     inner class SaturdayDecorator(): DayViewDecorator {

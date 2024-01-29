@@ -1,7 +1,9 @@
 package com.diary.paintlog.view.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private val TAG = this.javaClass.simpleName
     private var isImageChanged = false
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,8 +57,7 @@ class MainActivity : AppCompatActivity() {
         binding.calendarView.setLeftArrow(0)
         binding.calendarView.isPagingEnabled = false
 
-
-
+        val todayDecorator = calendarDecorator.TodayDecorator()
         val saturdayDecorator = calendarDecorator.SaturdayDecorator()
         val sundayDecorator = calendarDecorator.SundayDecorator()
         val selectedMonthDecorator = calendarDecorator.SelectedMonthDecorator(CalendarDay.today().month)
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 //        val highlightedDate = CalendarDay.from(2024, 1, 24)
 //        val highlightDecorator = HighlightDecorator(binding.calendarView.context,setOf(highlightedDate))
 
-        binding.calendarView.addDecorators(saturdayDecorator,sundayDecorator,selectedMonthDecorator)
+        binding.calendarView.addDecorators(todayDecorator,saturdayDecorator,sundayDecorator,selectedMonthDecorator)
 
         // 이번달이 아닌 월로 변경되지 않도록 설정
         binding.calendarView.setOnMonthChangedListener { widget, date ->
@@ -85,6 +87,18 @@ class MainActivity : AppCompatActivity() {
             val unSelectedSaturdayDecorator = calendarDecorator.UnSelectedSaturdayDecorator(date)
             val unSelectedSundayDecorator = calendarDecorator.UnSelectedSundayDecorator(date)
             binding.calendarView.addDecorators(selectedDateDecorator,unSelectedDateDecorator,unSelectedSaturdayDecorator,unSelectedSundayDecorator,selectedMonthDecorator)
+        }
+
+        // 추천 주제를 새로 받아오기
+        binding.repeatButton.setOnClickListener {
+            // TODO: DB 연동을 통해 값을 가져오도록 변경
+            var text: String = ""
+            if(binding.todayTopic.text == "내가 가장 좋아하는 음악은?")
+                text = "내가 가장 싫어하는 상황은?"
+            else
+                text = "내가 가장 좋아하는 음악은?"
+
+            binding.todayTopic.text = text
         }
     }
 
@@ -109,9 +123,8 @@ class MainActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 when (item.itemId) {
                     R.id.menu_home -> {
-                        // 메뉴 아이템 1 선택 시 할 일
-                        // 예: Toast 메시지 표시
-                        showToast("Menu Item 1 Clicked")
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
                         true
                     }
                     R.id.menu_week -> {
@@ -136,19 +149,16 @@ class MainActivity : AppCompatActivity() {
         isImageChanged = !isImageChanged
     }
 
+    // Toast 메시지 표시
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     // 버튼 클릭 이벤트 처리
     fun goToDiaryActivity(view: View) {
         val intent = Intent(this, DiaryActivity::class.java)
         startActivity(intent)
     }
 
-    private fun showToast(message: String) {
-        // 예시로 Toast 메시지 표시
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    /**
-     * 아래 부터는 Decorator 설정
-     */
 
 }
