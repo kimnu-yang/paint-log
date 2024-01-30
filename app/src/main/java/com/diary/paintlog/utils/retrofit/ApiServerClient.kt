@@ -12,7 +12,7 @@ object ApiServerClient {
 //        .build()
 
     var api: ApiServerService = Retrofit.Builder()
-        .baseUrl(BuildConfig.SERVER_ADDRESS)
+        .baseUrl(BuildConfig.API_SERVER_ADDRESS)
         .addConverterFactory(GsonConverterFactory.create())
 //        .client(okHttpClient)
         .build()

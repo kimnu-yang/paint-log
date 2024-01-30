@@ -17,12 +17,12 @@
     <fragment
         android:id="@+id/fragment_diary"
         android:name="com.diary.paintlog.view.fragments.DiaryFragment"
-        tools:layout="@layout/fragment_diary"></fragment>
+        tools:layout="@layout/fragment_diary" />
 
     <fragment
         android:id="@+id/fragment_settings"
         android:name="com.diary.paintlog.view.fragments.SettingsFragment"
-        tools:layout="@layout/fragment_settings"></fragment>
+        tools:layout="@layout/fragment_settings" />
 
     <action
         android:id="@+id/action_global_fragment_settings"
