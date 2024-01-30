@@ -8,28 +8,25 @@
     <fragment
         android:id="@+id/fragment_main"
         android:name="com.diary.paintlog.view.fragments.MainFragment"
-        tools:layout="@layout/fragment_main"
-        >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_fragment_main_to_fragment_diary"
-            app:destination="@id/fragment_diary"/>
+            app:destination="@id/fragment_diary" />
     </fragment>
 
     <fragment
         android:id="@+id/fragment_diary"
         android:name="com.diary.paintlog.view.fragments.DiaryFragment"
-        tools:layout="@layout/fragment_diary">
-    </fragment>
+        tools:layout="@layout/fragment_diary"></fragment>
 
     <fragment
         android:id="@+id/fragment_settings"
         android:name="com.diary.paintlog.view.fragments.SettingsFragment"
-        tools:layout="@layout/fragment_settings">
-    </fragment>
+        tools:layout="@layout/fragment_settings"></fragment>
 
     <action
         android:id="@+id/action_global_fragment_settings"
+        app:destination="@id/fragment_settings"
         app:popUpTo="@id/fragment_settings"
-        app:popUpToInclusive="true"
-        app:destination="@id/fragment_settings" />
+        app:popUpToInclusive="true" />
 </navigation>

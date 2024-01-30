@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toBottomOf="@id/calendar_view">
 
         <TextView
@@ -42,8 +42,7 @@
             android:layout_height="180dp"
             android:background="@drawable/canvas_small_selector"
             app:layout_constraintStart_toStartOf="@id/topic"
-            app:layout_constraintTop_toBottomOf="@+id/topic"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/topic" />
 
         <TextView
             android:id="@+id/today_topic"
@@ -53,10 +52,10 @@
             android:text="내가 가장 좋아하는 음악은?"
             android:textColor="@color/deep"
             android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/topic_canvas"
             app:layout_constraintLeft_toLeftOf="@id/topic_canvas"
             app:layout_constraintRight_toRightOf="@id/topic_canvas"
-            app:layout_constraintTop_toTopOf="@id/topic_canvas"
-            app:layout_constraintBottom_toBottomOf="@id/topic_canvas"/>
+            app:layout_constraintTop_toTopOf="@id/topic_canvas" />
 
         <ImageButton
             android:id="@+id/repeat_button"
@@ -74,8 +73,8 @@
             android:layout_height="70dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/add_diary_selector"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topic_canvas" />
 
         <TextView
@@ -86,9 +85,9 @@
             android:text="새 일기"
             android:textColor="@color/main"
             android:textSize="20dp"
-            app:layout_constraintTop_toBottomOf="@id/add_diary_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_diary_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
