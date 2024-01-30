@@ -9,16 +9,21 @@ import com.diary.paintlog.data.AppDatabase
 import com.kakao.sdk.common.KakaoSdk
 
 class GlobalApplication : Application() {
-    val dataStore: DataStore<Preferences> by preferencesDataStore(name = "apiToken")
+    val dataStore: DataStore<Preferences> by preferencesDataStore(name = "diary")
 
     companion object {
         lateinit var database: AppDatabase
             private set
+
+        private lateinit var globalApplication: GlobalApplication
+        fun getInstance(): GlobalApplication = globalApplication
     }
 
     override fun onCreate() {
         super.onCreate()
         // 다른 초기화 코드들
+
+        globalApplication = this
 
         // Room 데이터베이스 인스턴스 생성
         database = Room.databaseBuilder(

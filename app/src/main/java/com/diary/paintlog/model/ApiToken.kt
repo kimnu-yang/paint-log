@@ -1,8 +1,8 @@
 package com.diary.paintlog.model
 
 data class ApiToken(
-    val accessToken: String,
-    val accessTokenExpireAt: String,
-    val refreshToken: String,
-    val refreshTokenExpireAt: String
+    var accessToken: String = "",
+    var accessTokenExpireAt: String = "",
+    var refreshToken: String = "",
+    var refreshTokenExpireAt: String = ""
 )

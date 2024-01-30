@@ -1,32 +1,34 @@
 package com.diary.paintlog.utils
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import android.widget.Toast
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import com.diary.paintlog.GlobalApplication
-import com.diary.paintlog.model.ApiToken
-import com.diary.paintlog.model.repository.TokenRepository
 import com.diary.paintlog.utils.retrofit.ApiServerClient
-import com.diary.paintlog.utils.retrofit.model.ApiRegisterResponse
+import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
 import com.diary.paintlog.utils.retrofit.model.KakaoRegisterRequest
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.kakao.sdk.user.model.AccessTokenInfo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 object Kakao {
-    val TAG = "KAKAO"
+    private val TAG = this.javaClass.simpleName
 
-    fun openKakaoLogin(context: Context) {
+    fun openKakaoLogin(context: Context, successFunc: () -> Any = {}) {
+
+        if (!checkNetwork(context)) {
+            return
+        }
+
+        val failureFunc: () -> Unit = {
+            kakaoLogout(context)
+        }
+
+
         // 로그인 조합 예제
 
         // 카카오계정으로 로그인 공통 callback 구성
@@ -37,12 +39,8 @@ object Kakao {
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
 
-                apiKakaoLogin(
-                    token.accessToken,
-                    (context.applicationContext as GlobalApplication).dataStore
-                )
-
-                moveSubActivity(context)
+                successFunc()
+                apiKakaoLogin(token.accessToken, failureFunc)
             }
         }
 
@@ -50,7 +48,7 @@ object Kakao {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {
-                    Log.e(TAG, "카카오톡으로 로그인 실패: " + error.message, error)
+                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
 
                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
                     // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
@@ -59,94 +57,72 @@ object Kakao {
                     }
 
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                    UserApiClient.instance.loginWithKakaoAccount(
-                        context,
-                        callback = callback
-                    )
+                    UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
 
-                    moveSubActivity(context)
+                    successFunc()
+                    apiKakaoLogin(token.accessToken, failureFunc)
                 }
             }
         } else {
-            Toast.makeText(context, "카카오톡 설치 안된 경우", Toast.LENGTH_LONG).show()
             UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
         }
     }
 
+    fun kakaoLogout(context: Context, callback: () -> Any = {}) {
+        if (!checkNetwork(context)) {
+            return
+        }
 
-    fun apiKakaoLogin(token: String, dataStore: DataStore<Preferences>) {
-        var repo = TokenRepository(dataStore)
+        // 로그아웃
+        UserApiClient.instance.logout { error ->
+            if (error != null) {
+                Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
+            } else {
+                Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨")
+            }
+
+            callback()
+        }
+    }
+
+    private fun checkNetwork(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+
+        if (networkCapabilities == null) {
+            // 네트워크에 연결되어 있지 않음
+            Toast.makeText(context, "네트워크 연결 후 시도 바랍니다.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
+    }
+
+    private fun apiKakaoLogin(
+        token: String,
+        onFailureFunc: () -> Unit = {}
+    ) {
         ApiServerClient.api.kakaoLogin(KakaoRegisterRequest(token)).enqueue(object :
-            Callback<ApiRegisterResponse> {
+            Callback<ApiLoginResponse> {
             override fun onResponse(
-                call: Call<ApiRegisterResponse>,
-                response: Response<ApiRegisterResponse>
+                call: Call<ApiLoginResponse>,
+                response: Response<ApiLoginResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.i(TAG, "${response.body()}")
-
-
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val data = response.body()?.data
-                        repo.save(
-                            ApiToken(
-                                data?.accessToken ?: "",
-                                data?.accessTokenExpiredAt ?: "",
-                                data?.refreshToken ?: "",
-                                data?.refreshTokenExpiredAt ?: ""
-                            )
-                        )
-                    }
                 } else {
                     Log.i(TAG, response.toString())
+                    onFailureFunc()
                 }
             }
 
-            override fun onFailure(call: Call<ApiRegisterResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
                 Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
             }
         })
-    }
-
-    private fun moveSubActivity(context: Context) {
-        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-            if (tokenInfo != null) {
-                Log.i(
-                    TAG, "토큰 정보 보기 성공" +
-                            "\n회원번호: ${tokenInfo.id}" +
-                            "\n만료시간: ${tokenInfo.expiresIn} 초"
-                )
-
-                // 로그인 후 화면
-//                val intent = Intent(context, SubActivity::class.java)
-//                intent.putExtra("id", tokenInfo.id)
-//                intent.putExtra("expiresIn", tokenInfo.expiresIn)
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-//                context.startActivity(intent)
-            } else {
-                Log.i(TAG, "토큰 정보 보기 실패: " + error?.message)
-            }
-        }
-    }
-
-    private fun getTokenInfo(): AccessTokenInfo? {
-        var accessTokenInfo: AccessTokenInfo? = null
-
-        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-            if (tokenInfo != null) {
-                Log.i(
-                    TAG, "토큰 정보 보기 성공" +
-                            "\n회원번호: ${tokenInfo.id}" +
-                            "\n만료시간: ${tokenInfo.expiresIn} 초"
-                )
-
-                accessTokenInfo = tokenInfo
-            }
-        }
-
-        return accessTokenInfo
     }
 }

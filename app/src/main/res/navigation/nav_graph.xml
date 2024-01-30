@@ -3,26 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/fragment_main">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.diary.paintlog.view.fragments.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/fragment_main"
+        android:name="com.diary.paintlog.view.fragments.MainFragment"
+        tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_fragment_main_to_fragment_diary"
+            app:destination="@id/fragment_diary" />
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.diary.paintlog.view.fragments.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/fragment_diary"
+        android:name="com.diary.paintlog.view.fragments.DiaryFragment"
+        tools:layout="@layout/fragment_diary" />
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="com.diary.paintlog.view.fragments.SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+
+    <action
+        android:id="@+id/action_global_fragment_settings"
+        app:destination="@id/fragment_settings"
+        app:popUpTo="@id/fragment_settings"
+        app:popUpToInclusive="true" />
 </navigation>

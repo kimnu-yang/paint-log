@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,84 +11,17 @@
         android:id="@+id/header"
         layout="@layout/header" />
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendarView"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:theme="@style/CalenderViewCustom"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
-        app:mcv_firstDayOfWeek="monday"
-        app:mcv_showOtherDates="all"
-        app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText" />
+        android:layout_height="match_parent"
+        android:paddingTop="80dp"
+        app:defaultNavHost="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:navGraph="@navigation/nav_graph" />
 
-    <TextView
-        android:id="@+id/topic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/bm_yeon_sung"
-        android:text="추천 주제"
-        android:textColor="@color/deep"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
-
-    <ImageButton
-        android:id="@+id/topicCanvas"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/canvas_small_selector"
-        app:layout_constraintTop_toBottomOf="@+id/topic" />
-
-    <TextView
-        android:id="@+id/todayTopic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:fontFamily="@font/bm_yeon_sung"
-        android:text="내가 가장 좋아하는 음악은?"
-        android:textColor="@color/deep"
-        android:textSize="20dp"
-        app:layout_constraintTop_toTopOf="@id/topicCanvas"
-        app:layout_constraintEnd_toEndOf="@id/topicCanvas"
-        app:layout_constraintStart_toStartOf="@id/topicCanvas" />
-
-    <ImageButton
-        android:id="@+id/repeatButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/repeat_selector"
-        android:onClick="goToDiaryActivity"
-        app:layout_constraintEnd_toEndOf="@id/topicCanvas"
-        app:layout_constraintTop_toTopOf="@+id/topicCanvas" />
-
-    <ImageButton
-        android:id="@+id/addDiaryButton"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/add_diary_selector"
-        android:onClick="goToDiaryActivity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topicCanvas" />
-
-    <TextView
-        android:id="@+id/addDiaryText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bm_yeon_sung"
-        android:text="새 일기"
-        android:textColor="@color/main"
-        android:textSize="20dp"
-        app:layout_constraintTop_toBottomOf="@id/addDiaryButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
