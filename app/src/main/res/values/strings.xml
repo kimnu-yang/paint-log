@@ -57,6 +57,8 @@
     <string name="setting_kakao_logout_button">카카오 로그아웃</string>
     <string name="setting_kakao_login_description">카카오 로그인 버튼</string>
     <string name="setting_unregist_text"><u>회원탈퇴하기</u></string>
+    <string name="setting_unregist_error_retry">재접속 후 다시 시도 바랍니다.</string>
+    <string name="setting_unregist_error_doing">네트워크 연결 중입니다.</string>
     <string name="setting_unregist_error">회원 탈퇴 오류 (%s)</string>
 
 

@@ -122,13 +122,29 @@ class SettingsFragment : Fragment() {
         /////
 
         // 탈퇴하기
+        var status = false
+
         binding.settingUnregistText.setOnClickListener {
+
             val kakaoToken =
                 AuthApiClient.instance.tokenManagerProvider.manager.getToken()?.accessToken ?: ""
             if (kakaoToken == "") {
-                Toast.makeText(context, "재접속 후 다시 시도 바랍니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.setting_unregist_error_retry),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
+                if (status) {
+                    Toast.makeText(
+                        context,
+                        R.string.setting_unregist_error_doing,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
 
+                status = true
                 ApiServerClient.api.unregistKakaoUser(kakaoToken).enqueue(object :
                     Callback<ApiLoginResponse> {
                     override fun onResponse(
@@ -136,7 +152,7 @@ class SettingsFragment : Fragment() {
                         response: Response<ApiLoginResponse>
                     ) {
                         if (response.isSuccessful) {
-                            Log.i(Kakao.TAG, "${response.body()}")
+                            Log.i(TAG, "${response.body()}")
 
                             // 카카오 연결 끊기
                             UserApiClient.instance.unlink { error ->
@@ -153,8 +169,10 @@ class SettingsFragment : Fragment() {
                                 getString(R.string.setting_unregist_error, "-1"),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            Log.i(Kakao.TAG, response.toString())
+                            Log.i(TAG, response.toString())
                         }
+
+                        status = false
                     }
 
                     override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
@@ -163,7 +181,10 @@ class SettingsFragment : Fragment() {
                             getString(R.string.setting_unregist_error, "0"),
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.i(Kakao.TAG, t.localizedMessage?.toString() ?: "ERROR")
+
+                        Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
+
+                        status = false
                     }
                 })
             }
