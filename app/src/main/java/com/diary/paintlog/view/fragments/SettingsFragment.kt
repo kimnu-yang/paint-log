@@ -30,7 +30,7 @@ import java.util.Locale
 
 class SettingsFragment : Fragment() {
 
-    private val TAG = "SettingsFragment"
+    private val TAG = this.javaClass.simpleName
 
     private var _binding: FragmentSettingsBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter

@@ -16,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object Kakao {
-    const val TAG = "KAKAO"
+    private val TAG = this.javaClass.simpleName
 
     fun openKakaoLogin(context: Context, successFunc: () -> Any = {}) {
 

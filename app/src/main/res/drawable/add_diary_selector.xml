@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 터치되었을 때 -->
+    <item android:drawable="@drawable/add_button_click" android:state_pressed="true"/>
+    <!-- 기본 -->
+    <item android:drawable="@drawable/add_button"/>
+</selector>
