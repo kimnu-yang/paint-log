@@ -18,12 +18,8 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view.activities.DiaryActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.activities.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.PaintLog">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

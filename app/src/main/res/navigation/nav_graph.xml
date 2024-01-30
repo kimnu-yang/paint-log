@@ -3,33 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/fragment_main">
 
     <fragment
-        android:id="@+id/action_global_settingsFragment"
+        android:id="@+id/fragment_main"
+        android:name="com.diary.paintlog.view.fragments.MainFragment"
+        tools:layout="@layout/fragment_main"
+        >
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_diary"
+            app:destination="@id/fragment_diary"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_diary"
+        android:name="com.diary.paintlog.view.fragments.DiaryFragment"
+        tools:layout="@layout/fragment_diary">
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_settings"
         android:name="com.diary.paintlog.view.fragments.SettingsFragment"
-        app:destination="@id/fragment_settings">
-        <action
-            android:id="@+id/action_global_action_global_settingsFragment"
-            app:destination="@id/action_global_settingsFragment" />
+        tools:layout="@layout/fragment_settings">
     </fragment>
 
-    <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.diary.paintlog.view.fragments.FirstFragment"
-        tools:layout="@layout/fragment_first">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.diary.paintlog.view.fragments.SecondFragment"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_settings"
+        app:popUpTo="@id/fragment_settings"
+        app:popUpToInclusive="true"
+        app:destination="@id/fragment_settings" />
 </navigation>

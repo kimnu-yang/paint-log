@@ -62,7 +62,6 @@
     <string name="setting_unregist_error">회원 탈퇴 오류 (%s)</string>
 
 
-
     <string-array name="custom_weekdays">
         <item>월</item>
         <item>화</item>
@@ -87,4 +86,6 @@
         <item>11월</item>
         <item>12월</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

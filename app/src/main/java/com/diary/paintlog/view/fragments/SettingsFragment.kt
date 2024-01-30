@@ -207,8 +207,7 @@ class SettingsFragment : Fragment() {
      * 설정 화면 reload
      */
     private fun reloadFragment() {
-        findNavController().popBackStack(R.id.action_global_settingsFragment, true)
-        findNavController().navigate(R.id.action_global_settingsFragment)
+        findNavController().navigate(R.id.action_global_fragment_settings)
     }
 
     override fun onDestroyView() {
