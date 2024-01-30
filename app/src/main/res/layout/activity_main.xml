@@ -28,7 +28,7 @@
         android:id="@+id/topic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/bm_yeon_sung"
         android:text="추천 주제"
@@ -37,12 +37,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/topicCanvas"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_marginHorizontal="20dp"
-        android:background="@drawable/canvas_small"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/canvas_small_selector"
         app:layout_constraintTop_toBottomOf="@+id/topic" />
 
     <TextView
@@ -59,11 +59,22 @@
         app:layout_constraintStart_toStartOf="@id/topicCanvas" />
 
     <ImageButton
+        android:id="@+id/repeatButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/repeat_selector"
+        android:onClick="goToDiaryActivity"
+        app:layout_constraintEnd_toEndOf="@id/topicCanvas"
+        app:layout_constraintTop_toTopOf="@+id/topicCanvas" />
+
+    <ImageButton
         android:id="@+id/addDiaryButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/add_button"
+        android:background="@drawable/add_diary_selector"
         android:onClick="goToDiaryActivity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
