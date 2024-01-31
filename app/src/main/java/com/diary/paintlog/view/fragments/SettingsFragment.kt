@@ -57,22 +57,24 @@ class SettingsFragment : Fragment() {
             binding.settingAlarmSummary.text = setTimeMsg(storeTime)
         }
 
+        val timePickerDialog = TimePickerDialog(
+            context,
+            { _, selectedHour, selectedMinute ->
+                runBlocking { settingsRepo.saveTime(selectedHour, selectedMinute) }
+                binding.settingAlarmSummary.text =
+                    setTimeMsg(SettingsRepository.Time(selectedHour, selectedMinute))
+
+                binding.settingAlarmSwitch.isChecked = true
+            },
+            storeTime.hour,
+            storeTime.minute,
+            true
+        )
+
         binding.settingAlarmView.setOnClickListener {
             storeTime = runBlocking { settingsRepo.getTime() }
 
-            TimePickerDialog(
-                context,
-                { _, selectedHour, selectedMinute ->
-                    runBlocking { settingsRepo.saveTime(selectedHour, selectedMinute) }
-                    binding.settingAlarmSummary.text =
-                        setTimeMsg(SettingsRepository.Time(selectedHour, selectedMinute))
-
-                    binding.settingAlarmSwitch.isChecked = true
-                },
-                storeTime.hour,
-                storeTime.minute,
-                true
-            ).show()
+            timePickerDialog.show()
         }
         /////
 
