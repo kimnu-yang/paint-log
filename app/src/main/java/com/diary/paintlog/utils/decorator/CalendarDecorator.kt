@@ -1,15 +1,12 @@
 package com.diary.paintlog.utils.decorator
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PixelFormat
-import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import com.diary.paintlog.R
+import com.diary.paintlog.utils.Common
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -150,22 +147,11 @@ class CalendarDecorator(private val context: Context) {
                 else -> ContextCompat.getColor(context, R.color.deep) // 다른 요일은 검정색
             }
 
-            return SpannableString("${getDayOfWeekName(day)}").apply {
+            return SpannableString("${Common.getDayOfWeekName(day)}").apply {
                 setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
         }
 
-        private fun getDayOfWeekName(day: Int): String {
-            return when (day) {
-                1 -> "월"
-                2 -> "화"
-                3 -> "수"
-                4 -> "목"
-                5 -> "금"
-                6 -> "토"
-                7 -> "일"
-                else -> ""
-            }
-        }
+
     }
 }
