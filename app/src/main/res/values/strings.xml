@@ -44,6 +44,24 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
 
+    <!--  Main  -->
+    <string name="main_topic">추천 주제</string>
+    <string name="main_add_diary">새 일기</string>
+
+    <!--  Diary  -->
+    <string name="diary_title">제목</string>
+    <string name="diary_content">내용</string>
+    <string name="diary_tag">태그</string>
+    <string name="diary_today_color">오늘의 색</string>
+    <string name="diary_weather_now">지금의 날씨</string>
+    <string name="diary_call_weather">날씨 불러오기</string>
+    <string name="diary_cancel">취소</string>
+    <string name="diary_save">저장</string>
+    <string name="diary_desc_canvas">일기 작성 배경 화면</string>
+    <string name="diary_desc_color">오늘의 색 추가</string>
+    <string name="diary_desc_weather_btn">날씨 불러오기</string>
+
+    <!--  Settings  -->
     <string name="setting_alarm_title">알람</string>
     <string name="setting_alarm_summary">설정된 시간에 일기 작성 알람을 보냅니다.</string>
     <string name="setting_hour">시</string>
@@ -56,9 +74,9 @@
     <string name="network_setting_summary">동기화 시 사용할 네트워크 설정</string>
     <string name="setting_kakao_logout_button">카카오 로그아웃</string>
     <string name="setting_kakao_login_description">카카오 로그인 버튼</string>
-    <string name="setting_unregist_text"><u>회원탈퇴하기</u></string>
+    <string name="setting_unregist_text"><u>회원 탈퇴하기</u></string>
     <string name="setting_unregist_error_retry">재접속 후 다시 시도 바랍니다.</string>
-    <string name="setting_unregist_error_doing">네트워크 연결 중입니다.</string>
+    <string name="setting_unregist_error_doing">네트워크 연결중 입니다.</string>
     <string name="setting_unregist_error">회원 탈퇴 오류 (%s)</string>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -14,18 +14,17 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/diary_margin" >
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="2024. 01. 01(월)"
                 android:textColor="@color/deep"
-                android:textSize="20dp"
+                android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,9 +32,9 @@
                 android:id="@+id/canvas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/canvas_big"
+                android:contentDescription="@string/diary_desc_canvas"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date" />
@@ -49,9 +48,11 @@
                 android:layout_marginEnd="80dp"
                 android:background="@null"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:hint="제목"
+                android:hint="@string/diary_title"
+                android:autofillHints="@string/diary_title"
                 android:maxLength="32"
-                android:textSize="24dp"
+                android:textSize="24sp"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@id/canvas"
                 app:layout_constraintStart_toStartOf="@id/canvas"
                 app:layout_constraintTop_toTopOf="@id/canvas" />
@@ -65,12 +66,15 @@
                 android:layout_marginEnd="20dp"
                 android:background="@null"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:hint="내용"
+                android:hint="@string/diary_content"
+                android:autofillHints="@string/diary_content"
                 android:maxLength="420"
-                android:textSize="18dp"
+                android:textSize="18sp"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@id/canvas"
                 app:layout_constraintStart_toStartOf="@id/canvas"
-                app:layout_constraintTop_toBottomOf="@id/title" />
+                app:layout_constraintTop_toBottomOf="@id/title"
+                 />
 
             <TextView
                 android:id="@+id/tag_title"
@@ -79,8 +83,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="태그"
-                android:textSize="20dp"
+                android:text="@string/diary_tag"
+                android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/canvas" />
 
@@ -93,9 +97,11 @@
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
-                android:hint="태그"
+                android:hint="@string/diary_tag"
+                android:autofillHints="@string/diary_tag"
                 android:textAlignment="center"
-                android:textSize="16dp"
+                android:textSize="16sp"
+                android:inputType="text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag_title" />
 
@@ -107,9 +113,11 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:hint="태그"
+                android:hint="@string/diary_tag"
+                android:autofillHints="@string/diary_tag"
                 android:textAlignment="center"
-                android:textSize="16dp"
+                android:textSize="16sp"
+                android:inputType="text"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -123,9 +131,11 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:hint="태그"
+                android:hint="@string/diary_tag"
+                android:autofillHints="@string/diary_tag"
                 android:textAlignment="center"
-                android:textSize="16dp"
+                android:textSize="16sp"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag_title" />
 
@@ -137,8 +147,8 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
-                android:text="오늘의 색"
-                android:textSize="20dp"
+                android:text="@string/diary_today_color"
+                android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag1" />
 
@@ -149,6 +159,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/add_color"
+                android:contentDescription="@string/diary_desc_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color_title" />
 
@@ -159,6 +170,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/add_color"
+                android:contentDescription="@string/diary_desc_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -171,6 +183,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/add_color"
+                android:contentDescription="@string/diary_desc_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color_title" />
 
@@ -182,8 +195,8 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
-                android:text="지금의 날씨"
-                android:textSize="20dp"
+                android:text="@string/diary_weather_now"
+                android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color1" />
 
@@ -193,6 +206,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/call_weather_selector"
                 android:layout_marginTop="10dp"
+                android:contentDescription="@string/diary_desc_weather_btn"
                 app:layout_constraintTop_toBottomOf="@id/weather_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -202,8 +216,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="날씨 불러오기"
-                android:textSize="20dp"
+                android:text="@string/diary_call_weather"
+                android:textSize="@dimen/diary_title_small"
                 android:textColor="@color/deep"
                 app:layout_constraintTop_toTopOf="@id/weather_button"
                 app:layout_constraintBottom_toBottomOf="@id/weather_button"
@@ -219,16 +233,16 @@
                 android:background="@drawable/weather_sunny"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/temp_now"
-                app:layout_constraintTop_toTopOf="@id/temp_now"/>
+                app:layout_constraintTop_toTopOf="@id/temp_now"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/temp_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="10°C"
                 android:layout_marginTop="20dp"
-                android:textSize="28dp"
+                android:textSize="28sp"
                 android:textColor="@color/deep"
                 android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@id/weather_img"
@@ -241,9 +255,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="10°C / 20°C"
                 android:layout_marginTop="20dp"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/deep"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/temp_now"
@@ -254,10 +267,10 @@
                 android:id="@+id/cancel_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="80dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/cancel_button_white_selector"
+                android:contentDescription="@string/diary_cancel"
                 app:layout_constraintTop_toBottomOf="@id/weather_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -266,9 +279,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="취소"
+                android:text="@string/diary_cancel"
                 android:textColor="@color/deep"
-                android:textSize="20dp"
+                android:textSize="@dimen/diary_title_small"
                 app:layout_constraintBottom_toBottomOf="@id/cancel_button"
                 app:layout_constraintEnd_toEndOf="@id/cancel_button"
                 app:layout_constraintStart_toStartOf="@id/cancel_button"
@@ -278,10 +291,10 @@
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="80dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/save_button_selector"
+                android:contentDescription="@string/diary_save"
                 app:layout_constraintTop_toBottomOf="@id/weather_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -290,8 +303,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="저장"
-                android:textSize="20dp"
+                android:text="@string/diary_save"
+                android:textSize="@dimen/diary_title_small"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/save_button"
                 app:layout_constraintEnd_toEndOf="@id/save_button"
