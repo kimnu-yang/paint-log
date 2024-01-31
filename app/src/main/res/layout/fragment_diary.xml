@@ -14,9 +14,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/date"
@@ -90,12 +88,13 @@
                 android:id="@+id/tag1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
+                android:textColor="@color/deep"
                 android:hint="태그"
                 android:textAlignment="center"
-                android:textColor="@color/deep"
                 android:textSize="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag_title" />
@@ -104,15 +103,16 @@
                 android:id="@+id/tag2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="태그"
                 android:textAlignment="center"
                 android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag_title" />
 
             <EditText
@@ -120,6 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="태그"
@@ -132,10 +133,11 @@
                 android:id="@+id/color_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="오늘의 색"
                 android:textColor="@color/deep"
+                android:text="오늘의 색"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag1" />
@@ -144,6 +146,7 @@
                 android:id="@+id/color1"
                 android:layout_width="84dp"
                 android:layout_height="37dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/add_color"
                 app:layout_constraintStart_toStartOf="parent"
@@ -153,6 +156,7 @@
                 android:id="@+id/color2"
                 android:layout_width="84dp"
                 android:layout_height="37dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/add_color"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -165,6 +169,7 @@
                 android:layout_width="84dp"
                 android:layout_height="37dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/add_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color_title" />
@@ -173,10 +178,11 @@
                 android:id="@+id/weather_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:text="오늘의 날씨"
                 android:textColor="@color/deep"
+                android:text="지금의 날씨"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color1" />
@@ -185,34 +191,76 @@
                 android:id="@+id/weather_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/call_weather_selector"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/call_weather"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weather_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/weather_title" />
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
+                android:id="@+id/weather_button_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:text="날씨 불러오기"
-                android:textColor="@color/deep"
                 android:textSize="20dp"
+                android:textColor="@color/deep"
+                app:layout_constraintTop_toTopOf="@id/weather_button"
                 app:layout_constraintBottom_toBottomOf="@id/weather_button"
-                app:layout_constraintEnd_toEndOf="@id/weather_button"
                 app:layout_constraintStart_toStartOf="@id/weather_button"
-                app:layout_constraintTop_toTopOf="@id/weather_button" />
+                app:layout_constraintEnd_toEndOf="@id/weather_button"/>
 
             <ImageView
+                android:id="@+id/weather_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/weather_sunny"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/temp_now"
+                app:layout_constraintTop_toTopOf="@id/temp_now"/>
+
+            <TextView
+                android:id="@+id/temp_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:text="10°C"
+                android:layout_marginTop="20dp"
+                android:textSize="28dp"
+                android:textColor="@color/deep"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/weather_img"
+                app:layout_constraintTop_toBottomOf="@id/weather_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/temp_min_max"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:text="10°C / 20°C"
+                android:layout_marginTop="20dp"
+                android:textSize="20dp"
+                android:textColor="@color/deep"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/temp_now"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageButton
                 android:id="@+id/cancel_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/cancel_button_white"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/cancel_button_white_selector"
+                app:layout_constraintTop_toBottomOf="@id/weather_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/weather_button" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -230,20 +278,21 @@
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/save_button"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/save_button_selector"
+                app:layout_constraintTop_toBottomOf="@id/weather_button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/weather_button" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:text="저장"
-                android:textColor="@color/white"
                 android:textSize="20dp"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/save_button"
                 app:layout_constraintEnd_toEndOf="@id/save_button"
                 app:layout_constraintStart_toStartOf="@id/save_button"
