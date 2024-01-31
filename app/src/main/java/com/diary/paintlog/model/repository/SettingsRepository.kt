@@ -54,7 +54,7 @@ class SettingsRepository() {
 
     suspend fun delSyncTime() {
         dataStore.edit {
-            it.clear()
+            it.remove(LAST_SYNC_TIME)
         }
     }
 }
