@@ -6,7 +6,7 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import com.diary.paintlog.R
-import com.diary.paintlog.utils.common.Common
+import com.diary.paintlog.utils.Common
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -15,9 +15,6 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import org.threeten.bp.DayOfWeek
 
 class CalendarDecorator(private val context: Context) {
-
-    /* 공통 모듈 준비 */
-    private val common = Common()
 
     /* 오늘 날짜의 색상을 설정 */
     inner class TodayDecorator(): DayViewDecorator {
@@ -150,7 +147,7 @@ class CalendarDecorator(private val context: Context) {
                 else -> ContextCompat.getColor(context, R.color.deep) // 다른 요일은 검정색
             }
 
-            return SpannableString("${common.getDayOfWeekName(day)}").apply {
+            return SpannableString("${Common.getDayOfWeekName(day)}").apply {
                 setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
         }

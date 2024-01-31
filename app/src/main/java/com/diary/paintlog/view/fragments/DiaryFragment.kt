@@ -8,9 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentDiaryBinding
-import com.diary.paintlog.utils.common.Common
+import com.diary.paintlog.utils.Common
 import com.diary.paintlog.utils.retrofit.WeatherServerClient
 import com.diary.paintlog.utils.retrofit.model.WeatherResponse
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -26,9 +25,6 @@ class DiaryFragment : Fragment() {
     private var _binding: FragmentDiaryBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    /* 공통 모듈 준비 */
-    private val common = Common()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,9 +42,9 @@ class DiaryFragment : Fragment() {
 
         val today = LocalDateTime.now()
         val weekOfDay = today.dayOfWeek.value
-        val date = today.format(DateTimeFormatter.ofPattern("yyyy. MM. dd(${common.getDayOfWeekName(weekOfDay)})"))
+        val date = today.format(DateTimeFormatter.ofPattern("yyyy. MM. dd(${Common.getDayOfWeekName(weekOfDay)})"))
 
-        // TODO: 선택한 날짜로 변경되어야 함
+        // TODO: 선택한 날짜로 변경 되어야 함
         binding.date.text = date
 
         binding.weatherButton.setOnClickListener {
@@ -61,7 +57,7 @@ class DiaryFragment : Fragment() {
                             val latitude = it.latitude
                             val longitude = it.longitude
 
-                            val grid = common.convertBtwGridGps(latitude, longitude)
+                            val grid = Common.convertBtwGridGps(latitude, longitude)
                             var gridX = grid.x.toInt().toString()
                             var gridY = grid.y.toInt().toString()
 
@@ -73,8 +69,8 @@ class DiaryFragment : Fragment() {
                             }
 
                             WeatherServerClient.api.getWeather(
-                                common.weatherBaseDate,
-                                common.weatherBaseTime,
+                                Common.weatherBaseDate,
+                                Common.weatherBaseTime,
                                 gridX,
                                 gridY
                             ).enqueue(object :
@@ -101,23 +97,27 @@ class DiaryFragment : Fragment() {
                                         binding.weatherButton.visibility = View.INVISIBLE
                                         binding.weatherButtonText.visibility = View.GONE
 
-                                        binding.tempNow.text = "$nowTemp°C"
-                                        binding.tempMinMax.text = "$minTemp°C / $maxTemp°C"
-                                        binding.weatherImg.setBackgroundResource(common.getWeatherImage(skyState,rainOrSnow))
+                                        val tempNow = "$nowTemp°C"
+                                        val tempMinMax = "$minTemp°C / $maxTemp°C"
+
+                                        binding.tempNow.text = tempNow
+                                        binding.tempMinMax.text = tempMinMax
+                                        binding.weatherImg.setBackgroundResource(Common.getWeatherImage(skyState,rainOrSnow))
 
                                         binding.tempNow.visibility = View.VISIBLE
                                         binding.tempMinMax.visibility = View.VISIBLE
                                         binding.weatherImg.visibility = View.VISIBLE
 
                                     } else {
-                                        common.showToast(binding.root.context, "날씨 데이터가 없습니다")
+                                        Common.showToast(binding.root.context, "날씨 데이터가 없습니다")
                                         Log.i("Weather Null Error", response.toString())
                                     }
                                 }
 
                                 override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                                    common.showToast(binding.root.context, "네트워크 연결 상태를 확인 해 주세요")
-                                    Log.i("Weather Network Error", t.localizedMessage)
+                                    Common.showToast(binding.root.context, "네트워크 연결 상태를 확인 해 주세요")
+                                    t.localizedMessage?.let { Log.i("Weather Network Error", it)
+                                    }
                                 }
                             })
                         }
