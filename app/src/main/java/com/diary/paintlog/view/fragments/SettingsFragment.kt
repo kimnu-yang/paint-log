@@ -17,6 +17,7 @@ import com.diary.paintlog.model.repository.SettingsRepository
 import com.diary.paintlog.utils.Kakao
 import com.diary.paintlog.utils.retrofit.ApiServerClient
 import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
+import com.diary.paintlog.view.dialog.LoadingDialog
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.CoroutineScope
@@ -139,10 +140,9 @@ class SettingsFragment : Fragment() {
         /////
 
         // 탈퇴하기
-        var status = false
+        val loading = LoadingDialog(requireContext())
 
         binding.settingUnregistText.setOnClickListener {
-
             val kakaoToken =
                 AuthApiClient.instance.tokenManagerProvider.manager.getToken()?.accessToken ?: ""
             if (kakaoToken == "") {
@@ -152,20 +152,12 @@ class SettingsFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                if (status) {
-                    Toast.makeText(
-                        context,
-                        R.string.setting_unregist_error_doing,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-
                 showConfirmationDialog(
                     requireContext(),
                     getString(R.string.setting_unregist_confirm)
                 ) {
-                    status = true
+                    loading.show()
+
                     ApiServerClient.api.unregistKakaoUser(kakaoToken).enqueue(object :
                         Callback<ApiLoginResponse> {
                         override fun onResponse(
@@ -193,7 +185,7 @@ class SettingsFragment : Fragment() {
                                 Log.i(TAG, response.toString())
                             }
 
-                            status = false
+                            loading.dismiss()
                         }
 
                         override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
@@ -205,7 +197,7 @@ class SettingsFragment : Fragment() {
 
                             Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
 
-                            status = false
+                            loading.dismiss()
                         }
                     })
                 }
