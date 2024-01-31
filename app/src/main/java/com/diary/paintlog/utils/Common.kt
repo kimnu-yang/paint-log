@@ -1,8 +1,6 @@
-package com.diary.paintlog.utils.common
+package com.diary.paintlog.utils
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.widget.Toast
 import com.diary.paintlog.R
 import java.time.LocalDateTime
@@ -18,7 +16,7 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 
-class Common() {
+object Common {
 
     val weatherBaseDate: String = getWeatherBaseDateAndTime()[0]
     val weatherBaseTime: String = getWeatherBaseDateAndTime()[1]
@@ -40,13 +38,13 @@ class Common() {
     fun getWeatherImage(skyState: String?, rainOrSnow: String?): Int {
 
         when(rainOrSnow){
-           "0" -> {
-               when(skyState){
-                   "1" -> return R.drawable.weather_sunny
-                   "3" -> return R.drawable.weather_cloudy
-                   "4" -> return R.drawable.weather_overcast
-               }
-           }
+            "0" -> {
+                when(skyState){
+                    "1" -> return R.drawable.weather_sunny
+                    "3" -> return R.drawable.weather_cloudy
+                    "4" -> return R.drawable.weather_overcast
+                }
+            }
 
             "1" -> return R.drawable.weather_rainy
             "2" -> return R.drawable.weather_snow_rain
