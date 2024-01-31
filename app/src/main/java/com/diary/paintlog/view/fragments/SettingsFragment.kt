@@ -175,6 +175,9 @@ class SettingsFragment : Fragment() {
                                         Log.e(TAG, "연결 끊기 실패", error)
                                     } else {
                                         Log.i(TAG, "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            settingsRepo.delSyncTime()
+                                        }
                                         reloadFragment()
                                     }
                                 }

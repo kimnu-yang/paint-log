@@ -51,4 +51,10 @@ class SettingsRepository() {
     suspend fun getSyncTime(): String {
         return dataStore.data.first()[LAST_SYNC_TIME] ?: ""
     }
+
+    suspend fun delSyncTime() {
+        dataStore.edit {
+            it.clear()
+        }
+    }
 }
