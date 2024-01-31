@@ -45,39 +45,52 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false) // 바인딩 객체 초기화
 
         val settingsRepo = SettingsRepository()
+
+        val alarmChecked = runBlocking { settingsRepo.getChecked() }
+        var storeTime = runBlocking { settingsRepo.getTime() }
         /////
 
         // 알람 설정 세팅
 
-        // 설정한 알람 시간 표시
-        val time: SettingsRepository.Time = runBlocking { settingsRepo.getTime() }
-
-        if (time.hour != -1) {
-            binding.settingAlarmSummary.text = setTimeMsg(time.hour, time.minute)
+        if (storeTime.hour != -1 && alarmChecked) {
+            binding.settingAlarmSummary.text = setTimeMsg(storeTime)
         }
 
         binding.settingAlarmView.setOnClickListener {
-            val nowTime = runBlocking { settingsRepo.getTime() }
+            storeTime = runBlocking { settingsRepo.getTime() }
 
             TimePickerDialog(
                 context,
                 { _, selectedHour, selectedMinute ->
                     runBlocking { settingsRepo.saveTime(selectedHour, selectedMinute) }
-                    reloadFragment()
+                    binding.settingAlarmSummary.text =
+                        setTimeMsg(SettingsRepository.Time(selectedHour, selectedMinute))
+
+                    binding.settingAlarmSwitch.isChecked = true
                 },
-                nowTime.hour,
-                nowTime.minute,
+                storeTime.hour,
+                storeTime.minute,
                 true
             ).show()
         }
         /////
 
         // 알람 스위치 세팅
-        val checked = runBlocking { settingsRepo.getChecked() }
-
-        binding.settingAlarmSwitch.isChecked = checked
+        binding.settingAlarmSwitch.isChecked = alarmChecked
 
         binding.settingAlarmSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                storeTime = runBlocking { settingsRepo.getTime() }
+
+                if (storeTime.hour == -1) {
+                    binding.settingAlarmView.callOnClick()
+                }
+
+                binding.settingAlarmSummary.text = setTimeMsg(storeTime)
+            } else {
+                binding.settingAlarmSummary.text = getString(R.string.setting_alarm_summary)
+            }
+
             CoroutineScope(Dispatchers.IO).launch { settingsRepo.saveChecked(isChecked) }
         }
         /////
@@ -109,6 +122,8 @@ class SettingsFragment : Fragment() {
             binding.settingKakaoLoginButton.visibility = View.GONE
             binding.settingUnregistText.visibility = View.VISIBLE
             binding.settingKakaoLogoutButton.visibility = View.VISIBLE
+
+            binding.settingSyncView.visibility = View.VISIBLE
         }
 
         binding.settingKakaoLoginButton.setOnClickListener {
@@ -204,10 +219,16 @@ class SettingsFragment : Fragment() {
     /**
      * 시간 텍스트 설정 함수
      */
-    private fun setTimeMsg(hour: Int, minute: Int): String {
-        return hour.toString() + resources.getString(R.string.setting_hour) + " " + minute.toString() + resources.getString(
-            R.string.setting_minute
-        )
+    private fun setTimeMsg(time: SettingsRepository.Time): String {
+        return if (time.hour != -1) {
+            "${time.hour}${resources.getString(R.string.setting_hour)} ${time.minute}${
+                resources.getString(
+                    R.string.setting_minute
+                )
+            }"
+        } else {
+            getString(R.string.setting_alarm_summary)
+        }
     }
 
     /**

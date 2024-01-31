@@ -51,9 +51,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/setting_sync_view"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:padding="15dp">
+        android:padding="15dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/setting_sync_title"
@@ -104,11 +106,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/setting_kakao_logout_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="183dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/kakao_logout_button"
+            android:padding="0dp"
             android:text="@string/setting_kakao_logout_button"
+            android:textColor="@color/black"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/setting_unregist_text"
             app:layout_constraintEnd_toEndOf="parent"
