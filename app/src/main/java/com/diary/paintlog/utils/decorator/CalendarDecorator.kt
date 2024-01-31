@@ -1,15 +1,12 @@
 package com.diary.paintlog.utils.decorator
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PixelFormat
-import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import com.diary.paintlog.R
+import com.diary.paintlog.utils.common.Common
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -18,6 +15,9 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import org.threeten.bp.DayOfWeek
 
 class CalendarDecorator(private val context: Context) {
+
+    /* 공통 모듈 준비 */
+    private val common = Common()
 
     /* 오늘 날짜의 색상을 설정 */
     inner class TodayDecorator(): DayViewDecorator {
@@ -150,22 +150,11 @@ class CalendarDecorator(private val context: Context) {
                 else -> ContextCompat.getColor(context, R.color.deep) // 다른 요일은 검정색
             }
 
-            return SpannableString("${getDayOfWeekName(day)}").apply {
+            return SpannableString("${common.getDayOfWeekName(day)}").apply {
                 setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
         }
 
-        private fun getDayOfWeekName(day: Int): String {
-            return when (day) {
-                1 -> "월"
-                2 -> "화"
-                3 -> "수"
-                4 -> "목"
-                5 -> "금"
-                6 -> "토"
-                7 -> "일"
-                else -> ""
-            }
-        }
+
     }
 }
