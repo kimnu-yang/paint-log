@@ -14,6 +14,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("com.google.android.gms:play-services-location:21.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -57,8 +58,10 @@ android {
 
         // 프로젝트 내에서 언제든지 사용이 가능한 변수들이다.
         // 타입 - 키 - 값으로 저장된다.
-        buildConfigField("String", "KAKAO_NATIVE_KEY", getLocalProperties("KAKAO_NATIVE_KEY"))
         buildConfigField("String", "API_SERVER_ADDRESS", getLocalProperties("API_SERVER_ADDRESS"))
+        buildConfigField("String", "KAKAO_NATIVE_KEY", getLocalProperties("KAKAO_NATIVE_KEY"))
+        buildConfigField("String", "WEATHER_KEY", getLocalProperties("WEATHER_KEY"))
+
         manifestPlaceholders["KAKAO_NATIVE_KEY"] =
             getLocalProperties("KAKAO_NATIVE_KEY").replace("\"", "")
     }
