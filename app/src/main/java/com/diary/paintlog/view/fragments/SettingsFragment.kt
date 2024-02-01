@@ -15,6 +15,7 @@ import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentSettingsBinding
 import com.diary.paintlog.model.repository.SettingsRepository
 import com.diary.paintlog.utils.Kakao
+import com.diary.paintlog.utils.NotifyManager
 import com.diary.paintlog.utils.retrofit.ApiServerClient
 import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
 import com.diary.paintlog.view.dialog.LoadingDialog
@@ -83,6 +84,18 @@ class SettingsFragment : Fragment() {
 
         binding.settingAlarmSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
+                if (!NotifyManager.checkNotifyPermissionWithRequest(requireContext())) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.setting_notify_disabled),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.settingAlarmSwitch.isChecked = false
+                    return@setOnCheckedChangeListener
+                }
+
+                NotifyManager.checkNotifyPermissionWithRequest(requireContext())
+
                 storeTime = runBlocking { settingsRepo.getTime() }
 
                 if (storeTime.hour == -1) {

@@ -45,7 +45,7 @@
     </string>
 
     <string name="setting_alarm_title">알람</string>
-    <string name="setting_alarm_summary">설정된 시간에 일기 작성 알람을 보냅니다.</string>
+    <string name="setting_alarm_summary">설정된 시간에 일기 작성 알림을 보냅니다.</string>
     <string name="setting_hour">시</string>
     <string name="setting_minute">분</string>
     <string name="setting_sync_title">동기화</string>
@@ -61,6 +61,11 @@
     <string name="setting_unregist_confirm">정말 탈퇴하시겠습니까??\n동기화 되어있는 일기는 모두 지워집니다.</string>
     <string name="setting_unregist_error_retry">재접속 후 다시 시도 바랍니다.</string>
     <string name="setting_unregist_error">회원 탈퇴 오류 (%s)</string>
+    <string name="setting_notify_dialog_title">알람 설정</string>
+    <string name="setting_notify_dialog_summary">알람 기능을 사용하기 위해선 알림 설정이 필요합니다.\n알림 설정 화면으로 이동하시겠습니까?</string>
+    <string name="setting_notify_disabled">설정에서 알림을 허용해주세요.</string>
+    <string name="channel_notify_title">일기 작성 알림</string>
+    <string name="channel_notify_summary">설정한 시간에 일기 작성 알림을 보냅니다.</string>
 
 
     <string-array name="custom_weekdays">
