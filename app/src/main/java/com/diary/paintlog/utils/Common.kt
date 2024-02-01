@@ -1,7 +1,9 @@
 package com.diary.paintlog.utils
 
 import android.content.Context
+import android.location.LocationManager
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.diary.paintlog.R
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -17,6 +19,12 @@ import kotlin.math.sqrt
 import kotlin.math.tan
 
 object Common {
+
+    // 위치 제공 옵션 활성화 여부
+    fun isLocationProviderEnabled(fragmentActivity: FragmentActivity): Boolean {
+        val locationManager = fragmentActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
 
     val weatherBaseDate: String = getWeatherBaseDateAndTime()[0]
     val weatherBaseTime: String = getWeatherBaseDateAndTime()[1]

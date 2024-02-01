@@ -13,6 +13,9 @@ import com.diary.paintlog.utils.Common
 import com.diary.paintlog.utils.retrofit.WeatherServerClient
 import com.diary.paintlog.utils.retrofit.model.WeatherResponse
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +28,10 @@ class DiaryFragment : Fragment() {
     private var _binding: FragmentDiaryBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +46,16 @@ class DiaryFragment : Fragment() {
 
         // 위치 정보 관련 패키지
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                p0?.lastLocation?.let { location ->
+                    // 위치 정보를 성공적으로 가져왔을 때 처리
+                    // 위치 정보 사용
+                    latitude = location.latitude
+                    longitude = location.longitude
+                }
+            }
+        }
 
         val today = LocalDateTime.now()
         val weekOfDay = today.dayOfWeek.value
@@ -48,85 +65,142 @@ class DiaryFragment : Fragment() {
         binding.date.text = date
 
         binding.weatherButton.setOnClickListener {
-
-            if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location ->
-                        // 위치 정보를 가져온 경우
-                        location?.let {
-                            val latitude = it.latitude
-                            val longitude = it.longitude
-
-                            val grid = Common.convertBtwGridGps(latitude, longitude)
-                            var gridX = grid.x.toInt().toString()
-                            var gridY = grid.y.toInt().toString()
-
-                            // 이 범위 밖은 한국이 아님
-                            // TODO: 한국이 아닌 곳의 날씨 고려
-                            if(grid.x < 53 || grid.x > 144 || grid.y < 68 || grid.y > 139){
-                                gridX = "58"
-                                gridY = "125"
-                            }
-
-                            WeatherServerClient.api.getWeather(
-                                Common.weatherBaseDate,
-                                Common.weatherBaseTime,
-                                gridX,
-                                gridY
-                            ).enqueue(object :
-                                Callback<WeatherResponse> {
-                                override fun onResponse(
-                                    call: Call<WeatherResponse>,
-                                    response: Response<WeatherResponse>
-                                ) {
-                                    if (response.body()?.result?.body.toString() != "null") {
-                                        val weather = response.body()?.result?.body?.items?.item
-                                        val minTemp = weather?.filter { it.category == "TMN" }?.get(0)?.fcstValue
-                                        val maxTemp = weather?.filter { it.category == "TMX" }?.get(0)?.fcstValue
-
-                                        val nowTemp = weather?.filter { it.category == "TMP" && it.fcstTime == LocalDateTime.now().format(
-                                            DateTimeFormatter.ofPattern("HH00")) }?.get(0)?.fcstValue
-
-                                        val skyState = weather?.filter { it.category == "SKY" && it.fcstTime == LocalDateTime.now().format(
-                                            DateTimeFormatter.ofPattern("HH00")) }?.get(0)?.fcstValue
-
-                                        val rainOrSnow = weather?.filter { it.category == "PTY" && it.fcstTime == LocalDateTime.now().format(
-                                            DateTimeFormatter.ofPattern("HH00")) }?.get(0)?.fcstValue
-
-                                        // 날씨 불러오기 버튼과 텍스트 제거
-                                        binding.weatherButton.visibility = View.INVISIBLE
-                                        binding.weatherButtonText.visibility = View.GONE
-
-                                        val tempNow = "$nowTemp°C"
-                                        val tempMinMax = "$minTemp°C / $maxTemp°C"
-
-                                        binding.tempNow.text = tempNow
-                                        binding.tempMinMax.text = tempMinMax
-                                        binding.weatherImg.setBackgroundResource(Common.getWeatherImage(skyState,rainOrSnow))
-
-                                        binding.tempNow.visibility = View.VISIBLE
-                                        binding.tempMinMax.visibility = View.VISIBLE
-                                        binding.weatherImg.visibility = View.VISIBLE
-
-                                    } else {
-                                        Common.showToast(binding.root.context, "날씨 데이터가 없습니다")
-                                        Log.i("Weather Null Error", response.toString())
-                                    }
-                                }
-
-                                override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                                    Common.showToast(binding.root.context, "네트워크 연결 상태를 확인 해 주세요")
-                                    t.localizedMessage?.let { Log.i("Weather Network Error", it)
-                                    }
-                                }
-                            })
-                        }
-                    }
+            if(!Common.isLocationProviderEnabled(requireActivity())) {
+                Common.showToast(binding.root.context, "위치 제공 옵션을 켜 주세요")
             } else {
-                // 권한이 없는 경우 권한 요청
-                // TODO: Deprecated 고려
-                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-                Log.i("TEST", "위치 권한 획득 실패")
+
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+
+                    // TODO: Deprecated 고려
+                    val locationRequest = LocationRequest.create().apply {
+                        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                        interval = 10000 // 10 seconds
+                    }
+                    fusedLocationClient.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback,
+                        null
+                    )
+
+                    fusedLocationClient.lastLocation
+                        .addOnSuccessListener { location ->
+
+                            if (location == null) {
+                                Common.showToast(
+                                    binding.root.context,
+                                    "위치 정보를 갱신 중입니다.\n잠시후 다시 시도해 주세요."
+                                )
+                            } else {
+                                val latitude = latitude
+                                val longitude = longitude
+
+                                val grid = Common.convertBtwGridGps(latitude, longitude)
+                                var gridX = grid.x.toInt().toString()
+                                var gridY = grid.y.toInt().toString()
+
+                                // 이 범위 밖은 한국이 아님
+                                // TODO: 한국이 아닌 곳의 날씨 고려
+                                if (grid.x < 53 || grid.x > 144 || grid.y < 68 || grid.y > 139) {
+                                    gridX = "58"
+                                    gridY = "125"
+                                }
+
+                                WeatherServerClient.api.getWeather(
+                                    Common.weatherBaseDate,
+                                    Common.weatherBaseTime,
+                                    gridX,
+                                    gridY
+                                ).enqueue(object :
+                                    Callback<WeatherResponse> {
+                                    override fun onResponse(
+                                        call: Call<WeatherResponse>,
+                                        response: Response<WeatherResponse>
+                                    ) {
+                                        if (response.body()?.result?.body.toString() != "null") {
+                                            val weather = response.body()?.result?.body?.items?.item
+                                            val minTemp = weather?.filter { it.category == "TMN" }
+                                                ?.get(0)?.fcstValue
+                                            val maxTemp = weather?.filter { it.category == "TMX" }
+                                                ?.get(0)?.fcstValue
+
+                                            val nowTemp = weather?.filter {
+                                                it.category == "TMP" && it.fcstTime == LocalDateTime.now()
+                                                    .format(
+                                                        DateTimeFormatter.ofPattern("HH00")
+                                                    )
+                                            }?.get(0)?.fcstValue
+
+                                            val skyState = weather?.filter {
+                                                it.category == "SKY" && it.fcstTime == LocalDateTime.now()
+                                                    .format(
+                                                        DateTimeFormatter.ofPattern("HH00")
+                                                    )
+                                            }?.get(0)?.fcstValue
+
+                                            val rainOrSnow = weather?.filter {
+                                                it.category == "PTY" && it.fcstTime == LocalDateTime.now()
+                                                    .format(
+                                                        DateTimeFormatter.ofPattern("HH00")
+                                                    )
+                                            }?.get(0)?.fcstValue
+
+                                            // 날씨 불러오기 버튼과 텍스트 제거
+                                            binding.weatherButton.visibility = View.INVISIBLE
+                                            binding.weatherButtonText.visibility = View.GONE
+
+                                            val tempNow = "$nowTemp°C"
+                                            val tempMinMax = "$minTemp°C / $maxTemp°C"
+
+                                            binding.tempNow.text = tempNow
+                                            binding.tempMinMax.text = tempMinMax
+                                            binding.weatherImg.setBackgroundResource(
+                                                Common.getWeatherImage(
+                                                    skyState,
+                                                    rainOrSnow
+                                                )
+                                            )
+
+                                            binding.tempNow.visibility = View.VISIBLE
+                                            binding.tempMinMax.visibility = View.VISIBLE
+                                            binding.weatherImg.visibility = View.VISIBLE
+
+                                        } else {
+                                            Common.showToast(binding.root.context, "날씨 데이터가 없습니다")
+                                            Log.i("Weather Null Error", response.toString())
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<WeatherResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Common.showToast(
+                                            binding.root.context,
+                                            "네트워크 연결 상태를 확인 해 주세요"
+                                        )
+                                        t.localizedMessage?.let {
+                                            Log.i("Weather Network Error", it)
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                } else {
+                    // 권한이 없는 경우 권한 요청
+                    // TODO: Deprecated 고려
+                    requestPermissions(
+                        arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                        LOCATION_PERMISSION_REQUEST_CODE
+                    )
+                }
             }
         }
 
@@ -139,10 +213,14 @@ class DiaryFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        // 위치 업데이트를 중지
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
-
-
-
 }
