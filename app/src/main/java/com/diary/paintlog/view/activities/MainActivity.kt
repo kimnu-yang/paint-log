@@ -3,7 +3,6 @@ package com.diary.paintlog.view.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
@@ -11,11 +10,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.diary.paintlog.R
 import com.diary.paintlog.databinding.ActivityMainBinding
+import com.diary.paintlog.utils.Common
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val TAG = this.javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_week -> {
                     // 메뉴 아이템 2 선택 시 할 일
                     // 예: Toast 메시지 표시
-                    showToast("Menu Item 2 Clicked")
+                    Common.showToast(binding.root.context, "Menu Item 2 Clicked")
                     true
                 }
 
@@ -75,10 +74,5 @@ class MainActivity : AppCompatActivity() {
 
             navController.navigate(intent.getIntExtra("destination_fragment", -1))
         }
-    }
-
-    // Toast 메시지 표시
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

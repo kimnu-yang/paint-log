@@ -12,6 +12,11 @@
     <!-- 정확한 알람 권한 -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
+    <!-- 위치 정보 사용 권한 설정 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
