@@ -15,8 +15,10 @@ import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentSettingsBinding
 import com.diary.paintlog.model.repository.SettingsRepository
 import com.diary.paintlog.utils.Kakao
+import com.diary.paintlog.utils.NotifyManager
 import com.diary.paintlog.utils.retrofit.ApiServerClient
 import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
+import com.diary.paintlog.view.dialog.LoadingDialog
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.CoroutineScope
@@ -45,40 +47,77 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false) // 바인딩 객체 초기화
 
         val settingsRepo = SettingsRepository()
+
+        val alarmChecked = runBlocking { settingsRepo.getChecked() }
+        var storeTime = runBlocking { settingsRepo.getTime() }
         /////
 
         // 알람 설정 세팅
 
-        // 설정한 알람 시간 표시
-        val time: SettingsRepository.Time = runBlocking { settingsRepo.getTime() }
-
-        if (time.hour != -1) {
-            binding.settingAlarmSummary.text = setTimeMsg(time.hour, time.minute)
+        if (storeTime.hour != -1 && alarmChecked) {
+            binding.settingAlarmSummary.text = setTimeMsg(storeTime)
         }
 
-        binding.settingAlarmView.setOnClickListener {
-            val nowTime = runBlocking { settingsRepo.getTime() }
+        val timePickerDialog = TimePickerDialog(
+            context,
+            { _, selectedHour, selectedMinute ->
+                runBlocking { settingsRepo.saveTime(selectedHour, selectedMinute) }
+                binding.settingAlarmSummary.text =
+                    setTimeMsg(SettingsRepository.Time(selectedHour, selectedMinute))
 
-            TimePickerDialog(
-                context,
-                { _, selectedHour, selectedMinute ->
-                    runBlocking { settingsRepo.saveTime(selectedHour, selectedMinute) }
-                    reloadFragment()
-                },
-                nowTime.hour,
-                nowTime.minute,
-                true
-            ).show()
+                if (binding.settingAlarmSwitch.isChecked) {
+                    NotifyManager.setAlarm(requireContext())
+                } else {
+                    binding.settingAlarmSwitch.isChecked = true
+                }
+            },
+            storeTime.hour,
+            storeTime.minute,
+            true
+        )
+
+        binding.settingAlarmView.setOnClickListener {
+            storeTime = runBlocking { settingsRepo.getTime() }
+
+            timePickerDialog.show()
         }
         /////
 
         // 알람 스위치 세팅
-        val checked = runBlocking { settingsRepo.getChecked() }
-
-        binding.settingAlarmSwitch.isChecked = checked
+        binding.settingAlarmSwitch.isChecked = alarmChecked
 
         binding.settingAlarmSwitch.setOnCheckedChangeListener { _, isChecked ->
-            CoroutineScope(Dispatchers.IO).launch { settingsRepo.saveChecked(isChecked) }
+            if (isChecked) {
+                if (!NotifyManager.checkNotifyPermissionWithRequest(requireContext())) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.setting_notify_disabled),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.settingAlarmSwitch.isChecked = false
+                    return@setOnCheckedChangeListener
+                }
+
+                NotifyManager.checkNotifyPermissionWithRequest(requireContext())
+
+                storeTime = runBlocking { settingsRepo.getTime() }
+
+                if (storeTime.hour == -1) {
+                    binding.settingAlarmView.callOnClick()
+                }
+
+                binding.settingAlarmSummary.text = setTimeMsg(storeTime)
+            } else {
+                binding.settingAlarmSummary.text = getString(R.string.setting_alarm_summary)
+            }
+
+            runBlocking { settingsRepo.saveChecked(isChecked) }
+
+            if (isChecked) {
+                NotifyManager.setAlarm(requireContext())
+            } else {
+                NotifyManager.cancelAlarm(requireContext())
+            }
         }
         /////
 
@@ -109,6 +148,8 @@ class SettingsFragment : Fragment() {
             binding.settingKakaoLoginButton.visibility = View.GONE
             binding.settingUnregistText.visibility = View.VISIBLE
             binding.settingKakaoLogoutButton.visibility = View.VISIBLE
+
+            binding.settingSyncView.visibility = View.VISIBLE
         }
 
         binding.settingKakaoLoginButton.setOnClickListener {
@@ -124,10 +165,9 @@ class SettingsFragment : Fragment() {
         /////
 
         // 탈퇴하기
-        var status = false
+        val loading = LoadingDialog(requireContext())
 
         binding.settingUnregistText.setOnClickListener {
-
             val kakaoToken =
                 AuthApiClient.instance.tokenManagerProvider.manager.getToken()?.accessToken ?: ""
             if (kakaoToken == "") {
@@ -137,20 +177,12 @@ class SettingsFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                if (status) {
-                    Toast.makeText(
-                        context,
-                        R.string.setting_unregist_error_doing,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-
                 showConfirmationDialog(
                     requireContext(),
                     getString(R.string.setting_unregist_confirm)
                 ) {
-                    status = true
+                    loading.show()
+
                     ApiServerClient.api.unregistKakaoUser(kakaoToken).enqueue(object :
                         Callback<ApiLoginResponse> {
                         override fun onResponse(
@@ -166,6 +198,9 @@ class SettingsFragment : Fragment() {
                                         Log.e(TAG, "연결 끊기 실패", error)
                                     } else {
                                         Log.i(TAG, "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            settingsRepo.delSyncTime()
+                                        }
                                         reloadFragment()
                                     }
                                 }
@@ -178,7 +213,7 @@ class SettingsFragment : Fragment() {
                                 Log.i(TAG, response.toString())
                             }
 
-                            status = false
+                            loading.dismiss()
                         }
 
                         override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
@@ -190,7 +225,7 @@ class SettingsFragment : Fragment() {
 
                             Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
 
-                            status = false
+                            loading.dismiss()
                         }
                     })
                 }
@@ -204,10 +239,16 @@ class SettingsFragment : Fragment() {
     /**
      * 시간 텍스트 설정 함수
      */
-    private fun setTimeMsg(hour: Int, minute: Int): String {
-        return hour.toString() + resources.getString(R.string.setting_hour) + " " + minute.toString() + resources.getString(
-            R.string.setting_minute
-        )
+    private fun setTimeMsg(time: SettingsRepository.Time): String {
+        return if (time.hour != -1) {
+            "${time.hour}${resources.getString(R.string.setting_hour)} ${time.minute}${
+                resources.getString(
+                    R.string.setting_minute
+                )
+            }"
+        } else {
+            getString(R.string.setting_alarm_summary)
+        }
     }
 
     /**

@@ -4,9 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
 import android.widget.Toast
+import com.diary.paintlog.R
 import com.diary.paintlog.utils.retrofit.ApiServerClient
 import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
 import com.diary.paintlog.utils.retrofit.model.KakaoRegisterRequest
+import com.diary.paintlog.view.dialog.LoadingDialog
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -18,16 +20,11 @@ import retrofit2.Response
 object Kakao {
     private val TAG = this.javaClass.simpleName
 
-    fun openKakaoLogin(context: Context, successFunc: () -> Any = {}) {
+    fun openKakaoLogin(context: Context, callbackFunc: () -> Unit = {}) {
 
         if (!checkNetwork(context)) {
             return
         }
-
-        val failureFunc: () -> Unit = {
-            kakaoLogout(context)
-        }
-
 
         // 로그인 조합 예제
 
@@ -38,9 +35,11 @@ object Kakao {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-
-                successFunc()
-                apiKakaoLogin(token.accessToken, failureFunc)
+                apiKakaoLogin(
+                    context,
+                    token.accessToken,
+                    callbackFunc
+                )
             }
         }
 
@@ -61,8 +60,11 @@ object Kakao {
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
 
-                    successFunc()
-                    apiKakaoLogin(token.accessToken, failureFunc)
+                    apiKakaoLogin(
+                        context,
+                        token.accessToken,
+                        callbackFunc
+                    )
                 }
             }
         } else {
@@ -103,9 +105,13 @@ object Kakao {
     }
 
     private fun apiKakaoLogin(
+        context: Context,
         token: String,
-        onFailureFunc: () -> Unit = {}
+        callbackFunc: () -> Unit = {}
     ) {
+        val loadingDialog = LoadingDialog(context)
+        loadingDialog.show()
+
         ApiServerClient.api.kakaoLogin(KakaoRegisterRequest(token)).enqueue(object :
             Callback<ApiLoginResponse> {
             override fun onResponse(
@@ -114,14 +120,30 @@ object Kakao {
             ) {
                 if (response.isSuccessful) {
                     Log.i(TAG, "${response.body()}")
+                    callbackFunc()
                 } else {
                     Log.i(TAG, response.toString())
-                    onFailureFunc()
+                    kakaoLogout(context)
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.setting_kakao_login_error, "0"),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+
+                loadingDialog.dismiss()
             }
 
             override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
                 Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.setting_kakao_login_error, "1"),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                kakaoLogout(context)
+                loadingDialog.dismiss()
             }
         })
     }
