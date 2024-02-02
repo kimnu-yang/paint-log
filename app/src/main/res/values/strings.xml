@@ -64,6 +64,8 @@
     <string name="setting_notify_dialog_title">알람 설정</string>
     <string name="setting_notify_dialog_summary">알람 기능을 사용하기 위해선 알림 설정이 필요합니다.\n알림 설정 화면으로 이동하시겠습니까?</string>
     <string name="setting_notify_disabled">설정에서 알림을 허용해주세요.</string>
+    <string name="setting_notify_title">오늘의 일기</string>
+    <string name="setting_notify_summary">오늘의 일기를 작성해주세요.</string>
     <string name="channel_notify_title">일기 작성 알림</string>
     <string name="channel_notify_summary">설정한 시간에 일기 작성 알림을 보냅니다.</string>
 

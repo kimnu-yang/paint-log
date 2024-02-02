@@ -65,7 +65,11 @@ class SettingsFragment : Fragment() {
                 binding.settingAlarmSummary.text =
                     setTimeMsg(SettingsRepository.Time(selectedHour, selectedMinute))
 
-                binding.settingAlarmSwitch.isChecked = true
+                if (binding.settingAlarmSwitch.isChecked) {
+                    NotifyManager.setAlarm(requireContext())
+                } else {
+                    binding.settingAlarmSwitch.isChecked = true
+                }
             },
             storeTime.hour,
             storeTime.minute,
@@ -107,7 +111,13 @@ class SettingsFragment : Fragment() {
                 binding.settingAlarmSummary.text = getString(R.string.setting_alarm_summary)
             }
 
-            CoroutineScope(Dispatchers.IO).launch { settingsRepo.saveChecked(isChecked) }
+            runBlocking { settingsRepo.saveChecked(isChecked) }
+
+            if (isChecked) {
+                NotifyManager.setAlarm(requireContext())
+            } else {
+                NotifyManager.cancelAlarm(requireContext())
+            }
         }
         /////
 
