@@ -60,6 +60,16 @@
     <string name="diary_desc_canvas">일기 작성 배경 화면</string>
     <string name="diary_desc_color">오늘의 색 추가</string>
     <string name="diary_desc_weather_btn">날씨 불러오기</string>
+    <string name="diary_color_percent_10">10%</string>
+    <string name="diary_color_percent_20">20%</string>
+    <string name="diary_color_percent_30">30%</string>
+    <string name="diary_color_percent_40">40%</string>
+    <string name="diary_color_percent_50">50%</string>
+    <string name="diary_color_percent_60">60%</string>
+    <string name="diary_color_percent_70">70%</string>
+    <string name="diary_color_percent_80">80%</string>
+    <string name="diary_color_percent_90">90%</string>
+    <string name="diary_color_percent_100">100%</string>
 
     <!--  Settings  -->
     <string name="setting_alarm_title">알람</string>

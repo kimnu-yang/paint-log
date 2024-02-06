@@ -10,6 +10,9 @@ import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentMainBinding
 import com.diary.paintlog.utils.decorator.CalendarDecorator
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import org.threeten.bp.LocalDate
+import java.util.Calendar
 
 class MainFragment : Fragment() {
 
@@ -40,6 +43,13 @@ class MainFragment : Fragment() {
         // 작성 이벤트 등록
         binding.addDiaryButton.setOnClickListener {
             findNavController().navigate(R.id.action_fragment_main_to_fragment_diary)
+        }
+
+        // 빈 곳 터치시 달력 초기화
+        binding.root.setOnClickListener {
+            binding.calendarView.state().edit()
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit()
         }
 
         return binding.root
@@ -114,6 +124,18 @@ class MainFragment : Fragment() {
                 unSelectedSundayDecorator,
                 selectedMonthDecorator
             )
+
+            val calendar = Calendar.getInstance()
+            calendar.set(date.year,date.month-1,date.day)
+            calendar.set(Calendar.DAY_OF_WEEK,2)
+            val startYear = calendar.get(Calendar.YEAR).toInt()
+            val startMonth = calendar.get(Calendar.MONTH).toInt()
+            val startDate = calendar.get(Calendar.DATE).toInt()
+
+            binding.calendarView.state().edit()
+                .setMinimumDate(LocalDate.of(startYear,startMonth+1,startDate))
+                .setCalendarDisplayMode(CalendarMode.WEEKS)
+                .commit()
         }
     }
 }

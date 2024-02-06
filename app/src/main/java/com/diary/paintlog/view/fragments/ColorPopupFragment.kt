@@ -1,25 +1,35 @@
 package com.diary.paintlog.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.diary.paintlog.R
+import com.diary.paintlog.utils.DataListener
 
 class ColorPopupFragment(colorNum: Int): DialogFragment() {
+
+    private var dataListener: DataListener? = null
+
+    private var colorSelect = ""
+    private var colorPercent = ""
+
+    fun setDataListener(listener: DataListener) {
+        dataListener = listener
+    }
+
+    fun sendDataToFragment(data: Map<String, String>) {
+        dataListener?.onDataReceived(data)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.set_color_popup, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        var colorSelect = ""
-        var colorPercent = 0
 
         // 다이얼로그의 너비를 설정
         dialog?.window?.setLayout(1050, ViewGroup.LayoutParams.WRAP_CONTENT) // 너비 설정 (픽셀 단위)
@@ -47,7 +57,7 @@ class ColorPopupFragment(colorNum: Int): DialogFragment() {
                     val percent = view.findViewById<ImageButton>(percentId)
                     percent.isSelected = false
                 }
-                colorPercent = percent.tooltipText.toString().toInt()
+                colorPercent = percent.tooltipText.toString()
                 percent.isSelected = true
             }
         }
@@ -55,6 +65,12 @@ class ColorPopupFragment(colorNum: Int): DialogFragment() {
         val saveButton = view.findViewById<ImageButton>(R.id.save_button)
         saveButton.setOnClickListener {
             // TODO: 선택한 변수들을 DirayFragment로 전달해야 함
+            val data: Map<String, String> = mapOf(
+                "colorSelect" to colorSelect,
+                "colorPercent" to colorPercent
+            )
+
+            sendDataToFragment(data)
             dismiss()
         }
 

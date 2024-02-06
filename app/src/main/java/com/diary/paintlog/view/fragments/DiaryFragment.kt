@@ -1,15 +1,21 @@
 package com.diary.paintlog.view.fragments
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentDiaryBinding
 import com.diary.paintlog.utils.Common
+import com.diary.paintlog.utils.DataListener
 import com.diary.paintlog.utils.retrofit.WeatherServerClient
 import com.diary.paintlog.utils.retrofit.model.WeatherResponse
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -23,7 +29,7 @@ import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class DiaryFragment : Fragment() {
+class DiaryFragment : Fragment(), DataListener {
 
     private var _binding: FragmentDiaryBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
@@ -64,6 +70,37 @@ class DiaryFragment : Fragment() {
         // TODO: 선택한 날짜로 변경 되어야 함
         binding.date.text = date
 
+        // 추천 주제 버튼 클릭시 응답
+        binding.newTopicBtn.setOnClickListener {
+
+            val topic = "오늘 있었던 일은?"
+            // 이미 작성된 제목이 있을 때는 확인 후 실행
+            if(binding.title.text.toString() != "") {
+                showConfirmationDialog(binding.root.context, topic)
+            } else {
+                binding.title.setText(topic)
+            }
+        }
+
+        binding.color1.setOnClickListener {
+            val dialog = ColorPopupFragment(1)
+            dialog.setDataListener(this)
+            dialog.show(childFragmentManager, "ColorPopupFragment")
+        }
+
+        binding.color2.setOnClickListener {
+            val dialog = ColorPopupFragment(2)
+            dialog.setDataListener(this)
+            dialog.show(childFragmentManager, "ColorPopupFragment")
+        }
+
+        binding.color3.setOnClickListener {
+            val dialog = ColorPopupFragment(3)
+            dialog.setDataListener(this)
+            dialog.show(childFragmentManager, "ColorPopupFragment")
+        }
+
+        // 날씨 불러오기 버튼 클릭시 응답
         binding.weatherButton.setOnClickListener {
             if(!Common.isLocationProviderEnabled(requireActivity())) {
                 Common.showToast(binding.root.context, "위치 제공 옵션을 켜 주세요")
@@ -174,7 +211,6 @@ class DiaryFragment : Fragment() {
 
                                         } else {
                                             Common.showToast(binding.root.context, "날씨 데이터가 없습니다")
-                                            Log.i("Weather Null Error", response.toString())
                                         }
                                     }
 
@@ -195,8 +231,8 @@ class DiaryFragment : Fragment() {
                         }
                 } else {
                     // 권한이 없는 경우 권한 요청
-                    // TODO: Deprecated 고려
-                    requestPermissions(
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
                         arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                         LOCATION_PERMISSION_REQUEST_CODE
                     )
@@ -213,6 +249,24 @@ class DiaryFragment : Fragment() {
         }
     }
 
+    private fun showConfirmationDialog(context: Context, topic: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("확인")
+        builder.setMessage("제목이 추천 주제로 변경됩니다.")
+
+        // "확인" 버튼 클릭 시 동작 설정
+        builder.setPositiveButton("확인") { _, _ ->
+            binding.title.setText(topic)
+        }
+
+        // "취소" 버튼 클릭 시 동작 설정
+        builder.setNegativeButton("취소") { _, _ ->
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     override fun onPause() {
         super.onPause()
 
@@ -222,5 +276,10 @@ class DiaryFragment : Fragment() {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
+    }
+
+    override fun onDataReceived(data: Map<String, String>) {
+        // 데이터 받기
+        data["colorSelect"]?.let { Log.i("TEST", it) }
     }
 }
