@@ -86,4 +86,7 @@
     <string name="setting_notify_summary">오늘의 일기를 작성해주세요.</string>
     <string name="channel_notify_title">일기 작성 알림</string>
     <string name="channel_notify_summary">설정한 시간에 일기 작성 알림을 보냅니다.</string>
+
+    <!-- Artwork -->
+    <string name="artwork_count">총 %s건</string>
 </resources>

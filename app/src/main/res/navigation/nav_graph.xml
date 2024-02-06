@@ -20,6 +20,17 @@
         tools:layout="@layout/fragment_diary" />
 
     <fragment
+        android:id="@+id/fragment_art_work"
+        android:name="com.diary.paintlog.view.fragments.ArtWorkFragment"
+        tools:layout="@layout/fragment_art_work" />
+
+    <action
+        android:id="@+id/action_global_fragment_art_wrok"
+        app:destination="@id/fragment_art_work"
+        app:popUpTo="@id/fragment_art_work"
+        app:popUpToInclusive="true" />
+
+    <fragment
         android:id="@+id/fragment_settings"
         android:name="com.diary.paintlog.view.fragments.SettingsFragment"
         tools:layout="@layout/fragment_settings" />
