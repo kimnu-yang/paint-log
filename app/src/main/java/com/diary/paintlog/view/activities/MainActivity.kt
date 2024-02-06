@@ -44,6 +44,12 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.menu_art -> {
+                    // 메뉴 아이템 3 선택 시 할 일
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_fragment_art_wrok)
+                    true
+                }
+
                 else -> false
             }
         }
