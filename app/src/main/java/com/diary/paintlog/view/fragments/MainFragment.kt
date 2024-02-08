@@ -32,10 +32,9 @@ class MainFragment : Fragment() {
         binding.repeatButton.setOnClickListener {
             // TODO: DB 연동을 통해 값을 가져오도록 변경
             var text: String = ""
-            if (binding.todayTopic.text == "내가 가장 좋아하는 음악은?")
-                text = "내가 가장 싫어하는 상황은?"
-            else
-                text = "내가 가장 좋아하는 음악은?"
+            text =
+                if (binding.todayTopic.text == "내가 가장 좋아하는 음악은?") "내가 가장 싫어하는 상황은?"
+                else "내가 가장 좋아하는 음악은?"
 
             binding.todayTopic.text = text
         }
@@ -125,12 +124,13 @@ class MainFragment : Fragment() {
                 selectedMonthDecorator
             )
 
+            // TODO: 다음달/이전달 날짜 클릭시 문제 확인 필요
             val calendar = Calendar.getInstance()
             calendar.set(date.year,date.month-1,date.day)
             calendar.set(Calendar.DAY_OF_WEEK,2)
-            val startYear = calendar.get(Calendar.YEAR).toInt()
-            val startMonth = calendar.get(Calendar.MONTH).toInt()
-            val startDate = calendar.get(Calendar.DATE).toInt()
+            val startYear = calendar.get(Calendar.YEAR)
+            val startMonth = calendar.get(Calendar.MONTH)
+            val startDate = calendar.get(Calendar.DATE)
 
             binding.calendarView.state().edit()
                 .setMinimumDate(LocalDate.of(startYear,startMonth+1,startDate))
