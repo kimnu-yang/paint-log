@@ -17,4 +17,12 @@
     <color name="blue">#0B51CA</color>
     <color name="navy">#24317C</color>
     <color name="violet">#673AB7</color>
+
+    <color name="red_blur">#4DC7503E</color>
+    <color name="orange_blur">#4DEC7101</color>
+    <color name="yellow_blur">#4DFDCB38</color>
+    <color name="green_blur">#4D189365</color>
+    <color name="blue_blur">#4D0B51CA</color>
+    <color name="navy_blur">#4D24317C</color>
+    <color name="violet_blur">#4D673AB7</color>
 </resources>

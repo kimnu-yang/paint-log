@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/fragment_diary"
-        android:name="com.diary.paintlog.view.fragments.DiaryFragment"
+        android:name="com.diary.paintlog.view.fragments.DiaryInsertFragment"
         tools:layout="@layout/fragment_diary" />
 
     <fragment

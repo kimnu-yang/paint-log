@@ -1,10 +1,21 @@
 package com.diary.paintlog.utils
 
 import android.content.Context
+import android.graphics.Color
+import com.diary.paintlog.data.entities.enums.Color as ColorEnum
+import android.graphics.drawable.Drawable
 import android.location.LocationManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.diary.paintlog.R
+import com.diary.paintlog.data.entities.DiaryColor
+import com.diary.paintlog.data.entities.DiaryTag
+import com.diary.paintlog.viewmodel.DiaryColorViewModel
+import com.diary.paintlog.viewmodel.DiaryTagViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.abs
@@ -19,6 +30,40 @@ import kotlin.math.sqrt
 import kotlin.math.tan
 
 object Common {
+
+    fun getColorByString(color: String): ColorEnum {
+        return when (color) {
+            "RED" -> com.diary.paintlog.data.entities.enums.Color.RED
+            "ORANGE" -> com.diary.paintlog.data.entities.enums.Color.ORANGE
+            "YELLOW" -> com.diary.paintlog.data.entities.enums.Color.YELLOW
+            "GREEN" -> com.diary.paintlog.data.entities.enums.Color.GREEN
+            "BLUE" -> com.diary.paintlog.data.entities.enums.Color.BLUE
+            "NAVY" -> com.diary.paintlog.data.entities.enums.Color.NAVY
+            "VIOLET" -> com.diary.paintlog.data.entities.enums.Color.VIOLET
+            else -> com.diary.paintlog.data.entities.enums.Color.NONE
+        }
+    }
+
+    fun imageSetTintWithAlpha(context: Context, drawable: Drawable, colorString: String, percentString: String) {
+
+        //투명도를 alpha 값으로 변환
+        val alpha = 255 * percentString.toInt() / 100
+
+        val color = when (colorString) {
+            "RED" -> R.color.red
+            "ORANGE" -> R.color.orange
+            "YELLOW" -> R.color.yellow
+            "GREEN" -> R.color.green
+            "BLUE" -> R.color.blue
+            "NAVY" -> R.color.navy
+            "VIOLET" -> R.color.violet
+            else -> R.color.gray
+        }
+
+        val tintColor = ContextCompat.getColor(context, color)
+        val colorWithAlpha = Color.argb(alpha, Color.red(tintColor), Color.green(tintColor), Color.blue(tintColor))
+        DrawableCompat.setTint(drawable, colorWithAlpha)
+    }
 
     // 위치 제공 옵션 활성화 여부
     fun isLocationProviderEnabled(fragmentActivity: FragmentActivity): Boolean {
@@ -160,5 +205,55 @@ object Common {
     // 토스트 메세지를 출력
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // 일기 ID와 Position 에 매칭되는 태그 데이터를 삭제하고 등록한다.
+    fun tagInsertWithDelete(view: ViewModelStoreOwner, diaryId: Long, position: Int, tag: String) {
+        val diaryTagViewModel = ViewModelProvider(view)[DiaryTagViewModel::class.java]
+        val oldTag = diaryTagViewModel.getDiaryTag(diaryId, position)
+        if(oldTag != null) {
+            if(oldTag.tag != tag){
+                diaryTagViewModel.deleteDiaryTag(diaryId, position)
+                diaryTagViewModel.saveDiaryTag(
+                    DiaryTag(
+                        diaryId = diaryId,
+                        position = position,
+                        tag = tag)
+                )
+            }
+        } else {
+            diaryTagViewModel.saveDiaryTag(
+                DiaryTag(
+                    diaryId = diaryId,
+                    position = position,
+                    tag = tag)
+            )
+        }
+    }
+
+    // 일기 ID와 Position 에 매칭되는 색상 데이터를 삭제하고 등록한다.
+    fun colorInsertWithDelete(view: ViewModelStoreOwner, diaryId: Long, position: Int, color: String, percent: String) {
+        val diaryColorViewModel = ViewModelProvider(view)[DiaryColorViewModel::class.java]
+        val oldColor = diaryColorViewModel.getDiaryColor(diaryId, position)
+        if(oldColor != null){
+            if(oldColor.color != getColorByString(color) || oldColor.ratio != percent.toInt()) {
+                diaryColorViewModel.deleteDiaryColor(diaryId, position)
+                DiaryColor(
+                    diaryId = diaryId,
+                    position = position,
+                    color = getColorByString(color),
+                    ratio = percent.toInt()
+                )
+            }
+        } else {
+            diaryColorViewModel.saveDiaryColor(
+                DiaryColor(
+                    diaryId = diaryId,
+                    position = position,
+                    color = getColorByString(color),
+                    ratio = percent.toInt()
+                )
+            )
+        }
     }
 }

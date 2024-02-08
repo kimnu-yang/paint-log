@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.DiaryFragment">
+    tools:context=".view.fragments.DiaryInsertFragment">
 
     <ScrollView
+        android:id="@+id/diary_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +40,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date" />
 
+            <ImageButton
+                android:id="@+id/new_topic_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/new_topic_btn_selector"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toTopOf="@id/canvas"
+                app:layout_constraintEnd_toEndOf="@id/canvas"/>
+
             <EditText
                 android:id="@+id/title"
                 android:layout_width="0dp"
@@ -49,7 +60,6 @@
                 android:background="@null"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="@string/diary_title"
-                android:autofillHints="@string/diary_title"
                 android:maxLength="32"
                 android:textSize="24sp"
                 android:inputType="text"
@@ -67,7 +77,6 @@
                 android:background="@null"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="@string/diary_content"
-                android:autofillHints="@string/diary_content"
                 android:maxLength="420"
                 android:textSize="18sp"
                 android:inputType="text"
@@ -90,7 +99,7 @@
 
             <EditText
                 android:id="@+id/tag1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
@@ -98,7 +107,6 @@
                 android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
                 android:hint="@string/diary_tag"
-                android:autofillHints="@string/diary_tag"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:inputType="text"
@@ -107,32 +115,30 @@
 
             <EditText
                 android:id="@+id/tag2"
-                android:layout_width="wrap_content"
+                android:layout_width="85dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="@string/diary_tag"
-                android:autofillHints="@string/diary_tag"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:inputType="text"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag_title" />
 
             <EditText
                 android:id="@+id/tag3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/tag_box"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="@string/diary_tag"
-                android:autofillHints="@string/diary_tag"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:inputType="text"
@@ -152,40 +158,104 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag1" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/color1"
                 android:layout_width="84dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/add_color"
+                android:background="@drawable/add_color_selector"
                 android:contentDescription="@string/diary_desc_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color_title" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/color2"
                 android:layout_width="84dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/add_color"
+                android:background="@drawable/add_color_selector"
                 android:contentDescription="@string/diary_desc_color"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color_title" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/color3"
                 android:layout_width="84dp"
                 android:layout_height="37dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/add_color"
+                android:background="@drawable/add_color_selector"
                 android:contentDescription="@string/diary_desc_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color_title" />
+
+            <ImageButton
+                android:id="@+id/color1_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus_red"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/color1"
+                app:layout_constraintEnd_toEndOf="@id/color1"/>
+
+            <ImageButton
+                android:id="@+id/color2_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus_red"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/color2"
+                app:layout_constraintEnd_toEndOf="@id/color2"/>
+
+            <ImageButton
+                android:id="@+id/color3_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus_red"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/color3"
+                app:layout_constraintEnd_toEndOf="@id/color3"/>
+
+            <TextView
+                android:id="@+id/color1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/diary_title_small"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/color1"
+                app:layout_constraintEnd_toEndOf="@id/color1"
+                app:layout_constraintTop_toBottomOf="@id/color1" />
+
+            <TextView
+                android:id="@+id/color2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/diary_title_small"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/color2"
+                app:layout_constraintEnd_toEndOf="@id/color2"
+                app:layout_constraintTop_toBottomOf="@id/color2" />
+
+            <TextView
+                android:id="@+id/color3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/diary_title_small"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/color3"
+                app:layout_constraintEnd_toEndOf="@id/color3"
+                app:layout_constraintTop_toBottomOf="@id/color3" />
+
 
             <TextView
                 android:id="@+id/weather_title"
@@ -198,9 +268,9 @@
                 android:text="@string/diary_weather_now"
                 android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/color1" />
+                app:layout_constraintTop_toBottomOf="@id/color1_text" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/weather_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
