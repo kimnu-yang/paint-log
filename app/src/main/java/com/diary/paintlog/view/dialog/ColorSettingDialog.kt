@@ -1,4 +1,4 @@
-package com.diary.paintlog.view.fragments
+package com.diary.paintlog.view.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
 import com.diary.paintlog.R
+import com.diary.paintlog.utils.Common
 import com.diary.paintlog.utils.DataListener
 
-class ColorPopupFragment(colorNum: Int): DialogFragment() {
+class ColorSettingDialog(colorNum: String): DialogFragment() {
 
     private var dataListener: DataListener? = null
 
+    private var colorNum = colorNum
     private var colorSelect = ""
     private var colorPercent = ""
 
@@ -25,7 +27,7 @@ class ColorPopupFragment(colorNum: Int): DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.set_color_popup, container, false)
+        return inflater.inflate(R.layout.dialog_color_setting, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,14 +66,18 @@ class ColorPopupFragment(colorNum: Int): DialogFragment() {
 
         val saveButton = view.findViewById<ImageButton>(R.id.save_button)
         saveButton.setOnClickListener {
-            // TODO: 선택한 변수들을 DirayFragment로 전달해야 함
-            val data: Map<String, String> = mapOf(
-                "colorSelect" to colorSelect,
-                "colorPercent" to colorPercent
-            )
 
-            sendDataToFragment(data)
-            dismiss()
+            if(colorSelect == "" || colorPercent == ""){
+                context?.let { it -> Common.showToast(it, "모든 항목을 선택 해 주세요") }
+            } else {
+                val data = mapOf(
+                    "colorNum" to colorNum,
+                    "colorSelect" to colorSelect,
+                    "colorPercent" to colorPercent
+                )
+                sendDataToFragment(data)
+                dismiss()
+            }
         }
 
         // 취소 버튼 클릭시
