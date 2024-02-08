@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.DiaryFragment">
+    tools:context=".view.fragments.DiaryInsertFragment">
 
     <ScrollView
+        android:id="@+id/diary_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -192,6 +193,70 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color_title" />
 
+            <ImageButton
+                android:id="@+id/color1_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus_red"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/color1"
+                app:layout_constraintEnd_toEndOf="@id/color1"/>
+
+            <ImageButton
+                android:id="@+id/color2_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus_red"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/color2"
+                app:layout_constraintEnd_toEndOf="@id/color2"/>
+
+            <ImageButton
+                android:id="@+id/color3_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/minus_red"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/color3"
+                app:layout_constraintEnd_toEndOf="@id/color3"/>
+
+            <TextView
+                android:id="@+id/color1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/diary_title_small"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/color1"
+                app:layout_constraintEnd_toEndOf="@id/color1"
+                app:layout_constraintTop_toBottomOf="@id/color1" />
+
+            <TextView
+                android:id="@+id/color2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/diary_title_small"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/color2"
+                app:layout_constraintEnd_toEndOf="@id/color2"
+                app:layout_constraintTop_toBottomOf="@id/color2" />
+
+            <TextView
+                android:id="@+id/color3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/diary_title_small"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/color3"
+                app:layout_constraintEnd_toEndOf="@id/color3"
+                app:layout_constraintTop_toBottomOf="@id/color3" />
+
+
             <TextView
                 android:id="@+id/weather_title"
                 android:layout_width="wrap_content"
@@ -203,7 +268,7 @@
                 android:text="@string/diary_weather_now"
                 android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/color1" />
+                app:layout_constraintTop_toBottomOf="@id/color1_text" />
 
             <ImageButton
                 android:id="@+id/weather_button"
