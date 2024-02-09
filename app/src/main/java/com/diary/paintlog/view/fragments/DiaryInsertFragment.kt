@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -103,6 +104,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
         CoroutineScope(Dispatchers.Default).launch {
             if(diaryViewModel.getDiary(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "N") != null) {
                 // TODO: 데이터 유무를 확인하여 페이지 이동을 처리
+                showAddDiaryDialog(requireContext())
             }
         }
 
@@ -488,22 +490,24 @@ class DiaryInsertFragment : Fragment(), DataListener {
         handler.post(tempSave)
     }
 
-    private fun showAddDiaryDialog(context: Context) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("확인")
-        builder.setMessage("이미 작성된 오늘자 일기가 있습니다.\n 수정 하시겠습니까?")
+    private suspend fun showAddDiaryDialog(context: Context) {
+        withContext(Dispatchers.Main){
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("확인")
+            builder.setMessage("이미 작성된 오늘자 일기가 있습니다.\n 수정 하시겠습니까?")
 
-        // "확인" 버튼 클릭 시 동작 설정
-        builder.setPositiveButton("확인") { _, _ ->
+            // "확인" 버튼 클릭 시 동작 설정
+            builder.setPositiveButton("확인") { _, _ ->
+            }
+
+            // "취소" 버튼 클릭 시 동작 설정
+            builder.setNegativeButton("취소") { _, _ ->
+                findNavController().navigate(R.id.fragment_main)
+            }
+
+            val dialog = builder.create()
+            dialog.show()
         }
-
-        // "취소" 버튼 클릭 시 동작 설정
-        builder.setNegativeButton("취소") { _, _ ->
-            findNavController().navigate(R.id.fragment_main)
-        }
-
-        val dialog = builder.create()
-        dialog.show()
     }
 
     private fun showChangeTitleDialog(context: Context, topic: String) {
