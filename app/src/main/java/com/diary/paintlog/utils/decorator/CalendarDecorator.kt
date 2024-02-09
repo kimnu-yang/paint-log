@@ -93,43 +93,15 @@ class CalendarDecorator(private val context: Context) {
     /* 선택되지 않은 일자의 숫자색을 바꿈 */
     inner class UnSelectedDateDecorator(private val selectedDate: CalendarDay) :
         DayViewDecorator {
+        private var dayOfWeek = 0
 
         override fun shouldDecorate(day: CalendarDay): Boolean {
-            return day != selectedDate
+            dayOfWeek = day.date.dayOfWeek.value
+            return day != selectedDate && dayOfWeek != 6 && dayOfWeek != 7
         }
 
         override fun decorate(view: DayViewFacade) {
             val color = ContextCompat.getColor(context, R.color.deep)
-            view.addSpan(ForegroundColorSpan(color))
-        }
-    }
-
-    /* 선택되지 않은 토요일의 색을 바꿈 */
-    inner class UnSelectedSaturdayDecorator(private val selectedDate: CalendarDay) :
-        DayViewDecorator {
-        private var dayOfWeek = 0
-        override fun shouldDecorate(day: CalendarDay): Boolean {
-            dayOfWeek = day.date.dayOfWeek.value
-            return day != selectedDate && dayOfWeek == 6
-        }
-
-        override fun decorate(view: DayViewFacade) {
-            val color = ContextCompat.getColor(context, R.color.blue)
-            view.addSpan(ForegroundColorSpan(color))
-        }
-    }
-
-    /* 선택되지 않은 일요일의 색을 바꿈 */
-    inner class UnSelectedSundayDecorator(private val selectedDate: CalendarDay) :
-        DayViewDecorator {
-        private var dayOfWeek = 0
-        override fun shouldDecorate(day: CalendarDay): Boolean {
-            dayOfWeek = day.date.dayOfWeek.value
-            return day != selectedDate && dayOfWeek == 7
-        }
-
-        override fun decorate(view: DayViewFacade) {
-            val color = ContextCompat.getColor(context, R.color.red)
             view.addSpan(ForegroundColorSpan(color))
         }
     }
