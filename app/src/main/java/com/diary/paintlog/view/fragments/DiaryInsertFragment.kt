@@ -102,13 +102,12 @@ class DiaryInsertFragment : Fragment(), DataListener {
         }
 
         CoroutineScope(Dispatchers.Default).launch {
+            // 오늘 자로 등록된 일기가 있는 지 확인
             if(diaryViewModel.getDiary(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "N") != null) {
-                // TODO: 데이터 유무를 확인하여 페이지 이동을 처리
                 showAddDiaryDialog(requireContext())
             }
         }
-
-        // TODO: 선택한 날짜로 변경 되어야 함
+        
         val today = LocalDateTime.now()
         val weekOfDay = today.dayOfWeek.value
         val date = today.format(DateTimeFormatter.ofPattern("yyyy. MM. dd(${Common.getDayOfWeekName(weekOfDay)})"))
