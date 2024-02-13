@@ -1,15 +1,14 @@
 package com.diary.paintlog.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.diary.paintlog.data.entities.Diary
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
-import java.util.Date
 
 @Dao
 interface DiaryDao {
@@ -28,4 +27,7 @@ interface DiaryDao {
 
     @Query("DELETE FROM diary WHERE id = :diaryId")
     fun deleteDiary(diaryId: Long)
+
+    @RawQuery
+    fun executeRawQuery(query: SupportSQLiteQuery): List<Any>
 }

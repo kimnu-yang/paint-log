@@ -1,12 +1,9 @@
 package com.diary.paintlog.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.diary.paintlog.GlobalApplication
 import com.diary.paintlog.data.entities.Diary
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
-import com.diary.paintlog.data.entities.User
 
 class DiaryViewModel: ViewModel() {
 
