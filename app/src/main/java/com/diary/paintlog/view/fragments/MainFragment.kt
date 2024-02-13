@@ -164,6 +164,7 @@ class MainFragment : Fragment() {
                     saturdayDecorator,
                     sundayDecorator,
                     selectedMonthDecorator,
+                    highlightDecorator
                 )
             }
         }
