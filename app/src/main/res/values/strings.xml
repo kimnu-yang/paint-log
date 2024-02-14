@@ -99,4 +99,7 @@
 
     <!-- Artwork -->
     <string name="artwork_count">총 %s건</string>
+    <!-- Diary Search -->
+    <string name="diary_search_none_data">저장된 일기가 없습니다.</string>
+    <string name="diary_search_tag_all">전체</string>
 </resources>

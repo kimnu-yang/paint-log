@@ -31,6 +31,17 @@
         app:popUpToInclusive="true" />
 
     <fragment
+        android:id="@+id/fragment_diary_search"
+        android:name="com.diary.paintlog.view.fragments.DiarySearchFragment"
+        tools:layout="@layout/fragment_diary_search" />
+
+    <action
+        android:id="@+id/action_global_fragment_diary_search"
+        app:destination="@id/fragment_diary_search"
+        app:popUpTo="@id/fragment_diary_search"
+        app:popUpToInclusive="true" />
+
+    <fragment
         android:id="@+id/fragment_settings"
         android:name="com.diary.paintlog.view.fragments.SettingsFragment"
         tools:layout="@layout/fragment_settings" />
