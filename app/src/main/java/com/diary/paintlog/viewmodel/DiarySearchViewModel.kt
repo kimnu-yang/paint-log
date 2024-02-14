@@ -10,11 +10,11 @@ class DiarySearchViewModel : ViewModel() {
     private val diaryTagDao = GlobalApplication.database.diaryTagDao()
 
     fun getAllDiaryWithTagAndColor(): MutableList<DiaryWithTagAndColor> {
-        return diaryDao.getAllDiaryWithTagAndColor()
+        return diaryDao.getAllDiaryWithTagAndColor().toMutableList()
     }
 
     fun getAllDiaryByTagWithTagAndColor(tag: String): MutableList<DiaryWithTagAndColor> {
-        return diaryDao.getAllDiaryByTagWithTagAndColor(tag)
+        return diaryDao.getAllDiaryByTagWithTagAndColor(tag).toMutableList()
     }
 
     fun getAllTag(): List<DiaryTagCount> {
