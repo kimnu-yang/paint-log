@@ -50,6 +50,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.menu_search -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_fragment_diary_search)
+                    true
+                }
+
                 else -> false
             }
         }
