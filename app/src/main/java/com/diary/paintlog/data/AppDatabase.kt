@@ -13,7 +13,7 @@ import com.diary.paintlog.data.entities.DiaryColor
 import com.diary.paintlog.data.entities.DiaryTag
 import com.diary.paintlog.data.entities.User
 
-@Database(entities = [User::class, Diary::class, DiaryTag::class, DiaryColor::class], version = 2)
+@Database(entities = [User::class, Diary::class, DiaryTag::class, DiaryColor::class], version = 1)
 @TypeConverters(LocalDateTimeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
