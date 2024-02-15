@@ -48,6 +48,9 @@ class GlobalApplication : Application() {
 
         // 샘플 데이터 추가 (필요 할 때만 실행할 것)
         // exampleSQL()
+
+        // 주제 샘플 데이터 (필요 할 때만 실행할 것)
+        // exampleTopic()
     }
 
     private fun createNotificationChannel() {
@@ -62,6 +65,31 @@ class GlobalApplication : Application() {
             }
 
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun exampleTopic() {
+        CoroutineScope(Dispatchers.Default).launch {
+            val topicDao = database.topicDao()
+
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 가장 좋아하는 음악은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 가장 좋아하는 음식은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 열정을 가지는 분야는?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('인생에서 가장 중요한것은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나 스스로를 묘사한다면?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나는 지금 내가 꿈꾸던대로 살고 있나요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('3년전 나에게 해주고 싶은 충고는?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('오늘 무엇때문에 바쁜가요? 이것이 1년 후, 3년 후, 5년 후에도 문제가 될까요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('앞으로 인생이 자유라면, 무엇을 하고 싶은가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('지금 인생의 가장 우선순위는?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('10억을 가지고 있다면, 무엇을 할것인지?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('인생에서 가장 두려운 것은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('없애고 싶은 나의 나쁜 습관은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('더 키우고 싶은 나의 좋은 습관은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 가장 많은 시간을 함께 보내는 5명')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나에게 가장 영감을 주는 사람은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('세상에서 나에게 가장 중요한 사람(들)은?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('당신 인생의 멘토는 누구인지?')"))
         }
     }
 
