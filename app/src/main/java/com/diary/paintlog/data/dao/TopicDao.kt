@@ -10,7 +10,7 @@ import com.diary.paintlog.data.entities.Topic
 interface TopicDao {
 
     @Query("SELECT * FROM topic ORDER BY RANDOM() LIMIT 1")
-    fun getRandomTopic(): Topic
+    fun getRandomTopic(): Topic?
     @RawQuery
     fun executeRawQuery(query: SupportSQLiteQuery): List<Any>
 }

@@ -8,7 +8,7 @@ class TopicViewModel: ViewModel() {
 
     private val topicDao = GlobalApplication.database.topicDao()
 
-    fun getRandomTopic(): Topic {
+    fun getRandomTopic(): Topic? {
         return topicDao.getRandomTopic()
     }
 }
