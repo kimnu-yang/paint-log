@@ -30,6 +30,28 @@
         tools:layout="@layout/fragment_diary_view" />
 
     <fragment
+        android:id="@+id/fragment_art_work"
+        android:name="com.diary.paintlog.view.fragments.ArtWorkFragment"
+        tools:layout="@layout/fragment_art_work" />
+
+    <action
+        android:id="@+id/action_global_fragment_art_wrok"
+        app:destination="@id/fragment_art_work"
+        app:popUpTo="@id/fragment_art_work"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/fragment_diary_search"
+        android:name="com.diary.paintlog.view.fragments.DiarySearchFragment"
+        tools:layout="@layout/fragment_diary_search" />
+
+    <action
+        android:id="@+id/action_global_fragment_diary_search"
+        app:destination="@id/fragment_diary_search"
+        app:popUpTo="@id/fragment_diary_search"
+        app:popUpToInclusive="true" />
+
+    <fragment
         android:id="@+id/fragment_settings"
         android:name="com.diary.paintlog.view.fragments.SettingsFragment"
         tools:layout="@layout/fragment_settings" />

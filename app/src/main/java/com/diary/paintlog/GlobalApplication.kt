@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -14,6 +15,7 @@ import com.kakao.sdk.common.KakaoSdk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 class GlobalApplication : Application() {
     val dataStore: DataStore<Preferences> by preferencesDataStore(name = "diary")
@@ -38,7 +40,9 @@ class GlobalApplication : Application() {
             applicationContext,
             AppDatabase::class.java,
             "diary"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration().setQueryCallback({ sqlQuery, bindArgs ->
+            Log.d("SQL", "${sqlQuery}, args=${bindArgs}")
+        }, Executors.newSingleThreadExecutor()).build()
 
         // 알림 채널 등록
         createNotificationChannel()
@@ -60,7 +64,11 @@ class GlobalApplication : Application() {
 
         if (notificationManager.getNotificationChannel(CHANNEL_ID) == null) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, getString(R.string.channel_notify_title), importance).apply {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                getString(R.string.channel_notify_title),
+                importance
+            ).apply {
                 description = getString(R.string.channel_notify_summary)
             }
 
