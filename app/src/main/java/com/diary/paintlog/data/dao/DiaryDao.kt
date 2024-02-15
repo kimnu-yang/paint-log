@@ -13,8 +13,11 @@ import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 @Dao
 interface DiaryDao {
     @Transaction
-    @Query("SELECT * FROM diary")
+    @Query("SELECT * FROM diary WHERE is_temp = 'N'")
     fun getAllDiaryWithTagAndColor(): List<DiaryWithTagAndColor>
+
+    @Query("SELECT * FROM diary WHERE id = :diaryId")
+    fun getDiaryWithTagAndColorById(diaryId: Long): DiaryWithTagAndColor?
 
     @Query("SELECT * FROM diary WHERE date(registered_at) = :date AND is_temp = :temp ORDER BY id DESC LIMIT 1")
     fun getDiaryWithTagAndColorByDate(date: String, temp: String): DiaryWithTagAndColor?

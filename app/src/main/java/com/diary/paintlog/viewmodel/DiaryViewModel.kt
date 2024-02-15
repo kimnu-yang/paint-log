@@ -13,6 +13,10 @@ class DiaryViewModel: ViewModel() {
         return diaryDao.getAllDiaryWithTagAndColor()
     }
 
+    fun getDiaryById(diaryId: Long): DiaryWithTagAndColor? {
+        return diaryDao.getDiaryWithTagAndColorById(diaryId)
+    }
+
     fun getDiary(date: String, temp: String): DiaryWithTagAndColor? {
         return diaryDao.getDiaryWithTagAndColorByDate(date,temp)
     }
