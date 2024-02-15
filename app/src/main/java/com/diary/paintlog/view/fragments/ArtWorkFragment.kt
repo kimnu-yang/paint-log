@@ -48,16 +48,22 @@ class ArtWorkFragment : Fragment() {
             Artwork("Doremifasolasido Sodo!", "- fin -")
         )
 
-        // set adapter
-        val adapter = ArtWorkAdapter(data)
+        if (data.isEmpty()) {
+            binding.artworkListEmpty.visibility = View.VISIBLE
+        } else {
+            binding.artworkListEmpty.visibility = View.GONE
 
-        binding.artworkCount.text = getString(R.string.artwork_count, data.size.toString())
-        binding.artworkList.layoutManager = LinearLayoutManager(requireContext())
-        binding.artworkList.adapter = adapter
+            // set adapter
+            val adapter = ArtWorkAdapter(data)
 
-        binding.artworkOrderView.setOnClickListener {
-            data.reverse()
-            adapter.notifyItemRangeChanged(0, data.size)
+            binding.artworkCount.text = getString(R.string.artwork_count, data.size.toString())
+            binding.artworkList.layoutManager = LinearLayoutManager(requireContext())
+            binding.artworkList.adapter = adapter
+
+            binding.artworkOrderView.setOnClickListener {
+                data.reverse()
+                adapter.notifyItemRangeChanged(0, data.size)
+            }
         }
     }
 }
