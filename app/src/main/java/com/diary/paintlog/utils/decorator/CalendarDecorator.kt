@@ -1,5 +1,6 @@
 package com.diary.paintlog.utils.decorator
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
@@ -21,6 +22,7 @@ class CalendarDecorator(private val context: Context) {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             return day == CalendarDay.today()
         }
+        @SuppressLint("UseCompatLoadingForDrawables")
         override fun decorate(view: DayViewFacade?) {
             context.getDrawable(R.drawable.today_circle)?.let { view?.setBackgroundDrawable(it) }
         }
@@ -91,7 +93,7 @@ class CalendarDecorator(private val context: Context) {
     }
 
     /* 선택되지 않은 일자의 숫자색을 바꿈 */
-    inner class UnSelectedDateDecorator(private val selectedDate: CalendarDay) :
+    inner class UnSelectedDateDecorator(private val selectedDate: CalendarDay?) :
         DayViewDecorator {
         private var dayOfWeek = 0
 
@@ -119,7 +121,7 @@ class CalendarDecorator(private val context: Context) {
                 else -> ContextCompat.getColor(context, R.color.deep) // 다른 요일은 검정색
             }
 
-            return SpannableString("${Common.getDayOfWeekName(day)}").apply {
+            return SpannableString(Common.getDayOfWeekName(day)).apply {
                 setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
         }
