@@ -12,9 +12,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.diary.paintlog.R
-import com.diary.paintlog.data.entities.DiaryColor
 import com.diary.paintlog.data.entities.DiaryTag
-import com.diary.paintlog.viewmodel.DiaryColorViewModel
+import com.diary.paintlog.data.entities.enums.Weather
 import com.diary.paintlog.viewmodel.DiaryTagViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -106,6 +105,20 @@ object Common {
         }
 
         return R.drawable.weather_sunny
+    }
+
+    fun getWeatherImageByWeather(weather: Weather?): Int {
+
+        return when(weather){
+            Weather.SUNNY -> R.drawable.weather_sunny
+            Weather.CLOUDY -> R.drawable.weather_cloudy
+            Weather.OVERCAST -> R.drawable.weather_overcast
+            Weather.LITTLE_RAIN -> R.drawable.weather_little_rain
+            Weather.RAINY -> R.drawable.weather_rainy
+            Weather.SNOWY -> R.drawable.weather_snowy
+            Weather.SNOW_RAIN -> R.drawable.weather_snow_rain
+            else -> R.drawable.weather_sunny
+        }
     }
 
     // 위도, 경도 <-> X,Y 좌표
@@ -227,32 +240,6 @@ object Common {
                     diaryId = diaryId,
                     position = position,
                     tag = tag)
-            )
-        }
-    }
-
-    // 일기 ID와 Position 에 매칭되는 색상 데이터를 삭제하고 등록한다.
-    fun colorInsertWithDelete(view: ViewModelStoreOwner, diaryId: Long, position: Int, color: String, percent: String) {
-        val diaryColorViewModel = ViewModelProvider(view)[DiaryColorViewModel::class.java]
-        val oldColor = diaryColorViewModel.getDiaryColor(diaryId, position)
-        if(oldColor != null){
-            if(oldColor.color != getColorByString(color) || oldColor.ratio != percent.toInt()) {
-                diaryColorViewModel.deleteDiaryColor(diaryId, position)
-                DiaryColor(
-                    diaryId = diaryId,
-                    position = position,
-                    color = getColorByString(color),
-                    ratio = percent.toInt()
-                )
-            }
-        } else {
-            diaryColorViewModel.saveDiaryColor(
-                DiaryColor(
-                    diaryId = diaryId,
-                    position = position,
-                    color = getColorByString(color),
-                    ratio = percent.toInt()
-                )
             )
         }
     }
