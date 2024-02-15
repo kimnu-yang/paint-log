@@ -1,17 +1,30 @@
 package com.diary.paintlog.view.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentMainBinding
+import com.diary.paintlog.utils.Common
 import com.diary.paintlog.utils.decorator.CalendarDecorator
 import com.diary.paintlog.viewmodel.DiaryColorViewModel
+import com.diary.paintlog.viewmodel.DiaryTagViewModel
 import com.diary.paintlog.viewmodel.DiaryViewModel
+import com.diary.paintlog.viewmodel.TopicViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +39,8 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
     private lateinit var diaryViewModel: DiaryViewModel
     private lateinit var diaryColorViewModel: DiaryColorViewModel
+    private lateinit var diaryTagViewModel: DiaryTagViewModel
+    private lateinit var topicViewModel: TopicViewModel
 
     private var calendarDay: CalendarDay? = null
 
@@ -38,6 +53,7 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -74,15 +90,30 @@ class MainFragment : Fragment() {
         }
         setCalendar(null)
 
+        // 초기 추천 주제 셋팅
+        CoroutineScope(Dispatchers.Default).launch {
+            topicViewModel = ViewModelProvider(this@MainFragment)[TopicViewModel::class.java]
+            val topicData = topicViewModel.getRandomTopic()
+            activity?.runOnUiThread {
+                if(topicData != null) binding.todayTopic.text = topicData.topic
+            }
+        }
+
         // 추천 주제를 새로 받아오기
         binding.repeatButton.setOnClickListener {
-            // TODO: DB 연동을 통해 값을 가져오도록 변경
-            var text: String = ""
-            text =
-                if (binding.todayTopic.text == "내가 가장 좋아하는 음악은?") "내가 가장 싫어하는 상황은?"
-                else "내가 가장 좋아하는 음악은?"
+            CoroutineScope(Dispatchers.Default).launch {
+                topicViewModel = ViewModelProvider(this@MainFragment)[TopicViewModel::class.java]
+                val topicData = topicViewModel.getRandomTopic()
+                activity?.runOnUiThread {
+                    if(topicData != null) binding.todayTopic.text = topicData.topic
+                }
+            }
+        }
 
-            binding.todayTopic.text = text
+        binding.topicCanvas.setOnClickListener {
+            val topicBundle = Bundle()
+            topicBundle.putString("topic",binding.todayTopic.text.toString())
+            findNavController().navigate(R.id.action_fragment_main_to_fragment_diary, topicBundle)
         }
 
         // 작성 이벤트 등록
@@ -97,27 +128,183 @@ class MainFragment : Fragment() {
             val today = LocalDate.now()
             val firstDayOfMonth = LocalDate.of(today.year, today.monthValue, 1)
             val firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY)
-            binding.calendarView.state().edit()
-                .setMinimumDate(firstDayOfCalendar)
-                .setCalendarDisplayMode(CalendarMode.MONTHS)
-                .commit()
-        }
-
-        // 날짜가 바뀔때마다 색 지정
-        binding.calendarView.setOnDateChangedListener { _, date, _ ->
-            if(date != calendarDay)
-            {
-                setCalendar(date)
-
-                val selectDate = LocalDate.of(date.year,date.month,date.day)
-                val firstDayOfWeek = selectDate.with(DayOfWeek.MONDAY)
-
+            activity?.runOnUiThread {
                 binding.calendarView.state().edit()
-                    .setMinimumDate(firstDayOfWeek)
-                    .setCalendarDisplayMode(CalendarMode.WEEKS)
+                    .setMinimumDate(firstDayOfCalendar)
+                    .setCalendarDisplayMode(CalendarMode.MONTHS)
                     .commit()
+
+                binding.diaryView.visibility = View.INVISIBLE
+                binding.topicView.visibility = View.VISIBLE
+                binding.addDiary.visibility = View.VISIBLE
             }
         }
+
+        // 날짜가 바뀔때 일주일 달력으로 변경 및 작성된 일기 출력
+        binding.calendarView.setOnDateChangedListener { _, date, _ ->
+
+            if(date != calendarDay) {
+                setCalendar(date)
+
+                CoroutineScope(Dispatchers.Default).launch {
+                    diaryViewModel = ViewModelProvider(this@MainFragment)[DiaryViewModel::class.java]
+                    val selectDate = String.format("%04d-%02d-%02d", date.year, date.month, date.day)
+                    val diaryData = diaryViewModel.getDiary(selectDate, "N")
+
+                    if (diaryData != null) {
+                        activity?.runOnUiThread {
+                            val selectDate = LocalDate.of(date.year, date.month, date.day)
+                            val firstDayOfWeek = selectDate.with(DayOfWeek.MONDAY)
+
+                            binding.calendarView.state().edit()
+                                .setMinimumDate(firstDayOfWeek)
+                                .setCalendarDisplayMode(CalendarMode.WEEKS)
+                                .commit()
+
+                            binding.diaryView.visibility = View.VISIBLE
+                            binding.topicView.visibility = View.INVISIBLE
+                            binding.addDiary.visibility = View.INVISIBLE
+
+                            val constraintLayout = view.findViewById<ConstraintLayout>(R.id.diary_view)
+                            constraintLayout.removeAllViews()
+                            val inflater = LayoutInflater.from(requireContext())
+
+                            val dynamicLayout = inflater.inflate(R.layout.fragment_diary_view, constraintLayout, false)
+                            dynamicLayout.findViewById<TextView>(R.id.title).text = diaryData.diary.title
+                            dynamicLayout.findViewById<TextView>(R.id.content).text = diaryData.diary.content
+
+                            val tag1 = diaryData.tags.filter { it.position == 1 }
+                            if(tag1.isNotEmpty()){
+                                dynamicLayout.findViewById<TextView>(R.id.tag1_text).text = tag1[0].tag
+                            } else {
+                                dynamicLayout.findViewById<ImageView>(R.id.tag1).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.tag1_text).visibility = View.INVISIBLE
+                            }
+
+                            val tag2 = diaryData.tags.filter { it.position == 2 }
+                            if(tag2.isNotEmpty()){
+                                dynamicLayout.findViewById<TextView>(R.id.tag2_text).text = tag2[0].tag
+                            } else {
+                                dynamicLayout.findViewById<ImageView>(R.id.tag2).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.tag2_text).visibility = View.INVISIBLE
+                            }
+
+                            val tag3 = diaryData.tags.filter { it.position == 3 }
+                            if(tag3.isNotEmpty()){
+                                dynamicLayout.findViewById<TextView>(R.id.tag3_text).text = tag3[0].tag
+                            } else {
+                                dynamicLayout.findViewById<ImageView>(R.id.tag3).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.tag3_text).visibility = View.INVISIBLE
+                            }
+
+                            val color1 = diaryData.colors.filter { it.position == 1 }
+                            if(color1.isNotEmpty()){
+                                dynamicLayout.findViewById<TextView>(R.id.color1_text).text = "${color1[0].ratio}%"
+                                val drawable = dynamicLayout.findViewById<ImageView>(R.id.color1).background
+                                Common.imageSetTintWithAlpha(requireContext(), drawable, color1[0].color.toString(), color1[0].ratio.toString())
+                            } else {
+                                dynamicLayout.findViewById<TextView>(R.id.color1_text).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.color1).visibility = View.INVISIBLE
+                            }
+
+                            val color2 = diaryData.colors.filter { it.position == 2 }
+                            if(color2.isNotEmpty()){
+                                dynamicLayout.findViewById<TextView>(R.id.color2_text).text = "${color2[0].ratio}%"
+                                val drawable = dynamicLayout.findViewById<ImageView>(R.id.color2).background
+                                Common.imageSetTintWithAlpha(requireContext(), drawable, color2[0].color.toString(), color2[0].ratio.toString())
+                            } else {
+                                dynamicLayout.findViewById<TextView>(R.id.color2_text).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.color2).visibility = View.INVISIBLE
+                            }
+
+                            val color3 = diaryData.colors.filter { it.position == 3 }
+                            if(color3.isNotEmpty()){
+                                dynamicLayout.findViewById<TextView>(R.id.color3_text).text = "${color3[0].ratio}%"
+                                val drawable = dynamicLayout.findViewById<ImageView>(R.id.color3).background
+                                Common.imageSetTintWithAlpha(requireContext(), drawable, color3[0].color.toString(), color3[0].ratio.toString())
+                            } else {
+                                dynamicLayout.findViewById<TextView>(R.id.color3_text).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.color3).visibility = View.INVISIBLE
+                            }
+
+                            if(diaryData.diary.weather != null){
+                                val weatherImage = Common.getWeatherImageByWeather(diaryData.diary.weather)
+                                dynamicLayout.findViewById<ImageView>(R.id.weather_img).setBackgroundResource(weatherImage)
+                                dynamicLayout.findViewById<TextView>(R.id.temp_min_max).text = "${diaryData.diary.tempMin}°C / ${diaryData.diary.tempMax}°C"
+                                dynamicLayout.findViewById<TextView>(R.id.temp_now).text = "${diaryData.diary.tempNow}°C"
+                            } else {
+                                dynamicLayout.findViewById<ImageView>(R.id.weather_img).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.temp_min_max).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.temp_now).visibility = View.INVISIBLE
+                            }
+
+                            val height = (binding.calendarView.parent.parent as View).bottom - binding.calendarView.tileHeight * 4 - view.findViewById<LinearLayout>(R.id.header).height
+                            val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, height)
+                            layoutParams.topToBottom = R.id.calendar_view
+
+                            dynamicLayout.findViewById<ImageButton>(R.id.save_button).setOnClickListener {
+                                val diaryBundle = Bundle()
+                                diaryBundle.putLong("diaryId", diaryData.diary.id)
+                                findNavController().navigate(R.id.fragment_diary_update, diaryBundle)
+                            }
+
+                            dynamicLayout.findViewById<ImageButton>(R.id.delete_button).setOnClickListener {
+                                showDeleteConfirmDialog(requireContext(), diaryData.diary.id)
+                            }
+
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.post {
+                                constraintLayout.addView(dynamicLayout, layoutParams)
+                            }
+                        }
+                    } else {
+                        val today = LocalDate.now()
+                        val firstDayOfMonth = LocalDate.of(today.year, today.monthValue, 1)
+                        val firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY)
+                        activity?.runOnUiThread {
+                            binding.calendarView.state().edit()
+                                .setMinimumDate(firstDayOfCalendar)
+                                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                                .commit()
+
+                            binding.diaryView.visibility = View.INVISIBLE
+                            binding.topicView.visibility = View.VISIBLE
+                            binding.addDiary.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showDeleteConfirmDialog(context: Context, diaryId: Long) {
+        diaryViewModel = ViewModelProvider(this)[DiaryViewModel::class.java]
+        diaryColorViewModel = ViewModelProvider(this)[DiaryColorViewModel::class.java]
+        diaryTagViewModel = ViewModelProvider(this)[DiaryTagViewModel::class.java]
+
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("확인")
+        builder.setMessage("일기를 삭제하시겠습니까?")
+
+        builder.setPositiveButton("확인") { _, _ ->
+            CoroutineScope(Dispatchers.Default).launch {
+                diaryViewModel.deleteDiary(diaryId)
+                diaryColorViewModel.deleteDiaryColor(diaryId)
+                diaryTagViewModel.deleteDiaryTag(diaryId)
+
+                activity?.runOnUiThread {
+                    Common.showToast(context, "일기가 삭제 되었습니다.")
+                    findNavController().navigate(R.id.fragment_main)
+                }
+            }
+        }
+
+        // "취소" 버튼 클릭 시 동작 설정
+        builder.setNegativeButton("취소") { _, _ ->
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun setCalendar(selectDate: CalendarDay?) {
@@ -144,27 +331,36 @@ class MainFragment : Fragment() {
                 val diaryDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
                 highlightedDate.add(diaryDate)
             }
+            // TODO: 점 색깔을 변경
             val highlightDecorator = calendarDecorator.HighlightDecorator(highlightedDate)
 
             if(selectDate != null){
                 val selectedDateDecorator = calendarDecorator.SelectedDateDecorator(selectDate)
                 val unSelectedDateDecorator = calendarDecorator.UnSelectedDateDecorator(selectDate)
-                binding.calendarView.addDecorators(
-                    todayDecorator,
-                    saturdayDecorator,
-                    sundayDecorator,
-                    selectedDateDecorator,
-                    unSelectedDateDecorator,
-                    selectedMonthDecorator,
-                    highlightDecorator
-                )
+                activity?.runOnUiThread {
+                    binding.calendarView.addDecorators(
+                        todayDecorator,
+                        saturdayDecorator,
+                        sundayDecorator,
+                        selectedDateDecorator,
+                        unSelectedDateDecorator,
+                        selectedMonthDecorator,
+                        highlightDecorator
+                    )
+                }
             } else{
-                binding.calendarView.addDecorators(
-                    todayDecorator,
-                    saturdayDecorator,
-                    sundayDecorator,
-                    selectedMonthDecorator,
-                )
+                binding.calendarView.selectedDate = null
+                val unSelectedDateDecorator = calendarDecorator.UnSelectedDateDecorator(null)
+                activity?.runOnUiThread {
+                    binding.calendarView.addDecorators(
+                        todayDecorator,
+                        saturdayDecorator,
+                        sundayDecorator,
+                        unSelectedDateDecorator,
+                        selectedMonthDecorator,
+                        highlightDecorator,
+                    )
+                }
             }
         }
     }

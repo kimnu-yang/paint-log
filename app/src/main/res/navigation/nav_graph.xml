@@ -11,13 +11,23 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_fragment_main_to_fragment_diary"
-            app:destination="@id/fragment_diary" />
+            app:destination="@id/fragment_diary_insert" />
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_diary"
+        android:id="@+id/fragment_diary_insert"
         android:name="com.diary.paintlog.view.fragments.DiaryInsertFragment"
         tools:layout="@layout/fragment_diary" />
+
+    <fragment
+        android:id="@+id/fragment_diary_update"
+        android:name="com.diary.paintlog.view.fragments.DiaryUpdateFragment"
+        tools:layout="@layout/fragment_diary" />
+
+    <fragment
+        android:id="@+id/fragment_diary_view"
+        android:name="com.diary.paintlog.view.fragments.DiaryViewFragment"
+        tools:layout="@layout/fragment_diary_view" />
 
     <fragment
         android:id="@+id/fragment_art_work"

@@ -16,6 +16,10 @@ class DiaryColorViewModel: ViewModel() {
         return diaryColorDao.insertDiaryColor(diaryColor)
     }
 
+    fun deleteDiaryColor(diaryId: Long){
+        diaryColorDao.deleteDiaryColorByDiaryId(diaryId)
+    }
+
     fun deleteDiaryColor(diaryId: Long, position: Int) {
         diaryColorDao.deleteDiaryColorByDiaryIdAndPosition(diaryId, position)
     }
