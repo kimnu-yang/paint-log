@@ -1,7 +1,6 @@
 package com.diary.paintlog.data.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
@@ -19,6 +18,9 @@ interface DiaryColorDao {
 
     @Update
     fun updateDiaryColor(diaryColor: DiaryColor)
+
+    @Query("DELETE FROM diary_color WHERE diary_id = :diaryId")
+    fun deleteDiaryColorByDiaryId(diaryId: Long)
 
     @Query("DELETE FROM diary_color WHERE diary_id = :diaryId AND position = :position")
     fun deleteDiaryColorByDiaryIdAndPosition(diaryId: Long, position: Int)

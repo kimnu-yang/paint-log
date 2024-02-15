@@ -20,6 +20,9 @@ interface DiaryTagDao {
     @Update
     fun updateDiaryTag(diaryTag: DiaryTag)
 
+    @Query("DELETE FROM diary_tag WHERE diary_id = :diaryId")
+    fun deleteDiaryTagByDiaryId(diaryId: Long)
+
     @Query("DELETE FROM diary_tag WHERE diary_id = :diaryId AND position = :position")
     fun deleteDiaryTagByDiaryIdAndPosition(diaryId: Long, position: Int)
 

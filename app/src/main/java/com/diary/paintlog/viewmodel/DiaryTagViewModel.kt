@@ -16,6 +16,10 @@ class DiaryTagViewModel: ViewModel() {
         diaryTagDao.insertDiaryTag(diaryTag)
     }
 
+    fun deleteDiaryTag(diaryId: Long) {
+        diaryTagDao.deleteDiaryTagByDiaryId(diaryId)
+    }
+
     fun deleteDiaryTag(diaryId: Long, position: Int) {
         diaryTagDao.deleteDiaryTagByDiaryIdAndPosition(diaryId, position)
     }
