@@ -17,6 +17,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.Diary
+import com.diary.paintlog.data.entities.DiaryColor
+import com.diary.paintlog.data.entities.DiaryTag
+import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.data.entities.enums.TempStatus
 import com.diary.paintlog.data.entities.enums.Weather
 import com.diary.paintlog.databinding.FragmentDiaryBinding
@@ -28,6 +31,7 @@ import com.diary.paintlog.view.dialog.ColorSettingDialog
 import com.diary.paintlog.viewmodel.DiaryColorViewModel
 import com.diary.paintlog.viewmodel.DiaryTagViewModel
 import com.diary.paintlog.viewmodel.DiaryViewModel
+import com.diary.paintlog.viewmodel.TopicViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -53,6 +57,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
     private lateinit var diaryViewModel: DiaryViewModel
     private lateinit var diaryTagViewModel: DiaryTagViewModel
     private lateinit var diaryColorViewModel: DiaryColorViewModel
+    private lateinit var topicViewModel: TopicViewModel
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
@@ -103,11 +108,22 @@ class DiaryInsertFragment : Fragment(), DataListener {
 
         CoroutineScope(Dispatchers.Default).launch {
             // 오늘 자로 등록된 일기가 있는 지 확인
-            if(diaryViewModel.getDiary(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "N") != null) {
-                showAddDiaryDialog(requireContext())
+            val todayDiary = diaryViewModel.getDiary(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "N")
+            if(todayDiary != null) {
+                showUpdateDiaryDialog(requireContext(), todayDiary.diary.id)
+            } else {
+                val tempDiary = diaryViewModel.getDiary(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "Y")
+                if(tempDiary != null) {
+                    showTempDiaryDialog(requireContext(), tempDiary)
+                }
             }
         }
-        
+
+        // 홈에서 받아온 주제가 있으면 제목으로 설정
+        val topicBundle = arguments
+        val topic = topicBundle?.getString("topic")
+        if(topic != null) binding.title.setText(topic)
+
         val today = LocalDateTime.now()
         val weekOfDay = today.dayOfWeek.value
         val date = today.format(DateTimeFormatter.ofPattern("yyyy. MM. dd(${Common.getDayOfWeekName(weekOfDay)})"))
@@ -116,12 +132,10 @@ class DiaryInsertFragment : Fragment(), DataListener {
         // 추천 주제 버튼 클릭시 응답
         binding.newTopicBtn.setOnClickListener {
 
-            val topic = "오늘 있었던 일은?"
-            // 이미 작성된 제목이 있을 때는 확인 후 실행
-            if(binding.title.text.toString() != "") {
-                showChangeTitleDialog(binding.root.context, topic)
-            } else {
-                binding.title.setText(topic)
+            topicViewModel = ViewModelProvider(this)[TopicViewModel::class.java]
+            val topicData = topicViewModel.getRandomTopic()
+            activity?.runOnUiThread {
+                if(topicData != null) binding.title.setText(topicData.topic)
             }
         }
 
@@ -327,6 +341,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
         }
 
         binding.cancelButton.setOnClickListener {
+            findNavController().popBackStack()
             findNavController().navigate(R.id.fragment_main)
         }
 
@@ -401,17 +416,25 @@ class DiaryInsertFragment : Fragment(), DataListener {
                         diaryId = diaryViewModel.saveDiary(diary)
                     }
 
-                    if(tag1 != "") Common.tagInsertWithDelete(this@DiaryInsertFragment, diaryId, 1, tag1)
-                    if(tag2 != "") Common.tagInsertWithDelete(this@DiaryInsertFragment, diaryId, 2, tag2)
-                    if(tag3 != "") Common.tagInsertWithDelete(this@DiaryInsertFragment, diaryId, 3, tag3)
+                    diaryTagViewModel.deleteDiaryTag(diaryId)
+                    if(tag1 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 1, tag = tag1))
+                    if(tag2 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 2, tag = tag2))
+                    if(tag3 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 3, tag = tag3))
 
-                    if(color1 != "") Common.colorInsertWithDelete(this@DiaryInsertFragment, diaryId, 1, color1, color1Percent)
-                    if(color2 != "") Common.colorInsertWithDelete(this@DiaryInsertFragment, diaryId, 2, color2, color2Percent)
-                    if(color3 != "") Common.colorInsertWithDelete(this@DiaryInsertFragment, diaryId, 3, color3, color3Percent)
+                    diaryColorViewModel.deleteDiaryColor(diaryId)
+                    if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorByString(color1), ratio = color1Percent.toInt()))
+                    if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorByString(color2), ratio = color2Percent.toInt()))
+                    if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorByString(color3), ratio = color3Percent.toInt()))
+
+                    activity?.runOnUiThread {
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diaryId)
+                        Common.showToast(requireContext(), "일기가 저장되었습니다.")
+                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
+                    }
                 }
             }
-
-            findNavController().navigate(R.id.fragment_main)
         }
 
         // 임시 저장 배치 실행
@@ -474,22 +497,24 @@ class DiaryInsertFragment : Fragment(), DataListener {
                             diaryId = diaryViewModel.saveDiary(diary)
                         }
 
-                        if(tag1 != "") Common.tagInsertWithDelete(this@DiaryInsertFragment, diaryId, 1, tag1)
-                        if(tag2 != "") Common.tagInsertWithDelete(this@DiaryInsertFragment, diaryId, 2, tag2)
-                        if(tag3 != "") Common.tagInsertWithDelete(this@DiaryInsertFragment, diaryId, 3, tag3)
+                        diaryTagViewModel.deleteDiaryTag(diaryId)
+                        if(tag1 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 1, tag = tag1))
+                        if(tag2 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 2, tag = tag2))
+                        if(tag3 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 3, tag = tag3))
 
-                        if(color1 != "") Common.colorInsertWithDelete(this@DiaryInsertFragment, diaryId, 1, color1, color1Percent)
-                        if(color2 != "") Common.colorInsertWithDelete(this@DiaryInsertFragment, diaryId, 2, color2, color2Percent)
-                        if(color3 != "") Common.colorInsertWithDelete(this@DiaryInsertFragment, diaryId, 3, color3, color3Percent)
+                        diaryColorViewModel.deleteDiaryColor(diaryId)
+                        if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorByString(color1), ratio = color1Percent.toInt()))
+                        if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorByString(color2), ratio = color2Percent.toInt()))
+                        if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorByString(color3), ratio = color3Percent.toInt()))
                     }
                 }
-                handler.postDelayed(this, 3000)
+                handler.postDelayed(this, 5000)
             }
         }
         handler.post(tempSave)
     }
 
-    private suspend fun showAddDiaryDialog(context: Context) {
+    private suspend fun showUpdateDiaryDialog(context: Context, diaryId: Long) {
         withContext(Dispatchers.Main){
             val builder = AlertDialog.Builder(context)
             builder.setTitle("확인")
@@ -497,14 +522,94 @@ class DiaryInsertFragment : Fragment(), DataListener {
 
             // "확인" 버튼 클릭 시 동작 설정
             builder.setPositiveButton("확인") { _, _ ->
+                val data = Bundle()
+                data.putLong("diaryId", diaryId)
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.fragment_diary_update, data)
             }
 
             // "취소" 버튼 클릭 시 동작 설정
             builder.setNegativeButton("취소") { _, _ ->
+                findNavController().popBackStack()
                 findNavController().navigate(R.id.fragment_main)
             }
 
             val dialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+
+            dialog.show()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private suspend fun showTempDiaryDialog(context: Context, diaryData: DiaryWithTagAndColor) {
+        withContext(Dispatchers.Main){
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("확인")
+            builder.setMessage("임시저장 된 일기가 있습니다.\n 이어서 작성 하시겠습니까?")
+
+            // "확인" 버튼 클릭 시 동작 설정
+            builder.setPositiveButton("확인") { _, _ ->
+                binding.title.setText(diaryData.diary.title)
+                binding.content.setText(diaryData.diary.content)
+
+                val tag1 = diaryData.tags.filter { it.position == 1 }
+                if(tag1.isNotEmpty()) binding.tag1.setText(tag1[0].tag)
+
+                val tag2 = diaryData.tags.filter { it.position == 2 }
+                if(tag2.isNotEmpty()) binding.tag2.setText(tag2[0].tag)
+
+                val tag3 = diaryData.tags.filter { it.position == 3 }
+                if(tag3.isNotEmpty()) binding.tag3.setText(tag3[0].tag)
+
+                val color1 = diaryData.colors.filter { it.position == 1 }
+                if(color1.isNotEmpty()){
+                    Common.imageSetTintWithAlpha(requireContext(), binding.color1.background, color1[0].color.toString(), color1[0].ratio.toString())
+
+                    binding.color1Text.text = "${color1[0].ratio}%"
+                    binding.color1Text.visibility = View.VISIBLE
+                    binding.color1Delete.visibility = View.VISIBLE
+                }
+
+                val color2 = diaryData.colors.filter { it.position == 2 }
+                if(color2.isNotEmpty()){
+                    Common.imageSetTintWithAlpha(requireContext(), binding.color2.background, color2[0].color.toString(), color2[0].ratio.toString())
+
+                    binding.color2Text.text = "${color2[0].ratio}%"
+                    binding.color2Text.visibility = View.VISIBLE
+                    binding.color2Delete.visibility = View.VISIBLE
+                }
+
+                val color3 = diaryData.colors.filter { it.position == 3 }
+                if(color3.isNotEmpty()){
+                    Common.imageSetTintWithAlpha(requireContext(), binding.color3.background, color3[0].color.toString(), color3[0].ratio.toString())
+
+                    binding.color3Text.text = "${color3[0].ratio}%"
+                    binding.color3Text.visibility = View.VISIBLE
+                    binding.color3Delete.visibility = View.VISIBLE
+                }
+
+                if(diaryData.diary.weather != null){
+                    binding.weatherButton.visibility = View.INVISIBLE
+                    binding.weatherButtonText.visibility = View.INVISIBLE
+                    binding.weatherImg.visibility = View.VISIBLE
+                    binding.tempMinMax.visibility = View.VISIBLE
+                    binding.tempNow.visibility = View.VISIBLE
+
+                    val weatherImage = Common.getWeatherImageByWeather(diaryData.diary.weather)
+                    binding.weatherImg.setBackgroundResource(weatherImage)
+                    binding.tempMinMax.text = "${diaryData.diary.tempMin}°C / ${diaryData.diary.tempMax}°C"
+                    binding.tempNow.text = "${diaryData.diary.tempNow}°C"
+                }
+            }
+
+            // "취소" 버튼 클릭 시 동작 설정
+            builder.setNegativeButton("취소") { _, _ ->
+            }
+
+            val dialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+
             dialog.show()
         }
     }
