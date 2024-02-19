@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:id="@+id/week_diary_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/week_selector_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/week_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textColor="@color/deep"
+                    android:textSize="@dimen/week_title"
+                    android:text=""/>
+
+                <ImageButton
+                    android:id="@+id/pre_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_left_selector"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    app:layout_constraintEnd_toStartOf="@id/week_text"
+                    app:layout_constraintTop_toTopOf="@id/week_text"
+                    app:layout_constraintBottom_toBottomOf="@id/week_text"/>
+
+                <ImageButton
+                    android:id="@+id/next_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_right_selector"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    app:layout_constraintStart_toEndOf="@id/week_text"
+                    app:layout_constraintTop_toTopOf="@id/week_text"
+                    app:layout_constraintBottom_toBottomOf="@id/week_text"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/week_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:paddingHorizontal="@dimen/margin_medium"
+                app:layout_constraintTop_toBottomOf="@id/week_selector_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/monday_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/monday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/week_text"
+                        android:textColor="@color/deep"
+                        android:text="@string/week_monday"/>
+
+                    <ImageView
+                        android:id="@+id/monday_div"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/week_div"
+                        app:layout_constraintTop_toBottomOf="@id/monday_text"
+                        app:layout_constraintStart_toStartOf="@id/monday_text"/>
+
+                    <TextView
+                        android:id="@+id/monday_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_text"
+                        app:layout_constraintStart_toStartOf="@id/monday_div"
+                        app:layout_constraintTop_toTopOf="@id/monday_div"/>
+
+                    <ImageView
+                        android:id="@+id/monday_paint"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:rotation="-30"
+                        android:background="@drawable/paint_white"
+                        app:layout_constraintTop_toTopOf="@id/monday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/monday_div"
+                        app:layout_constraintStart_toStartOf="@id/monday_div"
+                        app:layout_constraintEnd_toEndOf="@id/monday_div"/>
+
+                    <ImageButton
+                        android:id="@+id/monday_diary"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/empty_page_selector"
+                        android:layout_marginStart="15dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="@id/monday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/monday_div"
+                        app:layout_constraintStart_toEndOf="@id/monday_div"
+                        app:layout_constraintWidth_percent="0.7"/>
+
+                    <TextView
+                        android:id="@+id/monday_diary_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_diary_title"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toTopOf="@id/monday_diary"
+                        app:layout_constraintBottom_toBottomOf="@id/monday_diary"
+                        app:layout_constraintStart_toStartOf="@id/monday_diary"
+                        app:layout_constraintEnd_toEndOf="@id/monday_diary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tuesday_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/monday_view"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/tuesday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/week_text"
+                        android:textColor="@color/deep"
+                        android:text="@string/week_tuesday"/>
+
+                    <ImageView
+                        android:id="@+id/tuesday_div"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/week_div"
+                        app:layout_constraintTop_toBottomOf="@id/tuesday_text"
+                        app:layout_constraintStart_toStartOf="@id/tuesday_text"/>
+
+                    <TextView
+                        android:id="@+id/tuesday_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_text"
+                        app:layout_constraintStart_toStartOf="@id/tuesday_div"
+                        app:layout_constraintTop_toTopOf="@id/tuesday_div"/>
+
+                    <ImageView
+                        android:id="@+id/tuesday_paint"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:rotation="-30"
+                        android:background="@drawable/paint_white"
+                        app:layout_constraintTop_toTopOf="@id/tuesday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/tuesday_div"
+                        app:layout_constraintStart_toStartOf="@id/tuesday_div"
+                        app:layout_constraintEnd_toEndOf="@id/tuesday_div"/>
+
+                    <ImageButton
+                        android:id="@+id/tuesday_diary"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/empty_page_selector"
+                        android:layout_marginStart="15dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="@id/tuesday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/tuesday_div"
+                        app:layout_constraintStart_toEndOf="@id/tuesday_div"
+                        app:layout_constraintWidth_percent="0.7"/>
+
+                    <TextView
+                        android:id="@+id/tuesday_diary_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_diary_title"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toTopOf="@id/tuesday_diary"
+                        app:layout_constraintBottom_toBottomOf="@id/tuesday_diary"
+                        app:layout_constraintStart_toStartOf="@id/tuesday_diary"
+                        app:layout_constraintEnd_toEndOf="@id/tuesday_diary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/wednesday_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tuesday_view"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/wednesday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/week_text"
+                        android:textColor="@color/deep"
+                        android:text="@string/week_wednesday"/>
+
+                    <ImageView
+                        android:id="@+id/wednesday_div"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/week_div"
+                        app:layout_constraintTop_toBottomOf="@id/wednesday_text"
+                        app:layout_constraintStart_toStartOf="@id/wednesday_text"/>
+
+                    <TextView
+                        android:id="@+id/wednesday_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_text"
+                        app:layout_constraintStart_toStartOf="@id/wednesday_div"
+                        app:layout_constraintTop_toTopOf="@id/wednesday_div"/>
+
+                    <ImageView
+                        android:id="@+id/wednesday_paint"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:rotation="-30"
+                        android:background="@drawable/paint_white"
+                        app:layout_constraintTop_toTopOf="@id/wednesday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/wednesday_div"
+                        app:layout_constraintStart_toStartOf="@id/wednesday_div"
+                        app:layout_constraintEnd_toEndOf="@id/wednesday_div"/>
+
+                    <ImageButton
+                        android:id="@+id/wednesday_diary"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/empty_page_selector"
+                        android:layout_marginStart="15dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="@id/wednesday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/wednesday_div"
+                        app:layout_constraintStart_toEndOf="@id/wednesday_div"
+                        app:layout_constraintWidth_percent="0.7"/>
+
+                    <TextView
+                        android:id="@+id/wednesday_diary_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_diary_title"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toTopOf="@id/wednesday_diary"
+                        app:layout_constraintBottom_toBottomOf="@id/wednesday_diary"
+                        app:layout_constraintStart_toStartOf="@id/wednesday_diary"
+                        app:layout_constraintEnd_toEndOf="@id/wednesday_diary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/thursday_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/wednesday_view"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/thursday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/week_text"
+                        android:textColor="@color/deep"
+                        android:text="@string/week_thursday"/>
+
+                    <ImageView
+                        android:id="@+id/thursday_div"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/week_div"
+                        app:layout_constraintTop_toBottomOf="@id/thursday_text"
+                        app:layout_constraintStart_toStartOf="@id/thursday_text"/>
+
+                    <TextView
+                        android:id="@+id/thursday_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_text"
+                        app:layout_constraintStart_toStartOf="@id/thursday_div"
+                        app:layout_constraintTop_toTopOf="@id/thursday_div"/>
+
+                    <ImageView
+                        android:id="@+id/thursday_paint"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:rotation="-30"
+                        android:background="@drawable/paint_white"
+                        app:layout_constraintTop_toTopOf="@id/thursday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/thursday_div"
+                        app:layout_constraintStart_toStartOf="@id/thursday_div"
+                        app:layout_constraintEnd_toEndOf="@id/thursday_div"/>
+
+                    <ImageButton
+                        android:id="@+id/thursday_diary"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/empty_page_selector"
+                        android:layout_marginStart="15dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="@id/thursday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/thursday_div"
+                        app:layout_constraintStart_toEndOf="@id/thursday_div"
+                        app:layout_constraintWidth_percent="0.7"/>
+
+                    <TextView
+                        android:id="@+id/thursday_diary_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_diary_title"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toTopOf="@id/thursday_diary"
+                        app:layout_constraintBottom_toBottomOf="@id/thursday_diary"
+                        app:layout_constraintStart_toStartOf="@id/thursday_diary"
+                        app:layout_constraintEnd_toEndOf="@id/thursday_diary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/friday_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/thursday_view"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/friday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/week_text"
+                        android:textColor="@color/deep"
+                        android:text="@string/week_friday"/>
+
+                    <ImageView
+                        android:id="@+id/friday_div"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/week_div"
+                        app:layout_constraintTop_toBottomOf="@id/friday_text"
+                        app:layout_constraintStart_toStartOf="@id/friday_text"/>
+
+                    <TextView
+                        android:id="@+id/friday_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_text"
+                        app:layout_constraintStart_toStartOf="@id/friday_div"
+                        app:layout_constraintTop_toTopOf="@id/friday_div"/>
+
+                    <ImageView
+                        android:id="@+id/friday_paint"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:rotation="-30"
+                        android:background="@drawable/paint_white"
+                        app:layout_constraintTop_toTopOf="@id/friday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/friday_div"
+                        app:layout_constraintStart_toStartOf="@id/friday_div"
+                        app:layout_constraintEnd_toEndOf="@id/friday_div"/>
+
+                    <ImageButton
+                        android:id="@+id/friday_diary"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/empty_page_selector"
+                        android:layout_marginStart="15dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="@id/friday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/friday_div"
+                        app:layout_constraintStart_toEndOf="@id/friday_div"
+                        app:layout_constraintWidth_percent="0.7"/>
+
+                    <TextView
+                        android:id="@+id/friday_diary_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_diary_title"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toTopOf="@id/friday_diary"
+                        app:layout_constraintBottom_toBottomOf="@id/friday_diary"
+                        app:layout_constraintStart_toStartOf="@id/friday_diary"
+                        app:layout_constraintEnd_toEndOf="@id/friday_diary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/saturday_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/friday_view"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/saturday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/week_text"
+                        android:textColor="@color/blue"
+                        android:text="@string/week_saturday"/>
+
+                    <ImageView
+                        android:id="@+id/saturday_div"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/week_div"
+                        app:layout_constraintTop_toBottomOf="@id/saturday_text"
+                        app:layout_constraintStart_toStartOf="@id/saturday_text"/>
+
+                    <TextView
+                        android:id="@+id/saturday_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/week_text"
+                        app:layout_constraintStart_toStartOf="@id/saturday_div"
+                        app:layout_constraintTop_toTopOf="@id/saturday_div"/>
+
+                    <ImageView
+                        android:id="@+id/saturday_paint"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:rotation="-30"
+                        android:background="@drawable/paint_white"
+                        app:layout_constraintTop_toTopOf="@id/saturday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/saturday_div"
+                        app:layout_constraintStart_toStartOf="@id/saturday_div"
+                        app:layout_constraintEnd_toEndOf="@id/saturday_div"/>
+
+                    <ImageButton
+                        android:id="@+id/saturday_diary"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/empty_page_selector"
+                        android:layout_marginStart="15dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="@id/saturday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/saturday_div"
+                        app:layout_constraintStart_toEndOf="@id/saturday_div"
+                        app:layout_constraintWidth_percent="0.7"/>
+
+                    <TextView
+                        android:id="@+id/saturday_diary_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_diary_title"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toTopOf="@id/saturday_diary"
+                        app:layout_constraintBottom_toBottomOf="@id/saturday_diary"
+                        app:layout_constraintStart_toStartOf="@id/saturday_diary"
+                        app:layout_constraintEnd_toEndOf="@id/saturday_diary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sunday_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/saturday_view"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/sunday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/week_text"
+                        android:textColor="@color/red"
+                        android:text="@string/week_sunday"/>
+
+                    <ImageView
+                        android:id="@+id/sunday_div"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/week_div"
+                        app:layout_constraintTop_toBottomOf="@id/sunday_text"
+                        app:layout_constraintStart_toStartOf="@id/sunday_text"/>
+
+                    <TextView
+                        android:id="@+id/sunday_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/week_text"
+                        app:layout_constraintStart_toStartOf="@id/sunday_div"
+                        app:layout_constraintTop_toTopOf="@id/sunday_div"/>
+
+                    <ImageView
+                        android:id="@+id/sunday_paint"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:rotation="-30"
+                        android:background="@drawable/paint_white"
+                        app:layout_constraintTop_toTopOf="@id/sunday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/sunday_div"
+                        app:layout_constraintStart_toStartOf="@id/sunday_div"
+                        app:layout_constraintEnd_toEndOf="@id/sunday_div"/>
+
+                    <ImageButton
+                        android:id="@+id/sunday_diary"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/empty_page_selector"
+                        android:layout_marginStart="15dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="@id/sunday_div"
+                        app:layout_constraintBottom_toBottomOf="@id/sunday_div"
+                        app:layout_constraintStart_toEndOf="@id/sunday_div"
+                        app:layout_constraintWidth_percent="0.7"/>
+
+                    <TextView
+                        android:id="@+id/sunday_diary_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/deep"
+                        android:textSize="@dimen/week_diary_title"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toTopOf="@id/sunday_diary"
+                        app:layout_constraintBottom_toBottomOf="@id/sunday_diary"
+                        app:layout_constraintStart_toStartOf="@id/sunday_diary"
+                        app:layout_constraintEnd_toEndOf="@id/sunday_diary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/drawing_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                app:layout_constraintTop_toBottomOf="@id/week_view"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageButton
+                    android:id="@+id/draw_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button_yet_selector"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/draw_button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    app:layout_constraintTop_toBottomOf="@id/draw_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/draw_button"
+                    app:layout_constraintEnd_toEndOf="@id/draw_button"
+                    android:textColor="@color/deep"
+                    android:textSize="@dimen/week_draw_button_text"/>
+
+                <ImageView
+                    android:id="@+id/drawing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/draw_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/drawing_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/deep"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/drawing"
+                    app:layout_constraintStart_toStartOf="@id/drawing"
+                    app:layout_constraintEnd_toEndOf="@id/drawing"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
