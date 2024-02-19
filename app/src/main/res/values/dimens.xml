@@ -6,6 +6,12 @@
     <dimen name="diary_margin">16dp</dimen>
     <dimen name="diary_title_small">20sp</dimen>
 
+    <!-- Week Diary -->
+    <dimen name="week_title">22sp</dimen>
+    <dimen name="week_text">18sp</dimen>
+    <dimen name="week_diary_title">20sp</dimen>
+    <dimen name="week_draw_button_text">20sp</dimen>
+
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">20dp</dimen>
@@ -16,4 +22,5 @@
 
     <dimen name="artwork_title">20sp</dimen>
     <dimen name="artwork_summary">16sp</dimen>
+
 </resources>
