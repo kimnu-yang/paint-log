@@ -52,6 +52,17 @@
         app:popUpToInclusive="true" />
 
     <fragment
+        android:id="@+id/fragment_stats"
+        android:name="com.diary.paintlog.view.fragments.StatsFragment"
+        tools:layout="@layout/fragment_stats" />
+
+    <action
+        android:id="@+id/action_global_fragment_stats"
+        app:destination="@id/fragment_stats"
+        app:popUpTo="@id/fragment_stats"
+        app:popUpToInclusive="true" />
+
+    <fragment
         android:id="@+id/fragment_settings"
         android:name="com.diary.paintlog.view.fragments.SettingsFragment"
         tools:layout="@layout/fragment_settings" />

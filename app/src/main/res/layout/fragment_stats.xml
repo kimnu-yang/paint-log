@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.StatsFragment">
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:theme="@style/CalenderViewCustom"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
+        app:mcv_firstDayOfWeek="monday"
+        app:mcv_selectionColor="#00FFFFFF"
+        app:mcv_selectionMode="none"
+        app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stats_color_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendar_view">
+
+        <TextView
+            android:id="@+id/stats_color_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_color_title"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@id/color_red"
+            app:layout_constraintLeft_toLeftOf="@id/color_red"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/color_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/paint_red_selector"
+            android:tooltipText="RED"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/color_red_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/color_red"
+            app:layout_constraintLeft_toLeftOf="@id/color_red"
+            app:layout_constraintRight_toRightOf="@id/color_red"
+            app:layout_constraintTop_toTopOf="@id/color_red" />
+
+        <ImageButton
+            android:id="@+id/color_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/paint_orange_selector"
+            android:tooltipText="ORANGE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/color_orange_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/color_orange"
+            app:layout_constraintLeft_toLeftOf="@id/color_orange"
+            app:layout_constraintRight_toRightOf="@id/color_orange"
+            app:layout_constraintTop_toTopOf="@id/color_orange" />
+
+        <ImageButton
+            android:id="@+id/color_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/paint_yellow_selector"
+            android:tooltipText="YELLOW"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.65"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/color_yellow_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/color_yellow"
+            app:layout_constraintLeft_toLeftOf="@id/color_yellow"
+            app:layout_constraintRight_toRightOf="@id/color_yellow"
+            app:layout_constraintTop_toTopOf="@id/color_yellow" />
+
+        <ImageButton
+            android:id="@+id/color_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/paint_green_selector"
+            android:tooltipText="GREEN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/color_green_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/color_green"
+            app:layout_constraintLeft_toLeftOf="@id/color_green"
+            app:layout_constraintRight_toRightOf="@id/color_green"
+            app:layout_constraintTop_toTopOf="@id/color_green" />
+
+        <ImageButton
+            android:id="@+id/color_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/paint_blue_selector"
+            android:tooltipText="BLUE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/color_red" />
+
+        <TextView
+            android:id="@+id/color_blue_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/color_blue"
+            app:layout_constraintLeft_toLeftOf="@id/color_blue"
+            app:layout_constraintRight_toRightOf="@id/color_blue"
+            app:layout_constraintTop_toTopOf="@id/color_blue" />
+
+        <ImageButton
+            android:id="@+id/color_navy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/paint_navy_selector"
+            android:tooltipText="NAVY"
+            app:layout_constraintEnd_toEndOf="@id/stats_color_layout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@id/stats_color_layout"
+            app:layout_constraintTop_toBottomOf="@id/color_red" />
+
+        <TextView
+            android:id="@+id/color_navy_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/color_navy"
+            app:layout_constraintLeft_toLeftOf="@id/color_navy"
+            app:layout_constraintRight_toRightOf="@id/color_navy"
+            app:layout_constraintTop_toTopOf="@id/color_navy" />
+
+        <ImageButton
+            android:id="@+id/color_violet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/paint_violet_selector"
+            android:tooltipText="VIOLET"
+            app:layout_constraintEnd_toEndOf="@id/stats_color_layout"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@id/stats_color_layout"
+            app:layout_constraintTop_toBottomOf="@id/color_red" />
+
+        <TextView
+            android:id="@+id/color_violet_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/color_violet"
+            app:layout_constraintLeft_toLeftOf="@id/color_violet"
+            app:layout_constraintRight_toRightOf="@id/color_violet"
+            app:layout_constraintTop_toTopOf="@id/color_violet" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stats_weather_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stats_color_layout">
+
+        <TextView
+            android:id="@+id/stats_weather_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_weather_title"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@id/weather_sunny"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/weather_sunny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xlarge"
+            android:background="@drawable/weather_sunny"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weather_sunny_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/weather_sunny"
+            app:layout_constraintStart_toStartOf="@id/weather_sunny"
+            app:layout_constraintTop_toBottomOf="@id/weather_sunny" />
+
+        <ImageView
+            android:id="@+id/weather_cloudy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xlarge"
+            android:background="@drawable/weather_cloudy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weather_cloudy_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/weather_cloudy"
+            app:layout_constraintStart_toStartOf="@id/weather_cloudy"
+            app:layout_constraintTop_toBottomOf="@id/weather_cloudy" />
+
+        <ImageView
+            android:id="@+id/weather_little_rain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xlarge"
+            android:background="@drawable/weather_little_rain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weather_little_rain_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/weather_little_rain"
+            app:layout_constraintStart_toStartOf="@id/weather_little_rain"
+            app:layout_constraintTop_toBottomOf="@id/weather_little_rain" />
+
+        <ImageView
+            android:id="@+id/weather_rainy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xlarge"
+            android:background="@drawable/weather_rainy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/weather_rainy_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/weather_rainy"
+            app:layout_constraintStart_toStartOf="@id/weather_rainy"
+            app:layout_constraintTop_toBottomOf="@id/weather_rainy" />
+
+        <ImageView
+            android:id="@+id/weather_snowy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xlarge"
+            android:background="@drawable/weather_snowy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weather_sunny" />
+
+        <TextView
+            android:id="@+id/weather_snowy_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/weather_snowy"
+            app:layout_constraintStart_toStartOf="@id/weather_snowy"
+            app:layout_constraintTop_toBottomOf="@id/weather_snowy" />
+
+        <ImageView
+            android:id="@+id/weather_snow_rain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xlarge"
+            android:background="@drawable/weather_snow_rain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weather_sunny" />
+
+        <TextView
+            android:id="@+id/weather_snow_rain_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/weather_snow_rain"
+            app:layout_constraintStart_toStartOf="@id/weather_snow_rain"
+            app:layout_constraintTop_toBottomOf="@id/weather_snow_rain" />
+
+        <ImageView
+            android:id="@+id/weather_overcast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xlarge"
+            android:background="@drawable/weather_overcast"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weather_sunny" />
+
+        <TextView
+            android:id="@+id/weather_overcast_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_percent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/weather_overcast"
+            app:layout_constraintStart_toStartOf="@id/weather_overcast"
+            app:layout_constraintTop_toBottomOf="@id/weather_overcast" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
