@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/diary_margin" >
+            android:layout_marginHorizontal="@dimen/diary_margin">
 
             <ImageView
                 android:id="@+id/canvas"
@@ -27,42 +27,45 @@
                 android:contentDescription="@string/diary_desc_canvas"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="80dp"
+                android:layout_marginEnd="20dp"
                 android:background="@null"
+                android:ellipsize="marquee"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="@string/diary_title"
                 android:maxLength="32"
+                android:singleLine="true"
+                android:textIsSelectable="true"
                 android:textSize="24sp"
-                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@id/canvas"
                 app:layout_constraintStart_toStartOf="@id/canvas"
                 app:layout_constraintTop_toTopOf="@id/canvas" />
 
             <TextView
                 android:id="@+id/content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="20dp"
                 android:background="@null"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:hint="@string/diary_content"
                 android:maxLength="420"
+                android:textIsSelectable="true"
                 android:textSize="18sp"
-                android:inputType="text"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toBottomOf="@+id/canvas"
                 app:layout_constraintEnd_toEndOf="@id/canvas"
                 app:layout_constraintStart_toStartOf="@id/canvas"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                 />
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <TextView
                 android:id="@+id/tag_title"
@@ -91,13 +94,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:textColor="@color/deep"
                 android:textAlignment="center"
+                android:textColor="@color/deep"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/tag1"
                 app:layout_constraintEnd_toEndOf="@id/tag1"
                 app:layout_constraintStart_toStartOf="@id/tag1"
-                app:layout_constraintTop_toTopOf="@id/tag1"/>
+                app:layout_constraintTop_toTopOf="@id/tag1" />
 
             <ImageView
                 android:id="@+id/tag2"
@@ -106,9 +109,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/tag_box"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag_title" />
 
             <TextView
@@ -116,13 +119,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:textColor="@color/deep"
                 android:textAlignment="center"
+                android:textColor="@color/deep"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/tag2"
                 app:layout_constraintEnd_toEndOf="@id/tag2"
                 app:layout_constraintStart_toStartOf="@id/tag2"
-                app:layout_constraintTop_toTopOf="@id/tag2"/>
+                app:layout_constraintTop_toTopOf="@id/tag2" />
 
             <ImageView
                 android:id="@+id/tag3"
@@ -139,13 +142,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:textColor="@color/deep"
                 android:textAlignment="center"
+                android:textColor="@color/deep"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/tag3"
                 app:layout_constraintEnd_toEndOf="@id/tag3"
                 app:layout_constraintStart_toStartOf="@id/tag3"
-                app:layout_constraintTop_toTopOf="@id/tag3"/>
+                app:layout_constraintTop_toTopOf="@id/tag3" />
 
             <TextView
                 android:id="@+id/color_title"
@@ -154,8 +157,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:textColor="@color/deep"
                 android:text="@string/diary_today_color"
+                android:textColor="@color/deep"
                 android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tag1" />
@@ -198,8 +201,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/minus_red"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@id/color1"
-                app:layout_constraintEnd_toEndOf="@id/color1"/>
+                app:layout_constraintEnd_toEndOf="@id/color1"
+                app:layout_constraintTop_toTopOf="@id/color1" />
 
             <ImageButton
                 android:id="@+id/color2_delete"
@@ -207,8 +210,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/minus_red"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@id/color2"
-                app:layout_constraintEnd_toEndOf="@id/color2"/>
+                app:layout_constraintEnd_toEndOf="@id/color2"
+                app:layout_constraintTop_toTopOf="@id/color2" />
 
             <ImageButton
                 android:id="@+id/color3_delete"
@@ -216,8 +219,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/minus_red"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@id/color3"
-                app:layout_constraintEnd_toEndOf="@id/color3"/>
+                app:layout_constraintEnd_toEndOf="@id/color3"
+                app:layout_constraintTop_toTopOf="@id/color3" />
 
             <TextView
                 android:id="@+id/color1_text"
@@ -226,8 +229,8 @@
                 android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
                 android:textSize="@dimen/diary_title_small"
-                app:layout_constraintStart_toStartOf="@id/color1"
                 app:layout_constraintEnd_toEndOf="@id/color1"
+                app:layout_constraintStart_toStartOf="@id/color1"
                 app:layout_constraintTop_toBottomOf="@id/color1" />
 
             <TextView
@@ -237,8 +240,8 @@
                 android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
                 android:textSize="@dimen/diary_title_small"
-                app:layout_constraintStart_toStartOf="@id/color2"
                 app:layout_constraintEnd_toEndOf="@id/color2"
+                app:layout_constraintStart_toStartOf="@id/color2"
                 app:layout_constraintTop_toBottomOf="@id/color2" />
 
             <TextView
@@ -248,8 +251,8 @@
                 android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
                 android:textSize="@dimen/diary_title_small"
-                app:layout_constraintStart_toStartOf="@id/color3"
                 app:layout_constraintEnd_toEndOf="@id/color3"
+                app:layout_constraintStart_toStartOf="@id/color3"
                 app:layout_constraintTop_toBottomOf="@id/color3" />
 
 
@@ -260,8 +263,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bm_yeon_sung"
-                android:textColor="@color/deep"
                 android:text="@string/diary_weather_now"
+                android:textColor="@color/deep"
                 android:textSize="@dimen/diary_title_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/color1_text" />
@@ -273,34 +276,34 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/weather_sunny"
+                android:importantForAccessibility="no"
                 app:layout_constraintEnd_toStartOf="@id/temp_now"
-                app:layout_constraintTop_toTopOf="@id/temp_now"
-                android:importantForAccessibility="no" />
+                app:layout_constraintTop_toTopOf="@id/temp_now" />
 
             <TextView
                 android:id="@+id/temp_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/bm_yeon_sung"
                 android:layout_marginTop="20dp"
-                android:textSize="28sp"
+                android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/weather_img"
-                app:layout_constraintTop_toBottomOf="@id/weather_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/weather_title" />
 
             <TextView
                 android:id="@+id/temp_min_max"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/bm_yeon_sung"
                 android:layout_marginTop="20dp"
-                android:textSize="20sp"
+                android:fontFamily="@font/bm_yeon_sung"
                 android:textColor="@color/deep"
-                app:layout_constraintTop_toBottomOf="@id/temp_now"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/temp_now" />
 
             <ImageButton
                 android:id="@+id/delete_button"
@@ -310,9 +313,9 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/delete_button_red_selector"
                 android:contentDescription="@string/diary_cancel"
-                app:layout_constraintTop_toBottomOf="@id/weather_img"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/weather_img" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -334,17 +337,17 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/save_button_selector"
                 android:contentDescription="@string/diary_save"
-                app:layout_constraintTop_toBottomOf="@id/weather_img"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/weather_img" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bm_yeon_sung"
                 android:text="@string/diary_update"
-                android:textSize="@dimen/diary_title_small"
                 android:textColor="@color/white"
+                android:textSize="@dimen/diary_title_small"
                 app:layout_constraintBottom_toBottomOf="@id/save_button"
                 app:layout_constraintEnd_toEndOf="@id/save_button"
                 app:layout_constraintStart_toStartOf="@id/save_button"
