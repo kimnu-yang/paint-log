@@ -106,4 +106,9 @@
     <!-- Diary Search -->
     <string name="diary_search_none_data">저장된 일기가 없습니다.</string>
     <string name="diary_search_tag_all">전체</string>
+
+    <!-- Stats -->
+    <string name="stats_color_title">%s월의 색</string>
+    <string name="stats_weather_title">%s월의 날씨</string>
+    <string name="stats_percent">%s%%</string>
 </resources>

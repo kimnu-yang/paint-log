@@ -9,6 +9,7 @@
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_xlarge">30dp</dimen>
 
     <dimen name="margin_small_twice">24dp</dimen>
     <dimen name="margin_medium_twice">32dp</dimen>

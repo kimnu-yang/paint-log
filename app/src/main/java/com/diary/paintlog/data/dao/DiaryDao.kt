@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.diary.paintlog.data.entities.Diary
+import com.diary.paintlog.data.entities.DiaryWeatherCount
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 
 @Dao
@@ -15,6 +16,13 @@ interface DiaryDao {
     @Transaction
     @Query("SELECT * FROM diary WHERE is_temp = 'N'")
     fun getAllDiaryWithTagAndColor(): List<DiaryWithTagAndColor>
+
+    @Transaction
+    @Query("SELECT * FROM diary WHERE is_temp = 'N' AND registered_at LIKE :date")
+    fun getMonthDiaryWithTagAndColor(date: String): List<DiaryWithTagAndColor>
+
+    @Query("SELECT weather, count(1) as count FROM diary WHERE is_temp = 'N' AND registered_at LIKE :yearMonth GROUP BY weather")
+    fun getWeatherMonthCount(yearMonth: String): List<DiaryWeatherCount>
 
     @Query("SELECT * FROM diary WHERE id = :diaryId")
     fun getDiaryWithTagAndColorById(diaryId: Long): DiaryWithTagAndColor?
