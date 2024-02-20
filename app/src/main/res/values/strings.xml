@@ -115,4 +115,9 @@
     <string name="week_friday">금</string>
     <string name="week_saturday">토</string>
     <string name="week_sunday">일</string>
+  
+    <!-- Stats -->
+    <string name="stats_color_title">%s월의 색</string>
+    <string name="stats_weather_title">%s월의 날씨</string>
+    <string name="stats_percent">%s%%</string>
 </resources>

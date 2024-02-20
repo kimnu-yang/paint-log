@@ -48,6 +48,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.menu_summary -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_fragment_stats)
+                    true
+                }
+
                 else -> false
             }
         }

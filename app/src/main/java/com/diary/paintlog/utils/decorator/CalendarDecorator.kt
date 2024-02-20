@@ -18,10 +18,11 @@ import org.threeten.bp.DayOfWeek
 class CalendarDecorator(private val context: Context) {
 
     /* 오늘 날짜의 색상을 설정 */
-    inner class TodayDecorator(): DayViewDecorator {
+    inner class TodayDecorator() : DayViewDecorator {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             return day == CalendarDay.today()
         }
+
         @SuppressLint("UseCompatLoadingForDrawables")
         override fun decorate(view: DayViewFacade?) {
             context.getDrawable(R.drawable.today_circle)?.let { view?.setBackgroundDrawable(it) }
@@ -30,7 +31,7 @@ class CalendarDecorator(private val context: Context) {
     }
 
     /* 토요일 색상을 설정 */
-    inner class SaturdayDecorator(): DayViewDecorator {
+    inner class SaturdayDecorator() : DayViewDecorator {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             val dayOfWeek = day.date.dayOfWeek.value // 1 (월요일) ~ 7 (일요일)
             return dayOfWeek == 6 // 토요일
@@ -43,7 +44,7 @@ class CalendarDecorator(private val context: Context) {
     }
 
     /* 일요일 색상을 설정 */
-    inner class SundayDecorator(): DayViewDecorator {
+    inner class SundayDecorator() : DayViewDecorator {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             val dayOfWeek = day.date.dayOfWeek.value // 1 (월요일) ~ 7 (일요일)
             return dayOfWeek == 7 // 일요일
@@ -56,10 +57,11 @@ class CalendarDecorator(private val context: Context) {
     }
 
     /* 이번달에 속하지 않지만 캘린더에 보여지는 이전달/다음달의 일부 날짜를 설정하는 클래스 */
-    inner class SelectedMonthDecorator(private val selectedMonth : Int) : DayViewDecorator {
+    inner class SelectedMonthDecorator(private val selectedMonth: Int) : DayViewDecorator {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             return day.month != selectedMonth
         }
+
         override fun decorate(view: DayViewFacade) {
             view.addSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.gray50)))
         }
