@@ -12,7 +12,17 @@
         <action
             android:id="@+id/action_fragment_main_to_fragment_diary"
             app:destination="@id/fragment_diary_insert" />
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_diary_view"
+            app:destination="@id/fragment_diary_view" />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_fragment_main"
+        app:destination="@id/fragment_main"
+        app:popUpTo="@id/fragment_main"
+        app:popUpToInclusive="true" />
+
 
     <fragment
         android:id="@+id/fragment_diary_insert"
@@ -27,12 +37,22 @@
     <fragment
         android:id="@+id/fragment_diary_view"
         android:name="com.diary.paintlog.view.fragments.DiaryViewFragment"
-        tools:layout="@layout/fragment_diary_view" />
+        tools:layout="@layout/fragment_diary_view">
+        <action
+            android:id="@+id/action_fragment_diary_view_to_fragment_diary_update"
+            app:destination="@id/fragment_diary_update" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_week_diary"
         android:name="com.diary.paintlog.view.fragments.WeekDiaryFragment"
         tools:layout="@layout/fragment_week_diary" />
+
+    <action
+        android:id="@+id/action_global_fragment_week_diary"
+        app:destination="@id/fragment_week_diary"
+        app:popUpTo="@id/fragment_week_diary"
+        app:popUpToInclusive="true" />
 
     <fragment
         android:id="@+id/fragment_art_work"
