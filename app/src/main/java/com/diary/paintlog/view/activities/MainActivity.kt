@@ -1,6 +1,5 @@
 package com.diary.paintlog.view.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +9,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.diary.paintlog.R
 import com.diary.paintlog.databinding.ActivityMainBinding
-import com.diary.paintlog.utils.Common
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,21 +29,16 @@ class MainActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.menu_home -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.fragment_main)
                     true
                 }
 
                 R.id.menu_week -> {
-                    // 메뉴 아이템 2 선택 시 할 일
-                    // 예: Toast 메시지 표시
-                    Common.showToast(binding.root.context, "Menu Item 2 Clicked")
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.fragment_week_diary)
                     true
                 }
 
                 R.id.menu_art -> {
-                    // 메뉴 아이템 3 선택 시 할 일
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_fragment_art_wrok)
                     true
                 }

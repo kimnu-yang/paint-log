@@ -9,14 +9,15 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import com.diary.paintlog.R
-import com.diary.paintlog.data.entities.DiaryTag
 import com.diary.paintlog.data.entities.enums.Weather
-import com.diary.paintlog.viewmodel.DiaryTagViewModel
+import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjusters
+import java.time.temporal.WeekFields
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.atan
 import kotlin.math.atan2
@@ -220,27 +221,32 @@ object Common {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    // 일기 ID와 Position 에 매칭되는 태그 데이터를 삭제하고 등록한다.
-    fun tagInsertWithDelete(view: ViewModelStoreOwner, diaryId: Long, position: Int, tag: String) {
-        val diaryTagViewModel = ViewModelProvider(view)[DiaryTagViewModel::class.java]
-        val oldTag = diaryTagViewModel.getDiaryTag(diaryId, position)
-        if(oldTag != null) {
-            if(oldTag.tag != tag){
-                diaryTagViewModel.deleteDiaryTag(diaryId, position)
-                diaryTagViewModel.saveDiaryTag(
-                    DiaryTag(
-                        diaryId = diaryId,
-                        position = position,
-                        tag = tag)
-                )
-            }
-        } else {
-            diaryTagViewModel.saveDiaryTag(
-                DiaryTag(
-                    diaryId = diaryId,
-                    position = position,
-                    tag = tag)
-            )
+    // 숫자로 받은 주차를 문자로 변경
+    fun weekNumberToString(weekNumber: Int): String {
+        return when(weekNumber){
+            1 -> "첫째 주"
+            2 -> "둘째 주"
+            3 -> "셋째 주"
+            4 -> "넷째 주"
+            5 -> "다섯째 주"
+            else -> ""
         }
+    }
+
+    // 기준일이 몇 월의 몇째 주인지 출력
+    fun getMonthAndWeek(baseDate: LocalDate): Map<String, Int> {
+        val weekField = WeekFields.of(Locale.getDefault())
+        val weekMap = mutableMapOf<String,Int>()
+        val date = baseDate.with(DayOfWeek.THURSDAY)
+        weekMap["month"] = date.monthValue
+        weekMap["week"] = date.get(weekField.weekOfMonth())
+
+        val firstDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth())
+        val dayOfWeekFirst = firstDayOfMonth.dayOfWeek.value
+
+        // 기준 월의 첫 요일이 금, 토 일때(일요일인 경우 weekOfMonth에서 한주로 계산되지 않음)
+        if(dayOfWeekFirst in 5..6) weekMap["week"] = weekMap["week"]!! - 1
+
+        return weekMap
     }
 }

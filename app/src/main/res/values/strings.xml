@@ -107,6 +107,15 @@
     <string name="diary_search_none_data">저장된 일기가 없습니다.</string>
     <string name="diary_search_tag_all">전체</string>
 
+    <!-- Week Diary -->
+    <string name="week_monday">월</string>
+    <string name="week_tuesday">화</string>
+    <string name="week_wednesday">수</string>
+    <string name="week_thursday">목</string>
+    <string name="week_friday">금</string>
+    <string name="week_saturday">토</string>
+    <string name="week_sunday">일</string>
+  
     <!-- Stats -->
     <string name="stats_color_title">%s월의 색</string>
     <string name="stats_weather_title">%s월의 날씨</string>
