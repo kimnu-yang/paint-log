@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -63,7 +62,7 @@ class MainFragment : Fragment() {
         binding.calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
 
         // 요일을 한글로 변경하고 요일별로 색을 바꿈
-        binding.calendarView.setWeekDayFormatter(calendarDecorator.CustomWeekDayFormatter());
+        binding.calendarView.setWeekDayFormatter(calendarDecorator.CustomWeekDayFormatter())
 
         // 연월 표기법 변경
         binding.calendarView.setTitleFormatter { day ->
@@ -95,7 +94,7 @@ class MainFragment : Fragment() {
             topicViewModel = ViewModelProvider(this@MainFragment)[TopicViewModel::class.java]
             val topicData = topicViewModel.getRandomTopic()
             activity?.runOnUiThread {
-                if(topicData != null) binding.todayTopic.text = topicData.topic
+                if (topicData != null) binding.todayTopic.text = topicData.topic
             }
         }
 
@@ -105,14 +104,14 @@ class MainFragment : Fragment() {
                 topicViewModel = ViewModelProvider(this@MainFragment)[TopicViewModel::class.java]
                 val topicData = topicViewModel.getRandomTopic()
                 activity?.runOnUiThread {
-                    if(topicData != null) binding.todayTopic.text = topicData.topic
+                    if (topicData != null) binding.todayTopic.text = topicData.topic
                 }
             }
         }
 
         binding.topicCanvas.setOnClickListener {
             val topicBundle = Bundle()
-            topicBundle.putString("topic",binding.todayTopic.text.toString())
+            topicBundle.putString("topic", binding.todayTopic.text.toString())
             findNavController().navigate(R.id.action_fragment_main_to_fragment_diary, topicBundle)
         }
 
@@ -142,13 +141,12 @@ class MainFragment : Fragment() {
 
         // 날짜가 바뀔때 일주일 달력으로 변경 및 작성된 일기 출력
         binding.calendarView.setOnDateChangedListener { _, date, _ ->
-
-            if(date != calendarDay) {
-                setCalendar(date)
-
+            if (calendarDay != date || binding.diaryView.visibility == View.INVISIBLE) {
                 CoroutineScope(Dispatchers.Default).launch {
-                    diaryViewModel = ViewModelProvider(this@MainFragment)[DiaryViewModel::class.java]
-                    val selectDate = String.format("%04d-%02d-%02d", date.year, date.month, date.day)
+                    diaryViewModel =
+                        ViewModelProvider(this@MainFragment)[DiaryViewModel::class.java]
+                    val selectDate =
+                        String.format("%04d-%02d-%02d", date.year, date.month, date.day)
                     val diaryData = diaryViewModel.getDiary(selectDate, "N")
 
                     if (diaryData != null) {
@@ -165,115 +163,181 @@ class MainFragment : Fragment() {
                             binding.topicView.visibility = View.INVISIBLE
                             binding.addDiary.visibility = View.INVISIBLE
 
-                            val constraintLayout = view.findViewById<ConstraintLayout>(R.id.diary_view)
+                            val constraintLayout =
+                                view.findViewById<ConstraintLayout>(R.id.diary_view)
                             constraintLayout.removeAllViews()
                             val inflater = LayoutInflater.from(requireContext())
 
-                            val dynamicLayout = inflater.inflate(R.layout.fragment_diary_view, constraintLayout, false)
-                            dynamicLayout.findViewById<TextView>(R.id.title).text = diaryData.diary.title
-                            dynamicLayout.findViewById<TextView>(R.id.content).text = diaryData.diary.content
+                            val dynamicLayout = inflater.inflate(
+                                R.layout.fragment_diary_view,
+                                constraintLayout,
+                                false
+                            )
+                            dynamicLayout.findViewById<TextView>(R.id.title).text =
+                                diaryData.diary.title
+                            dynamicLayout.findViewById<TextView>(R.id.content).text =
+                                diaryData.diary.content
 
                             val tag1 = diaryData.tags.filter { it.position == 1 }
-                            if(tag1.isNotEmpty()){
-                                dynamicLayout.findViewById<TextView>(R.id.tag1_text).text = tag1[0].tag
+                            if (tag1.isNotEmpty()) {
+                                dynamicLayout.findViewById<TextView>(R.id.tag1_text).text =
+                                    tag1[0].tag
                             } else {
-                                dynamicLayout.findViewById<ImageView>(R.id.tag1).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<TextView>(R.id.tag1_text).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.tag1).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.tag1_text).visibility =
+                                    View.INVISIBLE
                             }
 
                             val tag2 = diaryData.tags.filter { it.position == 2 }
-                            if(tag2.isNotEmpty()){
-                                dynamicLayout.findViewById<TextView>(R.id.tag2_text).text = tag2[0].tag
+                            if (tag2.isNotEmpty()) {
+                                dynamicLayout.findViewById<TextView>(R.id.tag2_text).text =
+                                    tag2[0].tag
                             } else {
-                                dynamicLayout.findViewById<ImageView>(R.id.tag2).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<TextView>(R.id.tag2_text).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.tag2).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.tag2_text).visibility =
+                                    View.INVISIBLE
                             }
 
                             val tag3 = diaryData.tags.filter { it.position == 3 }
-                            if(tag3.isNotEmpty()){
-                                dynamicLayout.findViewById<TextView>(R.id.tag3_text).text = tag3[0].tag
+                            if (tag3.isNotEmpty()) {
+                                dynamicLayout.findViewById<TextView>(R.id.tag3_text).text =
+                                    tag3[0].tag
                             } else {
-                                dynamicLayout.findViewById<ImageView>(R.id.tag3).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<TextView>(R.id.tag3_text).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.tag3).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.tag3_text).visibility =
+                                    View.INVISIBLE
                             }
 
                             val color1 = diaryData.colors.filter { it.position == 1 }
-                            if(color1.isNotEmpty()){
-                                dynamicLayout.findViewById<TextView>(R.id.color1_text).text = "${color1[0].ratio}%"
-                                val drawable = dynamicLayout.findViewById<ImageView>(R.id.color1).background
-                                Common.imageSetTintWithAlpha(requireContext(), drawable, color1[0].color.toString(), color1[0].ratio.toString())
+                            if (color1.isNotEmpty()) {
+                                dynamicLayout.findViewById<TextView>(R.id.color1_text).text =
+                                    "${color1[0].ratio}%"
+                                val drawable =
+                                    dynamicLayout.findViewById<ImageView>(R.id.color1).background
+                                Common.imageSetTintWithAlpha(
+                                    requireContext(),
+                                    drawable,
+                                    color1[0].color.toString(),
+                                    color1[0].ratio.toString()
+                                )
                             } else {
-                                dynamicLayout.findViewById<TextView>(R.id.color1_text).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<ImageView>(R.id.color1).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.color1_text).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.color1).visibility =
+                                    View.INVISIBLE
                             }
 
                             val color2 = diaryData.colors.filter { it.position == 2 }
-                            if(color2.isNotEmpty()){
-                                dynamicLayout.findViewById<TextView>(R.id.color2_text).text = "${color2[0].ratio}%"
-                                val drawable = dynamicLayout.findViewById<ImageView>(R.id.color2).background
-                                Common.imageSetTintWithAlpha(requireContext(), drawable, color2[0].color.toString(), color2[0].ratio.toString())
+                            if (color2.isNotEmpty()) {
+                                dynamicLayout.findViewById<TextView>(R.id.color2_text).text =
+                                    "${color2[0].ratio}%"
+                                val drawable =
+                                    dynamicLayout.findViewById<ImageView>(R.id.color2).background
+                                Common.imageSetTintWithAlpha(
+                                    requireContext(),
+                                    drawable,
+                                    color2[0].color.toString(),
+                                    color2[0].ratio.toString()
+                                )
                             } else {
-                                dynamicLayout.findViewById<TextView>(R.id.color2_text).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<ImageView>(R.id.color2).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.color2_text).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.color2).visibility =
+                                    View.INVISIBLE
                             }
 
                             val color3 = diaryData.colors.filter { it.position == 3 }
-                            if(color3.isNotEmpty()){
-                                dynamicLayout.findViewById<TextView>(R.id.color3_text).text = "${color3[0].ratio}%"
-                                val drawable = dynamicLayout.findViewById<ImageView>(R.id.color3).background
-                                Common.imageSetTintWithAlpha(requireContext(), drawable, color3[0].color.toString(), color3[0].ratio.toString())
+                            if (color3.isNotEmpty()) {
+                                dynamicLayout.findViewById<TextView>(R.id.color3_text).text =
+                                    "${color3[0].ratio}%"
+                                val drawable =
+                                    dynamicLayout.findViewById<ImageView>(R.id.color3).background
+                                Common.imageSetTintWithAlpha(
+                                    requireContext(),
+                                    drawable,
+                                    color3[0].color.toString(),
+                                    color3[0].ratio.toString()
+                                )
                             } else {
-                                dynamicLayout.findViewById<TextView>(R.id.color3_text).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<ImageView>(R.id.color3).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.color3_text).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.color3).visibility =
+                                    View.INVISIBLE
                             }
 
-                            if(diaryData.diary.weather != null){
-                                val weatherImage = Common.getWeatherImageByWeather(diaryData.diary.weather)
-                                dynamicLayout.findViewById<ImageView>(R.id.weather_img).setBackgroundResource(weatherImage)
-                                dynamicLayout.findViewById<TextView>(R.id.temp_min_max).text = "${diaryData.diary.tempMin}°C / ${diaryData.diary.tempMax}°C"
-                                dynamicLayout.findViewById<TextView>(R.id.temp_now).text = "${diaryData.diary.tempNow}°C"
+                            if (diaryData.diary.weather != null) {
+                                val weatherImage =
+                                    Common.getWeatherImageByWeather(diaryData.diary.weather)
+                                dynamicLayout.findViewById<ImageView>(R.id.weather_img)
+                                    .setBackgroundResource(weatherImage)
+                                dynamicLayout.findViewById<TextView>(R.id.temp_min_max).text =
+                                    "${diaryData.diary.tempMin}°C / ${diaryData.diary.tempMax}°C"
+                                dynamicLayout.findViewById<TextView>(R.id.temp_now).text =
+                                    "${diaryData.diary.tempNow}°C"
                             } else {
-                                dynamicLayout.findViewById<ImageView>(R.id.weather_img).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<TextView>(R.id.temp_min_max).visibility = View.INVISIBLE
-                                dynamicLayout.findViewById<TextView>(R.id.temp_now).visibility = View.INVISIBLE
+                                dynamicLayout.findViewById<ImageView>(R.id.weather_img).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.temp_min_max).visibility =
+                                    View.INVISIBLE
+                                dynamicLayout.findViewById<TextView>(R.id.temp_now).visibility =
+                                    View.INVISIBLE
                             }
 
-                            val height = (binding.calendarView.parent.parent as View).bottom - binding.calendarView.tileHeight * 4 - view.findViewById<LinearLayout>(R.id.header).height
-                            val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, height)
-                            layoutParams.topToBottom = R.id.calendar_view
+//                            val height = (binding.calendarView.parent.parent as View).bottom - binding.calendarView.tileHeight * 4 - view.findViewById<LinearLayout>(R.id.header).height
+//                            val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, height)
+//                            layoutParams.topToBottom = R.id.calendar_view
 
-                            dynamicLayout.findViewById<ImageButton>(R.id.save_button).setOnClickListener {
-                                val diaryBundle = Bundle()
-                                diaryBundle.putLong("diaryId", diaryData.diary.id)
-                                findNavController().navigate(R.id.fragment_diary_update, diaryBundle)
-                            }
+                            dynamicLayout.findViewById<ImageButton>(R.id.save_button)
+                                .setOnClickListener {
+                                    val diaryBundle = Bundle()
+                                    diaryBundle.putLong("diaryId", diaryData.diary.id)
+                                    findNavController().navigate(
+                                        R.id.fragment_diary_update,
+                                        diaryBundle
+                                    )
+                                }
 
-                            dynamicLayout.findViewById<ImageButton>(R.id.delete_button).setOnClickListener {
-                                showDeleteConfirmDialog(requireContext(), diaryData.diary.id)
-                            }
+                            dynamicLayout.findViewById<ImageButton>(R.id.delete_button)
+                                .setOnClickListener {
+                                    showDeleteConfirmDialog(requireContext(), diaryData.diary.id)
+                                }
 
                             val handler = Handler(Looper.getMainLooper())
                             handler.post {
-                                constraintLayout.addView(dynamicLayout, layoutParams)
+//                                constraintLayout.addView(dynamicLayout, layoutParams)
+                                constraintLayout.addView(dynamicLayout)
                             }
                         }
                     } else {
-                        val today = LocalDate.now()
-                        val firstDayOfMonth = LocalDate.of(today.year, today.monthValue, 1)
-                        val firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY)
-                        activity?.runOnUiThread {
-                            binding.calendarView.state().edit()
-                                .setMinimumDate(firstDayOfCalendar)
-                                .setCalendarDisplayMode(CalendarMode.MONTHS)
-                                .commit()
-
-                            binding.diaryView.visibility = View.INVISIBLE
-                            binding.topicView.visibility = View.VISIBLE
-                            binding.addDiary.visibility = View.VISIBLE
-                        }
+                        getBackDiary()
                     }
                 }
+            } else {
+                if (calendarDay?.day == date.day) {
+                    getBackDiary()
+                }
             }
+
+            calendarDay = date
+        }
+    }
+
+    private fun getBackDiary() {
+        val today = LocalDate.now()
+        val firstDayOfMonth = LocalDate.of(today.year, today.monthValue, 1)
+        val firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY)
+        activity?.runOnUiThread {
+            binding.calendarView.state().edit()
+                .setMinimumDate(firstDayOfCalendar)
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit()
+
+            binding.diaryView.visibility = View.INVISIBLE
+            binding.topicView.visibility = View.VISIBLE
+            binding.addDiary.visibility = View.VISIBLE
         }
     }
 
@@ -323,10 +387,11 @@ class MainFragment : Fragment() {
             val todayDecorator = calendarDecorator.TodayDecorator()
             val saturdayDecorator = calendarDecorator.SaturdayDecorator()
             val sundayDecorator = calendarDecorator.SundayDecorator()
-            val selectedMonthDecorator = calendarDecorator.SelectedMonthDecorator(CalendarDay.today().month)
+            val selectedMonthDecorator =
+                calendarDecorator.SelectedMonthDecorator(CalendarDay.today().month)
 
             val highlightedDate = mutableSetOf<CalendarDay>()
-            for(data in diaryViewModel.getDiaryAll()){
+            for (data in diaryViewModel.getDiaryAll()) {
                 val date = data.diary.registeredAt
                 val diaryDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
                 highlightedDate.add(diaryDate)
@@ -334,7 +399,7 @@ class MainFragment : Fragment() {
             // TODO: 점 색깔을 변경
             val highlightDecorator = calendarDecorator.HighlightDecorator(highlightedDate)
 
-            if(selectDate != null){
+            if (selectDate != null) {
                 val selectedDateDecorator = calendarDecorator.SelectedDateDecorator(selectDate)
                 val unSelectedDateDecorator = calendarDecorator.UnSelectedDateDecorator(selectDate)
                 activity?.runOnUiThread {
@@ -348,7 +413,7 @@ class MainFragment : Fragment() {
                         highlightDecorator
                     )
                 }
-            } else{
+            } else {
                 binding.calendarView.selectedDate = null
                 val unSelectedDateDecorator = calendarDecorator.UnSelectedDateDecorator(null)
                 activity?.runOnUiThread {
