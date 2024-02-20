@@ -39,8 +39,6 @@ class WeekDiaryFragment : Fragment() {
             else LocalDate.now()
         baseDate = date
 
-
-
         val week = Common.getMonthAndWeek(date)
 
         val year = date.year.toString()+"년"
