@@ -29,12 +29,12 @@ class MainActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.menu_home -> {
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.fragment_main)
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_fragment_main)
                     true
                 }
 
                 R.id.menu_week -> {
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.fragment_week_diary)
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_fragment_week_diary)
                     true
                 }
 
