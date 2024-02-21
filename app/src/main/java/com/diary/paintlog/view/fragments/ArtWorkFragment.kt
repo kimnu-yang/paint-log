@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diary.paintlog.R
@@ -47,6 +49,19 @@ class ArtWorkFragment : Fragment() {
             Artwork("Do", "That will bring us back to Do, oh oh oh~"),
             Artwork("Doremifasolasido Sodo!", "- fin -")
         )
+
+        binding.artworkColorFilter.children.forEach {
+            it.setOnClickListener { clickIt ->
+                Toast.makeText(requireContext(), it.tooltipText, Toast.LENGTH_SHORT).show()
+                binding.artworkColorFilter.children.forEach { color ->
+                    if (color.tooltipText != clickIt.tooltipText) {
+                        color.alpha = 0.5f
+                    } else {
+                        color.alpha = 1f
+                    }
+                }
+            }
+        }
 
         if (data.isEmpty()) {
             binding.artworkListEmpty.visibility = View.VISIBLE
