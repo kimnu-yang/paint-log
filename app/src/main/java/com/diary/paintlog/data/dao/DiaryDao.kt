@@ -18,6 +18,10 @@ interface DiaryDao {
     fun getAllDiaryWithTagAndColor(): List<DiaryWithTagAndColor>
 
     @Transaction
+    @Query("SELECT * FROM diary WHERE is_temp = 'N' AND registered_at BETWEEN :startDate AND :endDate ORDER BY registered_at")
+    fun getWeekDiaryByStartEndDate(startDate: String, endDate: String): List<DiaryWithTagAndColor>
+
+    @Transaction
     @Query("SELECT * FROM diary WHERE is_temp = 'N' AND registered_at LIKE :date")
     fun getMonthDiaryWithTagAndColor(date: String): List<DiaryWithTagAndColor>
 

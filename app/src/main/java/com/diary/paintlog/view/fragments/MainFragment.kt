@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -286,10 +287,6 @@ class MainFragment : Fragment() {
                                     View.INVISIBLE
                             }
 
-//                            val height = (binding.calendarView.parent.parent as View).bottom - binding.calendarView.tileHeight * 4 - view.findViewById<LinearLayout>(R.id.header).height
-//                            val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, height)
-//                            layoutParams.topToBottom = R.id.calendar_view
-
                             dynamicLayout.findViewById<ImageButton>(R.id.save_button)
                                 .setOnClickListener {
                                     val diaryBundle = Bundle()
@@ -307,7 +304,6 @@ class MainFragment : Fragment() {
 
                             val handler = Handler(Looper.getMainLooper())
                             handler.post {
-//                                constraintLayout.addView(dynamicLayout, layoutParams)
                                 constraintLayout.addView(dynamicLayout)
                             }
                         }
@@ -390,14 +386,20 @@ class MainFragment : Fragment() {
             val selectedMonthDecorator =
                 calendarDecorator.SelectedMonthDecorator(CalendarDay.today().month)
 
-            val highlightedDate = mutableSetOf<CalendarDay>()
             for (data in diaryViewModel.getDiaryAll()) {
                 val date = data.diary.registeredAt
                 val diaryDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
-                highlightedDate.add(diaryDate)
+                val color = if(data.colors.isNotEmpty()){
+                    Common.blendColors(requireContext(), data.colors)
+                } else {
+                    ContextCompat.getColor(requireContext(), R.color.gray)
+                }
+                activity?.runOnUiThread {
+                    binding.calendarView.addDecorators(
+                        calendarDecorator.ColorSpanDecorator(diaryDate, color)
+                    )
+                }
             }
-            // TODO: 점 색깔을 변경
-            val highlightDecorator = calendarDecorator.HighlightDecorator(highlightedDate)
 
             if (selectDate != null) {
                 val selectedDateDecorator = calendarDecorator.SelectedDateDecorator(selectDate)
@@ -410,7 +412,6 @@ class MainFragment : Fragment() {
                         selectedDateDecorator,
                         unSelectedDateDecorator,
                         selectedMonthDecorator,
-                        highlightDecorator
                     )
                 }
             } else {
@@ -423,7 +424,6 @@ class MainFragment : Fragment() {
                         sundayDecorator,
                         unSelectedDateDecorator,
                         selectedMonthDecorator,
-                        highlightDecorator,
                     )
                 }
             }

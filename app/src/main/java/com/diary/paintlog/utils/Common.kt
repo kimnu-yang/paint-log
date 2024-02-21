@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentActivity
 import com.diary.paintlog.R
+import com.diary.paintlog.data.entities.DiaryColor
 import com.diary.paintlog.data.entities.enums.Weather
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -31,7 +32,7 @@ import kotlin.math.tan
 
 object Common {
 
-    fun getColorByString(color: String): ColorEnum {
+    fun getColorEnumsByString(color: String): ColorEnum {
         return when (color) {
             "RED" -> com.diary.paintlog.data.entities.enums.Color.RED
             "ORANGE" -> com.diary.paintlog.data.entities.enums.Color.ORANGE
@@ -49,16 +50,7 @@ object Common {
         //투명도를 alpha 값으로 변환
         val alpha = 255 * percentString.toInt() / 100
 
-        val color = when (colorString) {
-            "RED" -> R.color.red
-            "ORANGE" -> R.color.orange
-            "YELLOW" -> R.color.yellow
-            "GREEN" -> R.color.green
-            "BLUE" -> R.color.blue
-            "NAVY" -> R.color.navy
-            "VIOLET" -> R.color.violet
-            else -> R.color.gray
-        }
+        val color = getColorByString(colorString)
 
         val tintColor = ContextCompat.getColor(context, color)
         val colorWithAlpha = Color.argb(alpha, Color.red(tintColor), Color.green(tintColor), Color.blue(tintColor))
@@ -248,5 +240,40 @@ object Common {
         if(dayOfWeekFirst in 5..6) weekMap["week"] = weekMap["week"]!! - 1
 
         return weekMap
+    }
+
+    fun blendColors(context: Context,colors: List<DiaryColor>): Int {
+        var cnt = 0
+        var r = 0F
+        var g = 0F
+        var b = 0F
+        for(color in colors){
+            val pickedColor = ContextCompat.getColor(context,getColorByString(color.color.toString()))
+            r += Color.red(pickedColor) * (color.ratio.toFloat() / 100)
+            g += Color.green(pickedColor) * (color.ratio.toFloat() / 100)
+            b += Color.blue(pickedColor) * (color.ratio.toFloat() / 100)
+            cnt += 1
+        }
+
+        if(cnt > 0){
+            r /= cnt
+            g /= cnt
+            b /= cnt
+        }
+
+        return Color.rgb(r,g,b)
+    }
+
+    private fun getColorByString(colorString: String): Int {
+        return when (colorString) {
+            "RED" -> R.color.red
+            "ORANGE" -> R.color.orange
+            "YELLOW" -> R.color.yellow
+            "GREEN" -> R.color.green
+            "BLUE" -> R.color.blue
+            "NAVY" -> R.color.navy
+            "VIOLET" -> R.color.violet
+            else -> R.color.gray
+        }
     }
 }
