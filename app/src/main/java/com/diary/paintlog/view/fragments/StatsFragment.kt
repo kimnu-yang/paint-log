@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.enums.Color
 import com.diary.paintlog.data.entities.enums.Weather
 import com.diary.paintlog.databinding.FragmentStatsBinding
+import com.diary.paintlog.utils.Common
 import com.diary.paintlog.utils.decorator.CalendarDecorator
 import com.diary.paintlog.viewmodel.DiaryViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -228,15 +230,21 @@ class StatsFragment : Fragment() {
         val sundayDecorator = calendarDecorator.SundayDecorator()
 
         CoroutineScope(Dispatchers.Default).launch {
-            val highlightedDate = mutableSetOf<CalendarDay>()
             for (data in diaryViewModel.getDiaryMonth(selectDate ?: CalendarDay.today())) {
                 val date = data.diary.registeredAt
                 val diaryDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
-                highlightedDate.add(diaryDate)
+                val color = if(data.colors.isNotEmpty()){
+                    Common.blendColors(requireContext(), data.colors)
+                } else {
+                    ContextCompat.getColor(requireContext(), R.color.gray)
+                }
+                activity?.runOnUiThread {
+                    binding.calendarView.addDecorators(
+                        calendarDecorator.ColorSpanDecorator(diaryDate, color)
+                    )
+                }
             }
 
-            // TODO: 점 색깔을 변경
-            val highlightDecorator = calendarDecorator.HighlightDecorator(highlightedDate)
             if (selectDate != null) {
                 val unSelectedDateDecorator = calendarDecorator.UnSelectedDateDecorator(selectDate)
                 activity?.runOnUiThread {
@@ -245,7 +253,6 @@ class StatsFragment : Fragment() {
                         saturdayDecorator,
                         sundayDecorator,
                         unSelectedDateDecorator,
-                        highlightDecorator
                     )
                 }
             } else {
@@ -257,7 +264,6 @@ class StatsFragment : Fragment() {
                         saturdayDecorator,
                         sundayDecorator,
                         unSelectedDateDecorator,
-                        highlightDecorator,
                     )
                 }
             }
