@@ -10,11 +10,9 @@ import com.diary.paintlog.R
 import com.diary.paintlog.utils.Common
 import com.diary.paintlog.utils.DataListener
 
-class ColorSettingDialog(colorNum: String): DialogFragment() {
+class ColorSettingDialog(private var colorNum: String): DialogFragment() {
 
     private var dataListener: DataListener? = null
-
-    private var colorNum = colorNum
     private var colorSelect = ""
     private var colorPercent = ""
 
@@ -22,7 +20,7 @@ class ColorSettingDialog(colorNum: String): DialogFragment() {
         dataListener = listener
     }
 
-    fun sendDataToFragment(data: Map<String, String>) {
+    private fun sendDataToFragment(data: Map<String, String>) {
         dataListener?.onDataReceived(data)
     }
 
