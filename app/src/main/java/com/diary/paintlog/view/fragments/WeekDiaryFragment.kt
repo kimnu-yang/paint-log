@@ -13,6 +13,7 @@ import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.databinding.FragmentWeekDiaryBinding
 import com.diary.paintlog.utils.Common
+import com.diary.paintlog.view.dialog.DrawingDialog
 import com.diary.paintlog.viewmodel.DiaryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -68,9 +69,28 @@ class WeekDiaryFragment : Fragment() {
 
             val weekDiary = diaryViewModel.getDiaryWeek(baseDate)
             val diaryMap = mutableMapOf<String, DiaryWithTagAndColor>()
+            var diaryCnt = 0
             for(diary in weekDiary){
-               val date = diary.diary.registeredAt.format(DateTimeFormatter.ofPattern("dd"))
+                val date = diary.diary.registeredAt.format(DateTimeFormatter.ofPattern("dd"))
                 diaryMap[date] = diary
+                diaryCnt += 1
+            }
+
+            if(diaryCnt > 4){
+                binding.drawButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.draw_button_done_selector)
+                binding.drawButtonText.text = "이번주 그림 그리기"
+
+                binding.drawButton.setOnClickListener {
+                    val dialog = DrawingDialog(baseDate)
+                    dialog.show(childFragmentManager, "DrawingDialog")
+                }
+            } else {
+                binding.drawButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.draw_button_yet_selector)
+                binding.drawButtonText.text = "물감이 부족해요 $diaryCnt / 5"
+
+                binding.drawButton.setOnClickListener {
+                    Common.showToast(requireContext(), "일기를 더 작성해 주세요")
+                }
             }
 
             activity?.runOnUiThread {
@@ -80,9 +100,13 @@ class WeekDiaryFragment : Fragment() {
                 if(diaryMap[binding.mondayDate.text] != null) {
                     val diary = diaryMap[binding.mondayDate.text]?.diary
                     if (diary != null) {
-                        if(diary.title != "") {
-                            binding.mondayDiary.visibility = View.VISIBLE
-                            binding.mondayDiaryTitle.text = diary.title
+                        binding.mondayDiary.visibility = View.VISIBLE
+                        binding.mondayDiaryTitle.text = diary.title
+
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diary.id)
+                        binding.mondayDiary.setOnClickListener {
+                            findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
                         }
                     }
                     val colors = diaryMap[binding.mondayDate.text]?.colors
@@ -99,9 +123,13 @@ class WeekDiaryFragment : Fragment() {
                 if(diaryMap[binding.tuesdayDate.text] != null) {
                     val diary = diaryMap[binding.tuesdayDate.text]?.diary
                     if (diary != null) {
-                        if(diary.title != "") {
-                            binding.tuesdayDiary.visibility = View.VISIBLE
-                            binding.tuesdayDiaryTitle.text = diary.title
+                        binding.tuesdayDiary.visibility = View.VISIBLE
+                        binding.tuesdayDiaryTitle.text = diary.title
+
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diary.id)
+                        binding.tuesdayDiary.setOnClickListener {
+                            findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
                         }
                     }
                     val colors = diaryMap[binding.tuesdayDate.text]?.colors
@@ -118,9 +146,13 @@ class WeekDiaryFragment : Fragment() {
                 if(diaryMap[binding.wednesdayDate.text] != null) {
                     val diary = diaryMap[binding.wednesdayDate.text]?.diary
                     if (diary != null) {
-                        if(diary.title != "") {
-                            binding.wednesdayDiary.visibility = View.VISIBLE
-                            binding.wednesdayDiaryTitle.text = diary.title
+                        binding.wednesdayDiary.visibility = View.VISIBLE
+                        binding.wednesdayDiaryTitle.text = diary.title
+
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diary.id)
+                        binding.wednesdayDiary.setOnClickListener {
+                            findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
                         }
                     }
                     val colors = diaryMap[binding.wednesdayDate.text]?.colors
@@ -137,9 +169,13 @@ class WeekDiaryFragment : Fragment() {
                 if(diaryMap[binding.thursdayDate.text] != null) {
                     val diary = diaryMap[binding.thursdayDate.text]?.diary
                     if (diary != null) {
-                        if(diary.title != "") {
-                            binding.thursdayDiary.visibility = View.VISIBLE
-                            binding.thursdayDiaryTitle.text = diary.title
+                        binding.thursdayDiary.visibility = View.VISIBLE
+                        binding.thursdayDiaryTitle.text = diary.title
+
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diary.id)
+                        binding.thursdayDiary.setOnClickListener {
+                            findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
                         }
                     }
                     val colors = diaryMap[binding.thursdayDate.text]?.colors
@@ -156,9 +192,13 @@ class WeekDiaryFragment : Fragment() {
                 if(diaryMap[binding.fridayDate.text] != null) {
                     val diary = diaryMap[binding.fridayDate.text]?.diary
                     if (diary != null) {
-                        if(diary.title != "") {
-                            binding.fridayDiary.visibility = View.VISIBLE
-                            binding.fridayDiaryTitle.text = diary.title
+                        binding.fridayDiary.visibility = View.VISIBLE
+                        binding.fridayDiaryTitle.text = diary.title
+
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diary.id)
+                        binding.fridayDiary.setOnClickListener {
+                            findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
                         }
                     }
                     val colors = diaryMap[binding.fridayDate.text]?.colors
@@ -175,9 +215,13 @@ class WeekDiaryFragment : Fragment() {
                 if(diaryMap[binding.saturdayDate.text] != null) {
                     val diary = diaryMap[binding.saturdayDate.text]?.diary
                     if (diary != null) {
-                        if(diary.title != "") {
-                            binding.saturdayDiary.visibility = View.VISIBLE
-                            binding.saturdayDiaryTitle.text = diary.title
+                        binding.saturdayDiary.visibility = View.VISIBLE
+                        binding.saturdayDiaryTitle.text = diary.title
+
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diary.id)
+                        binding.saturdayDiary.setOnClickListener {
+                            findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
                         }
                     }
                     val colors = diaryMap[binding.saturdayDate.text]?.colors
@@ -194,9 +238,13 @@ class WeekDiaryFragment : Fragment() {
                 if(diaryMap[binding.sundayDate.text] != null) {
                     val diary = diaryMap[binding.sundayDate.text]?.diary
                     if (diary != null) {
-                        if(diary.title != "") {
-                            binding.sundayDiary.visibility = View.VISIBLE
-                            binding.sundayDiaryTitle.text = diary.title
+                        binding.sundayDiary.visibility = View.VISIBLE
+                        binding.sundayDiaryTitle.text = diary.title
+
+                        val diaryBundle = Bundle()
+                        diaryBundle.putLong("diaryId", diary.id)
+                        binding.sundayDiary.setOnClickListener {
+                            findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
                         }
                     }
                     val colors = diaryMap[binding.sundayDate.text]?.colors

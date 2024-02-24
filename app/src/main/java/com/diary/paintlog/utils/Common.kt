@@ -1,6 +1,9 @@
 package com.diary.paintlog.utils
 
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import com.diary.paintlog.data.entities.enums.Color as ColorEnum
 import android.graphics.drawable.Drawable
@@ -275,5 +278,21 @@ object Common {
             "VIOLET" -> R.color.violet
             else -> R.color.gray
         }
+    }
+
+    // todo: 색 분류해서 그림을 매칭해 출력
+    fun getDrawingByColorData(colorData: MutableMap<String, Double>): Map<String, String> {
+        return mapOf(
+            "artist" to "빈센트 반 고흐",
+            "title" to "별이 빛나는 밤",
+            "drawing" to R.drawable.drawing_01.toString()
+        )
+    }
+
+    fun setScaleByWidth(resources: Resources, width: Int, image: Int): Bitmap {
+        val bitmap = BitmapFactory.decodeResource(resources, image)
+        val aspectRatio = bitmap.width.toDouble() / bitmap.height.toDouble()
+        val scaledHeight = (width / aspectRatio).toInt()
+        return Bitmap.createScaledBitmap(bitmap, width, scaledHeight, false)
     }
 }

@@ -23,5 +23,7 @@
 
     <dimen name="artwork_title">20sp</dimen>
     <dimen name="artwork_summary">16sp</dimen>
+    <dimen name="drawing_title">24sp</dimen>
+    <dimen name="drawing_artist">20sp</dimen>
 
 </resources>
