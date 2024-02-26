@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -43,6 +44,15 @@ class DrawingDialog(private val baseDate: LocalDate): DialogFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val drawable = ContextCompat.getDrawable(requireContext() ,R.drawable.drawing_01)
+        if(drawable != null) {
+            val blendColor = Common.blendColors(drawable)
+
+            activity?.run {
+                view.findViewById<ImageView>(R.id.canvas).background.setTint(blendColor)
+            }
+        }
 
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)

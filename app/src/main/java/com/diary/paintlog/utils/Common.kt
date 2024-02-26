@@ -5,13 +5,16 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import com.diary.paintlog.data.entities.enums.Color as ColorEnum
 import android.graphics.drawable.Drawable
 import android.location.LocationManager
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.palette.graphics.Palette
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryColor
 import com.diary.paintlog.data.entities.enums.Weather
@@ -245,7 +248,7 @@ object Common {
         return weekMap
     }
 
-    fun blendColors(context: Context,colors: List<DiaryColor>): Int {
+    fun blendColors(context: Context, colors: List<DiaryColor>): Int {
         var cnt = 0
         var r = 0F
         var g = 0F
@@ -264,6 +267,35 @@ object Common {
             b /= cnt
         }
 
+        return Color.rgb(r,g,b)
+    }
+
+    fun blendColors(drawable: Drawable): Int {
+        var cnt = 0
+        var r = 0F
+        var g = 0F
+        var b = 0F
+        val bitmap = (drawable as BitmapDrawable).bitmap
+        Palette.from(bitmap).generate { palette ->
+            val swatches = palette?.swatches
+            swatches?.forEach { swatch ->
+                val color = swatch.rgb.toString()
+                val rgb = hexToRgb(color)
+                val percentage = swatch.population / (bitmap.width * bitmap.height).toFloat() * 100
+
+                r += rgb[0] * percentage
+                g += rgb[1] * percentage
+                b += rgb[2] * percentage
+                cnt += 1
+            }
+
+            if (cnt > 0) {
+                r /= cnt
+                g /= cnt
+                b /= cnt
+            }
+        }
+        Log.i("TEST", "$r, $g, $b")
         return Color.rgb(r,g,b)
     }
 
@@ -294,5 +326,13 @@ object Common {
         val aspectRatio = bitmap.width.toDouble() / bitmap.height.toDouble()
         val scaledHeight = (width / aspectRatio).toInt()
         return Bitmap.createScaledBitmap(bitmap, width, scaledHeight, false)
+    }
+
+    private fun hexToRgb(hex: String): IntArray {
+        val color = hex.toLong(16).toInt()
+        val red = color shr 16 and 0xFF
+        val green = color shr 8 and 0xFF
+        val blue = color and 0xFF
+        return intArrayOf(red, green, blue)
     }
 }
