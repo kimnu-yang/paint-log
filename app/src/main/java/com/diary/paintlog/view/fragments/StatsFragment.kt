@@ -87,7 +87,10 @@ class StatsFragment : Fragment() {
             val weather = HashMap<String, Int>()
             var allCount = 0
             weatherCountList.forEach {
-                weather[it.weather] = it.count
+                if (it.weather != null) {
+                    weather[it.weather] = it.count
+                }
+
                 allCount += it.count
             }
 
