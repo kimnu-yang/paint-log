@@ -5,19 +5,21 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import com.diary.paintlog.data.entities.enums.Color as ColorEnum
 import android.graphics.drawable.Drawable
 import android.location.LocationManager
-import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.fragment.app.FragmentActivity
-import androidx.palette.graphics.Palette
 import com.diary.paintlog.R
+import com.diary.paintlog.data.entities.Art
 import com.diary.paintlog.data.entities.DiaryColor
 import com.diary.paintlog.data.entities.enums.Weather
+import okhttp3.internal.toHexString
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -265,38 +267,14 @@ object Common {
             r /= cnt
             g /= cnt
             b /= cnt
+        } else {
+            val color = ContextCompat.getColor(context, R.color.gray)
+            r = color.red.toFloat()
+            g = color.green.toFloat()
+            b = color.blue.toFloat()
         }
 
-        return Color.rgb(r,g,b)
-    }
-
-    fun blendColors(drawable: Drawable): Int {
-        var cnt = 0
-        var r = 0F
-        var g = 0F
-        var b = 0F
-        val bitmap = (drawable as BitmapDrawable).bitmap
-        Palette.from(bitmap).generate { palette ->
-            val swatches = palette?.swatches
-            swatches?.forEach { swatch ->
-                val color = swatch.rgb.toString()
-                val rgb = hexToRgb(color)
-                val percentage = swatch.population / (bitmap.width * bitmap.height).toFloat() * 100
-
-                r += rgb[0] * percentage
-                g += rgb[1] * percentage
-                b += rgb[2] * percentage
-                cnt += 1
-            }
-
-            if (cnt > 0) {
-                r /= cnt
-                g /= cnt
-                b /= cnt
-            }
-        }
-        Log.i("TEST", "$r, $g, $b")
-        return Color.rgb(r,g,b)
+        return Color.rgb(r.toInt(),g.toInt(),b.toInt())
     }
 
     private fun getColorByString(colorString: String): Int {
@@ -312,13 +290,35 @@ object Common {
         }
     }
 
-    // todo: 색 분류해서 그림을 매칭해 출력
-    fun getDrawingByColorData(colorData: MutableMap<String, Double>): Map<String, String> {
-        return mapOf(
-            "artist" to "빈센트 반 고흐",
-            "title" to "별이 빛나는 밤",
-            "drawing" to R.drawable.drawing_01.toString()
-        )
+    fun getDrawingByColorData(color: Int, artData: List<Art>): Map<String, String> {
+        val res = mutableMapOf<String, String>()
+
+        val hexString = color.toHexString()
+        val r = Integer.parseInt(hexString.substring(2, 4), 16)
+        val g = Integer.parseInt(hexString.substring(4, 6), 16)
+        val b = Integer.parseInt(hexString.substring(6, 8), 16)
+
+        var oldDiff = 1000
+        artData.forEach {
+            var diff = 0
+
+            val artR = Integer.parseInt(it.rgb.substring(2, 4), 16)
+            val artG = Integer.parseInt(it.rgb.substring(4, 6), 16)
+            val artB = Integer.parseInt(it.rgb.substring(6, 8), 16)
+
+            diff += abs(artR - r)
+            diff += abs(artG - g)
+            diff += abs(artB - b)
+
+            if(oldDiff > diff) {
+                oldDiff = diff
+                res["id"] = it.id.toString()
+                res["title"] = it.title
+                res["artist"] = it.artist
+                res["drawingId"] = it.resourceId
+            }
+        }
+        return res
     }
 
     fun setScaleByWidth(resources: Resources, width: Int, image: Int): Bitmap {
@@ -328,7 +328,7 @@ object Common {
         return Bitmap.createScaledBitmap(bitmap, width, scaledHeight, false)
     }
 
-    private fun hexToRgb(hex: String): IntArray {
+    fun hexToRgb(hex: String): IntArray {
         val color = hex.toLong(16).toInt()
         val red = color shr 16 and 0xFF
         val green = color shr 8 and 0xFF
