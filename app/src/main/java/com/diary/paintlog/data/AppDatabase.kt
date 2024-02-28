@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.diary.paintlog.data.converters.LocalDateTimeConverter
+import com.diary.paintlog.data.dao.ArtDao
 import com.diary.paintlog.data.dao.DiaryColorDao
 import com.diary.paintlog.data.dao.DiaryDao
 import com.diary.paintlog.data.dao.DiaryTagDao
@@ -18,7 +19,7 @@ import com.diary.paintlog.data.entities.MyArt
 import com.diary.paintlog.data.entities.Topic
 import com.diary.paintlog.data.entities.User
 
-@Database(entities = [User::class, Diary::class, DiaryTag::class, DiaryColor::class, Topic::class, MyArt::class, Art::class], version = 4)
+@Database(entities = [User::class, Diary::class, DiaryTag::class, DiaryColor::class, Topic::class, MyArt::class, Art::class], version = 1)
 @TypeConverters(LocalDateTimeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -27,4 +28,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun diaryColorDao(): DiaryColorDao
     abstract fun topicDao(): TopicDao
     abstract fun myArtDao(): MyArtDao
+    abstract fun artDao(): ArtDao
 }

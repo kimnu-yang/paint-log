@@ -10,11 +10,16 @@ import android.graphics.drawable.Drawable
 import android.location.LocationManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.fragment.app.FragmentActivity
 import com.diary.paintlog.R
+import com.diary.paintlog.data.entities.Art
 import com.diary.paintlog.data.entities.DiaryColor
 import com.diary.paintlog.data.entities.enums.Weather
+import okhttp3.internal.toHexString
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -245,7 +250,7 @@ object Common {
         return weekMap
     }
 
-    fun blendColors(context: Context,colors: List<DiaryColor>): Int {
+    fun blendColors(context: Context, colors: List<DiaryColor>): Int {
         var cnt = 0
         var r = 0F
         var g = 0F
@@ -262,9 +267,14 @@ object Common {
             r /= cnt
             g /= cnt
             b /= cnt
+        } else {
+            val color = ContextCompat.getColor(context, R.color.gray)
+            r = color.red.toFloat()
+            g = color.green.toFloat()
+            b = color.blue.toFloat()
         }
 
-        return Color.rgb(r,g,b)
+        return Color.rgb(r.toInt(),g.toInt(),b.toInt())
     }
 
     private fun getColorByString(colorString: String): Int {
@@ -280,13 +290,35 @@ object Common {
         }
     }
 
-    // todo: 색 분류해서 그림을 매칭해 출력
-    fun getDrawingByColorData(colorData: MutableMap<String, Double>): Map<String, String> {
-        return mapOf(
-            "artist" to "빈센트 반 고흐",
-            "title" to "별이 빛나는 밤",
-            "drawing" to R.drawable.drawing_01.toString()
-        )
+    fun getDrawingByColorData(color: Int, artData: List<Art>): Map<String, String> {
+        val res = mutableMapOf<String, String>()
+
+        val hexString = color.toHexString()
+        val r = Integer.parseInt(hexString.substring(2, 4), 16)
+        val g = Integer.parseInt(hexString.substring(4, 6), 16)
+        val b = Integer.parseInt(hexString.substring(6, 8), 16)
+
+        var oldDiff = 1000
+        artData.forEach {
+            var diff = 0
+
+            val artR = Integer.parseInt(it.rgb.substring(2, 4), 16)
+            val artG = Integer.parseInt(it.rgb.substring(4, 6), 16)
+            val artB = Integer.parseInt(it.rgb.substring(6, 8), 16)
+
+            diff += abs(artR - r)
+            diff += abs(artG - g)
+            diff += abs(artB - b)
+
+            if(oldDiff > diff) {
+                oldDiff = diff
+                res["id"] = it.id.toString()
+                res["title"] = it.title
+                res["artist"] = it.artist
+                res["drawingId"] = it.resourceId
+            }
+        }
+        return res
     }
 
     fun setScaleByWidth(resources: Resources, width: Int, image: Int): Bitmap {
@@ -294,5 +326,13 @@ object Common {
         val aspectRatio = bitmap.width.toDouble() / bitmap.height.toDouble()
         val scaledHeight = (width / aspectRatio).toInt()
         return Bitmap.createScaledBitmap(bitmap, width, scaledHeight, false)
+    }
+
+    fun hexToRgb(hex: String): IntArray {
+        val color = hex.toLong(16).toInt()
+        val red = color shr 16 and 0xFF
+        val green = color shr 8 and 0xFF
+        val blue = color and 0xFF
+        return intArrayOf(red, green, blue)
     }
 }

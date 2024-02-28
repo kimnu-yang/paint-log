@@ -115,6 +115,8 @@
     <string name="week_friday">금</string>
     <string name="week_saturday">토</string>
     <string name="week_sunday">일</string>
+    <string name="week_color">한 주의 색</string>
+    <string name="week_drawing">이번 주 그림은?</string>
 
     <!-- Drawing -->
     <string name="drawing_confirm">확인</string>

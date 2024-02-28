@@ -12,26 +12,23 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.diary.paintlog.R
+import com.diary.paintlog.data.entities.DiaryColor
+import com.diary.paintlog.data.entities.MyArt
 import com.diary.paintlog.utils.Common
-import com.diary.paintlog.utils.DataListener
+import com.diary.paintlog.viewmodel.ArtViewModel
 import com.diary.paintlog.viewmodel.DiaryViewModel
+import com.diary.paintlog.viewmodel.MyArtViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class DrawingDialog(private val baseDate: LocalDate): DialogFragment() {
     private lateinit var diaryViewModel: DiaryViewModel
-    private var dataListener: DataListener? = null
-
-    fun setDataListener(listener: DataListener) {
-        dataListener = listener
-    }
-
-    private fun sendDataToFragment(data: Map<String, String>) {
-        dataListener?.onDataReceived(data)
-    }
+    private lateinit var artViewModel: ArtViewModel
+    private lateinit var myArtViewModel: MyArtViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,56 +37,59 @@ class DrawingDialog(private val baseDate: LocalDate): DialogFragment() {
         return inflater.inflate(R.layout.dialog_drawing, container, false)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "DiscouragedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val width = resources.displayMetrics.widthPixels
         dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+        diaryViewModel = ViewModelProvider(this@DrawingDialog)[DiaryViewModel::class.java]
+        artViewModel = ViewModelProvider(this@DrawingDialog)[ArtViewModel::class.java]
+        myArtViewModel = ViewModelProvider(this@DrawingDialog)[MyArtViewModel::class.java]
+
         val brush = view.findViewById<ImageView>(R.id.brush)
         brush.animate().apply {
-            duration = 1000
-            translationX(550f)
-            withEndAction{
-                brush.animate().apply {
-                    duration = 1000
-                    translationX(0f)
-                    translationY(800f)
+
+            CoroutineScope(Dispatchers.Default).launch {
+                val artData = artViewModel.getAllArt()
+                val diaryData = diaryViewModel.getDiaryWeek(baseDate)
+                val colorList = mutableListOf<DiaryColor>()
+                for (diary in diaryData) {
+                    for (color in diary.colors) {
+                        colorList.add(color)
+                    }
                 }
-                withEndAction{
+
+                val blendColor = Common.blendColors(requireContext(), colorList)
+                val drawingData = Common.getDrawingByColorData(blendColor, artData)
+
+                myArtViewModel.saveMyArt(
+                    MyArt(
+                        artId = drawingData["id"]!!.toLong(),
+                        baseDate = baseDate.atTime(LocalTime.now())
+                    )
+                )
+
+                duration = 1000
+                translationX(550f)
+                withEndAction {
                     brush.animate().apply {
                         duration = 1000
-                        translationX(550f)
-                        withEndAction{
-                            diaryViewModel = ViewModelProvider(this@DrawingDialog)[DiaryViewModel::class.java]
-                            val colorData = mutableMapOf(
-                                "RED" to 0.0,
-                                "ORANGE" to 0.0,
-                                "YELLOW" to 0.0,
-                                "GREEN" to 0.0,
-                                "BLUE" to 0.0,
-                                "NAVY" to 0.0,
-                                "VIOLET" to 0.0
-                            )
-                            var total = 0
-                            CoroutineScope(Dispatchers.Default).launch {
-                                val diaryData = diaryViewModel.getDiaryWeek(baseDate)
-                                for(diary in diaryData){
-                                    for(color in diary.colors){
-                                        total += color.ratio
-                                        colorData[color.color.toString()] = colorData[color.color.toString()]!! + color.ratio
-                                    }
-                                }
-                                for(color in colorData){
-                                    colorData[color.key] = color.value / total
-                                }
-
-                                // 비율 맞추기
-                                val drawingData = Common.getDrawingByColorData(colorData)
-                                val scaledBitmap = drawingData["drawing"]?.let { Common.setScaleByWidth(resources, width, it.toInt()) }
+                        translationX(0f)
+                        translationY(800f)
+                    }
+                    withEndAction {
+                        brush.animate().apply {
+                            duration = 1000
+                            translationX(550f)
+                            withEndAction {
+                                val resourceName = "drawing_${drawingData["drawingId"]?.substring(0, 2)}_${drawingData["drawingId"]?.substring(2, 4)}"
+                                val resourceId = resources.getIdentifier(resourceName, "drawable", requireContext().packageName)
+                                val scaledBitmap = Common.setScaleByWidth(resources, width, resourceId)
 
                                 activity?.runOnUiThread {
+                                    view.findViewById<ImageButton>(R.id.save_button).background.setTint(blendColor)
                                     brush.background = null
                                     view.findViewById<ImageView>(R.id.canvas).background = null
                                     view.findViewById<ImageView>(R.id.canvas).setImageBitmap(scaledBitmap)

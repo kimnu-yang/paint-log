@@ -31,6 +31,9 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
+    // palette
+    implementation("androidx.palette:palette-ktx:1.0.0")
+
     // Room
     val room_version = "2.6.1"
 
