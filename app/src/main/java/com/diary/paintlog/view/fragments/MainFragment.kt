@@ -2,9 +2,12 @@ package com.diary.paintlog.view.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
 import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentMainBinding
 import com.diary.paintlog.utils.Common
@@ -30,6 +34,7 @@ import com.prolificinteractive.materialcalendarview.CalendarMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.toHexString
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
 
@@ -56,6 +61,9 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 원하는 이미지를 리스트에 넣어서 평균 RGB값을 구함
+//        getAvgRGB()
 
         val calendarDecorator = CalendarDecorator(binding.calendarView.context)
 
@@ -425,6 +433,106 @@ class MainFragment : Fragment() {
                         unSelectedDateDecorator,
                         selectedMonthDecorator,
                     )
+                }
+            }
+        }
+    }
+
+    private fun getAvgRGB(){
+        val drawableList = listOf(
+            R.drawable.drawing_01_01,
+            R.drawable.drawing_01_02,
+            R.drawable.drawing_01_03,
+            R.drawable.drawing_01_04,
+            R.drawable.drawing_01_05,
+            R.drawable.drawing_01_06,
+            R.drawable.drawing_01_07,
+            R.drawable.drawing_01_08,
+            R.drawable.drawing_01_09,
+            R.drawable.drawing_01_10,
+            R.drawable.drawing_02_01,
+            R.drawable.drawing_02_02,
+            R.drawable.drawing_02_03,
+            R.drawable.drawing_03_01,
+            R.drawable.drawing_03_02,
+            R.drawable.drawing_03_03,
+            R.drawable.drawing_03_04,
+            R.drawable.drawing_03_05,
+            R.drawable.drawing_03_06,
+            R.drawable.drawing_03_07,
+            R.drawable.drawing_03_08,
+            R.drawable.drawing_03_09,
+            R.drawable.drawing_03_10,
+            R.drawable.drawing_03_11,
+            R.drawable.drawing_04_01,
+            R.drawable.drawing_04_02,
+            R.drawable.drawing_04_03,
+            R.drawable.drawing_04_04,
+            R.drawable.drawing_04_05,
+            R.drawable.drawing_04_06,
+            R.drawable.drawing_05_01,
+            R.drawable.drawing_05_02,
+            R.drawable.drawing_05_03,
+            R.drawable.drawing_05_04,
+            R.drawable.drawing_05_05,
+            R.drawable.drawing_05_06,
+            R.drawable.drawing_05_07,
+            R.drawable.drawing_06_01,
+            R.drawable.drawing_06_02,
+            R.drawable.drawing_06_03,
+            R.drawable.drawing_06_04,
+            R.drawable.drawing_07_01,
+            R.drawable.drawing_07_02,
+            R.drawable.drawing_07_03,
+            R.drawable.drawing_08_01,
+            R.drawable.drawing_08_02,
+            R.drawable.drawing_08_03,
+            R.drawable.drawing_08_04,
+            R.drawable.drawing_08_05,
+            R.drawable.drawing_08_06,
+            R.drawable.drawing_08_07,
+            R.drawable.drawing_08_08,
+            R.drawable.drawing_09_01,
+            R.drawable.drawing_10_01,
+            R.drawable.drawing_10_02,
+            R.drawable.drawing_10_03,
+            R.drawable.drawing_10_04,
+            R.drawable.drawing_10_05,
+            R.drawable.drawing_10_06,
+            R.drawable.drawing_10_07,
+            R.drawable.drawing_10_08,
+            R.drawable.drawing_10_09,
+        )
+
+        for(drawableId in drawableList){
+            val drawable = ContextCompat.getDrawable(requireContext(), drawableId)
+            val bitmap = (drawable as BitmapDrawable).bitmap
+            Palette.from(bitmap).generate { palette ->
+
+                var totalPopulation = 0
+                var r = 0F
+                var g = 0F
+                var b = 0F
+                val swatches = palette?.swatches
+
+                swatches?.forEach { swatch ->
+                    val color = swatch.rgb.toHexString()
+                    val rgb = Common.hexToRgb(color)
+                    val population = swatch.population
+                    totalPopulation += population
+
+                    r += rgb[0] * population
+                    g += rgb[1] * population
+                    b += rgb[2] * population
+                }
+
+                if (totalPopulation > 0) {
+                    val avgR = r / totalPopulation
+                    val avgG = g / totalPopulation
+                    val avgB = b / totalPopulation
+
+                    val color = Color.rgb(avgR.toInt(),avgG.toInt(),avgB.toInt())
+                    Log.i("Color", "${resources.getResourceEntryName(drawableId)}, ${color.toHexString()}")
                 }
             }
         }
