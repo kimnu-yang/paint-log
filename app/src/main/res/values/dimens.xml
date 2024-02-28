@@ -5,6 +5,8 @@
     <!--  Diary  -->
     <dimen name="diary_margin">16dp</dimen>
     <dimen name="diary_title_small">20sp</dimen>
+    <dimen name="week_drawing_artist">20sp</dimen>
+    <dimen name="week_drawing_title">24sp</dimen>
 
     <!-- Week Diary -->
     <dimen name="week_title">22sp</dimen>
