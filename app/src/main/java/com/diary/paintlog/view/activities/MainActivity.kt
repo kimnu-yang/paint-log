@@ -2,6 +2,7 @@ package com.diary.paintlog.view.activities
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
@@ -9,10 +10,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.diary.paintlog.R
 import com.diary.paintlog.databinding.ActivityMainBinding
+import com.diary.paintlog.utils.SyncDataManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var runable = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,5 +90,25 @@ class MainActivity : AppCompatActivity() {
 
             navController.navigate(intent.getIntExtra("destination_fragment", -1))
         }
+
+        // 동기화 실행
+        CoroutineScope(Dispatchers.IO).launch {
+            while (true) {
+                if (runable) {
+                    SyncDataManager().syncData(applicationContext)
+                }
+                delay(30000) // 10초마다 작업 실행
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        runable = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        runable = true
     }
 }

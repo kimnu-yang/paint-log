@@ -11,11 +11,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.diary.paintlog.data.AppDatabase
-import com.diary.paintlog.utils.SyncDataManager
 import com.kakao.sdk.common.KakaoSdk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
@@ -51,14 +49,6 @@ class GlobalApplication : Application() {
 
         // Kakao SDK 초기화
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
-
-        // 동기화 실행
-        CoroutineScope(Dispatchers.IO).launch {
-            while (true) {
-                SyncDataManager().syncData(applicationContext)
-                delay(30000) // 10초마다 작업 실행
-            }
-        }
 
         // 샘플 데이터 추가 (필요 할 때만 실행할 것)
 //        exampleSQL()
