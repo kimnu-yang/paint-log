@@ -11,6 +11,7 @@ import com.diary.paintlog.data.entities.Diary
 import com.diary.paintlog.data.entities.DiaryOnlyDate
 import com.diary.paintlog.data.entities.DiaryWeatherCount
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
+import java.time.LocalDateTime
 
 @Dao
 interface DiaryDao {
@@ -21,8 +22,22 @@ interface DiaryDao {
     @Query("SELECT * FROM diary WHERE is_temp = 'N' AND id IN (:diaryIds)")
     fun getAllDiaryWithTagAndColor(diaryIds: List<Long>): List<DiaryWithTagAndColor>
 
-    @Query("SELECT id, registered_at AS registeredAt, updated_at AS updatedAt, deleted_at AS deletedAt FROM diary WHERE is_temp = 'N' ORDER BY id DESC")
+    @Query(
+        "SELECT id, registered_at AS registeredAt, updated_at AS updatedAt, deleted_at AS deletedAt " +
+                "FROM diary " +
+                "WHERE is_temp = 'N' " +
+                "ORDER BY id DESC"
+    )
     fun getAllDiaryRegisteredAt(): List<DiaryOnlyDate>
+
+    @Query(
+        "SELECT id, registered_at AS registeredAt, updated_at AS updatedAt, deleted_at AS deletedAt " +
+                "FROM diary " +
+                "WHERE is_temp = 'N' " +
+                "AND (registered_at >= :lastSyncTime OR updated_at >= :lastSyncTime OR deleted_at >= :lastSyncTime) " +
+                "ORDER BY id DESC"
+    )
+    fun getAllDiaryRegisteredAt(lastSyncTime: LocalDateTime): List<DiaryOnlyDate>
 
     @Query("SELECT id FROM diary WHERE registered_at LIKE :date ORDER BY id DESC LIMIT 1")
     fun getDiaryId(date: String): Long?

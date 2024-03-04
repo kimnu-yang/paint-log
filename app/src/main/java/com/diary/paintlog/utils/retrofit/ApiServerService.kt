@@ -1,8 +1,8 @@
 package com.diary.paintlog.utils.retrofit
 
-import com.diary.paintlog.data.entities.DiaryOnlyDate
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
+import com.diary.paintlog.utils.retrofit.model.CheckSyncDataRequest
 import com.diary.paintlog.utils.retrofit.model.KakaoRegisterRequest
 import com.diary.paintlog.utils.retrofit.model.SyncResponse
 import retrofit2.Call
@@ -22,7 +22,7 @@ interface ApiServerService {
     @POST("api/setting/check")
     fun syncDataCheck(
         @Header("authorization-token") kakaoToken: String,
-        @Body data: List<DiaryOnlyDate>
+        @Body data: CheckSyncDataRequest
     ): Call<SyncResponse>
 
     @POST("api/setting/upload")

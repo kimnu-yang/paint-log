@@ -14,6 +14,7 @@ import com.diary.paintlog.data.entities.enums.TempStatus
 import com.diary.paintlog.databinding.FragmentSettingsBinding
 import com.diary.paintlog.model.repository.SettingsRepository
 import com.diary.paintlog.utils.retrofit.ApiServerClient
+import com.diary.paintlog.utils.retrofit.model.CheckSyncDataRequest
 import com.diary.paintlog.utils.retrofit.model.SyncResponse
 import com.diary.paintlog.view.dialog.LoadingDialog
 import com.kakao.sdk.auth.AuthApiClient
@@ -21,6 +22,7 @@ import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,8 +42,12 @@ class SyncDataManager {
 
     private var loading: LoadingDialog? = null
 
-    private fun getDiarySyncList(): List<DiaryOnlyDate> {
-        return diaryDao.getAllDiaryRegisteredAt()
+    private fun getDiarySyncList(lastSyncTime: String): List<DiaryOnlyDate> {
+        return if (lastSyncTime == "") {
+            diaryDao.getAllDiaryRegisteredAt()
+        } else {
+            diaryDao.getAllDiaryRegisteredAt(LocalDateTime.parse(lastSyncTime))
+        }
     }
 
     private fun getUploadList(diaryIds: List<Long>): List<DiaryWithTagAndColor> {
@@ -111,11 +117,18 @@ class SyncDataManager {
 
         CoroutineScope(Dispatchers.IO).launch {
             // app 저장 데이터 조회
-            val appDiaryData = getDiarySyncList()
+            // 설정 화면에서 누르는 경우 전체 전송
+            val lastSyncTime = if (isSettingsScreen) {
+                ""
+            } else {
+                runBlocking { settingsRepo.getSyncTime() }
+            }
+            val appDiaryData = getDiarySyncList(lastSyncTime)
             val kakaoToken =
                 AuthApiClient.instance.tokenManagerProvider.manager.getToken()?.accessToken ?: ""
+            val checkSyncDataRequest = CheckSyncDataRequest(lastSyncTime, appDiaryData)
 
-            ApiServerClient.api.syncDataCheck(kakaoToken, appDiaryData)
+            ApiServerClient.api.syncDataCheck(kakaoToken, checkSyncDataRequest)
                 .enqueue(object : Callback<SyncResponse> {
                     override fun onResponse(
                         call: Call<SyncResponse>, response: Response<SyncResponse>
@@ -149,7 +162,6 @@ class SyncDataManager {
                                             isEndUpload = true
                                             if (isEndDownload) {
                                                 loading?.dismiss()
-                                                setSettingsSyncTime(binding)
                                             }
                                         }
 
