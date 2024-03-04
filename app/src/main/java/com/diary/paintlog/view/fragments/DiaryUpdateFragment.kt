@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.diary.paintlog.R
-import com.diary.paintlog.data.entities.Diary
 import com.diary.paintlog.data.entities.DiaryColor
 import com.diary.paintlog.data.entities.DiaryTag
 import com.diary.paintlog.data.entities.enums.TempStatus
@@ -48,8 +45,6 @@ class DiaryUpdateFragment : Fragment(), DataListener {
 
     private var _binding: FragmentDiaryBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
-    private val handler = Handler(Looper.getMainLooper())
-    private lateinit var tempSave: Runnable
 
     private lateinit var diaryViewModel: DiaryViewModel
     private lateinit var diaryTagViewModel: DiaryTagViewModel
@@ -108,7 +103,6 @@ class DiaryUpdateFragment : Fragment(), DataListener {
         CoroutineScope(Dispatchers.Default).launch {
             if(diaryId != null) {
                 val diaryData = diaryViewModel.getDiaryById(diaryId)
-
                 activity?.runOnUiThread {
                     if(diaryData?.diary != null) {
                         baseDate = diaryData.diary.registeredAt
@@ -175,6 +169,76 @@ class DiaryUpdateFragment : Fragment(), DataListener {
                         binding.tempNow.text = "${diaryData.diary.tempNow}°C"
                     }
                 }
+
+                binding.saveButton.setOnClickListener {
+
+                    val title = binding.title.text.toString()
+                    val content = binding.content.text.toString()
+
+                    val tag1 = binding.tag1.editableText.toString()
+                    val tag2 = binding.tag2.editableText.toString()
+                    val tag3 = binding.tag3.editableText.toString()
+
+                    val color1 = color1
+                    val color1Percent = color1Percent
+                    val color2 = color2
+                    val color2Percent = color2Percent
+                    val color3 = color3
+                    val color3Percent = color3Percent
+
+                    val weather = nowWeather
+                    val minTemp = minTemp
+                    val maxTemp = maxTemp
+                    val nowTemp = nowTemp
+
+                    if(title == "" || content == ""){
+                        if(title == ""){
+                            val targetView = binding.diaryScrollView.findViewById<View>(R.id.title)
+                            binding.diaryScrollView.post { binding.diaryScrollView.scrollTo(0, targetView.top) }
+                            Common.showToast(requireContext(), "제목을 작성 해 주세요")
+                        }
+                        else{
+                            val targetView = binding.diaryScrollView.findViewById<View>(R.id.content)
+                            binding.diaryScrollView.post { binding.diaryScrollView.scrollTo(0, targetView.top) }
+                            Common.showToast(requireContext(), "내용을 작성 해 주세요")
+                        }
+                    }else{
+                        CoroutineScope(Dispatchers.Default).launch {
+                            if (diaryData != null){
+                                val diary = diaryData.diary
+                                diary.isTemp = TempStatus.N
+                                diary.title = title
+                                diary.content = content
+                                diary.updatedAt = LocalDateTime.now()
+
+                                if(weather != null) {
+                                    diary.weather = weather
+                                    diary.tempMin = minTemp
+                                    diary.tempMax = maxTemp
+                                    diary.tempNow = nowTemp
+                                }
+                                diaryViewModel.updateDiary(diary)
+                            }
+
+                            diaryTagViewModel.deleteDiaryTag(diaryId)
+                            if(tag1 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 1, tag = tag1))
+                            if(tag2 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 2, tag = tag2))
+                            if(tag3 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 3, tag = tag3))
+
+                            diaryColorViewModel.deleteDiaryColor(diaryId)
+                            if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorEnumsByString(color1), ratio = color1Percent.toInt()))
+                            if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorEnumsByString(color2), ratio = color2Percent.toInt()))
+                            if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorEnumsByString(color3), ratio = color3Percent.toInt()))
+
+                            activity?.runOnUiThread {
+                                Common.showToast(requireContext(), "일기가 수정되었습니다.")
+                                findNavController().popBackStack()
+                                findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
+                            }
+                        }
+                    }
+                }
+
             } else {
                 activity?.runOnUiThread {
                     Common.showToast(requireContext(), "일기 ID 값이 전달되지 않았습니다.")
@@ -407,158 +471,6 @@ class DiaryUpdateFragment : Fragment(), DataListener {
             findNavController().popBackStack()
             findNavController().navigate(R.id.fragment_main)
         }
-
-        binding.saveButton.setOnClickListener {
-
-            val title = binding.title.text.toString()
-            val content = binding.content.text.toString()
-
-            val tag1 = binding.tag1.editableText.toString()
-            val tag2 = binding.tag2.editableText.toString()
-            val tag3 = binding.tag3.editableText.toString()
-
-            val color1 = color1
-            val color1Percent = color1Percent
-            val color2 = color2
-            val color2Percent = color2Percent
-            val color3 = color3
-            val color3Percent = color3Percent
-
-            val weather = nowWeather
-            val minTemp = minTemp
-            val maxTemp = maxTemp
-            val nowTemp = nowTemp
-
-            if(title == "" || content == ""){
-                if(title == ""){
-                    val targetView = binding.diaryScrollView.findViewById<View>(R.id.title)
-                    binding.diaryScrollView.post { binding.diaryScrollView.scrollTo(0, targetView.top) }
-                    Common.showToast(requireContext(), "제목을 작성 해 주세요")
-                }
-                else{
-                    val targetView = binding.diaryScrollView.findViewById<View>(R.id.content)
-                    binding.diaryScrollView.post { binding.diaryScrollView.scrollTo(0, targetView.top) }
-                    Common.showToast(requireContext(), "내용을 작성 해 주세요")
-                }
-            }else{
-                CoroutineScope(Dispatchers.Default).launch {
-                    val todayString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                    val data = diaryViewModel.getDiary(todayString,"Y")
-                    val oldData = diaryViewModel.getDiary(todayString, "N")
-                    val diaryId: Long
-
-                    if (data != null){
-                        val diary = data.diary
-                        diaryId = diary.id
-                        diary.isTemp = TempStatus.N
-                        diary.title = title
-                        diary.content = content
-                        diary.updatedAt = LocalDateTime.now()
-
-                        if(weather != null) {
-                            diary.weather = weather
-                            diary.tempMin = minTemp
-                            diary.tempMax = maxTemp
-                            diary.tempNow = nowTemp
-                        }
-
-                        if(oldData != null) diaryViewModel.deleteDiary(oldData.diary.id)
-                        diaryViewModel.updateDiary(diary)
-                    }else {
-                        val diary = Diary(
-                            isTemp = TempStatus.N,
-                            title = title,
-                            content = content
-                        )
-                        if (weather != null) {
-                            diary.weather = weather
-                            diary.tempNow = nowTemp
-                            diary.tempMin = minTemp
-                            diary.tempMax = maxTemp
-                        }
-                        diaryId = diaryViewModel.saveDiary(diary)
-                    }
-
-                    diaryTagViewModel.deleteDiaryTag(diaryId)
-                    if(tag1 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 1, tag = tag1))
-                    if(tag2 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 2, tag = tag2))
-                    if(tag3 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 3, tag = tag3))
-
-                    diaryColorViewModel.deleteDiaryColor(diaryId)
-                    if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorByString(color1), ratio = color1Percent.toInt()))
-                    if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorByString(color2), ratio = color2Percent.toInt()))
-                    if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorByString(color3), ratio = color3Percent.toInt()))
-
-                    activity?.runOnUiThread {
-                        val diaryBundle = Bundle()
-                        diaryBundle.putLong("diaryId", diaryId)
-                        Common.showToast(requireContext(), "일기가 수정되었습니다.")
-                        findNavController().popBackStack()
-                        findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
-                    }
-                }
-            }
-        }
-
-        // 임시 저장 배치 실행
-        tempSave = object: Runnable {
-            override fun run() {
-                val title = binding.title.text.toString()
-                val content = binding.content.text.toString()
-
-                val tag1 = binding.tag1.editableText.toString()
-                val tag2 = binding.tag2.editableText.toString()
-                val tag3 = binding.tag3.editableText.toString()
-
-                val color1 = color1
-                val color1Percent = color1Percent
-                val color2 = color2
-                val color2Percent = color2Percent
-                val color3 = color3
-                val color3Percent = color3Percent
-
-                val weather = nowWeather
-                val minTemp = minTemp
-                val maxTemp = maxTemp
-                val nowTemp = nowTemp
-
-                if(title != "" && content != "") {
-                    CoroutineScope(Dispatchers.Default).launch {
-                        val todayString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                        val data = diaryViewModel.getDiary(todayString,"N")
-                        var diaryId: Long = 0
-
-                        if (data != null){
-                            val diary = data.diary
-                            diaryId = diary.id
-                            diary.title = title
-                            diary.content = content
-                            diary.updatedAt = LocalDateTime.now()
-
-                            if(weather != null) {
-                                diary.weather = weather
-                                diary.tempMin = minTemp
-                                diary.tempMax = maxTemp
-                                diary.tempNow = nowTemp
-                            }
-                            diaryViewModel.updateDiary(diary)
-                        }
-
-                        diaryTagViewModel.deleteDiaryTag(diaryId)
-                        if(tag1 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 1, tag = tag1))
-                        if(tag2 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 2, tag = tag2))
-                        if(tag3 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 3, tag = tag3))
-
-                        diaryColorViewModel.deleteDiaryColor(diaryId)
-                        if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorByString(color1), ratio = color1Percent.toInt()))
-                        if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorByString(color2), ratio = color2Percent.toInt()))
-                        if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorByString(color3), ratio = color3Percent.toInt()))
-                    }
-                }
-                handler.postDelayed(this, 3000)
-            }
-        }
-        handler.post(tempSave)
     }
 
     private fun showChangeTitleDialog(context: Context, topic: String) {
@@ -621,11 +533,5 @@ class DiaryUpdateFragment : Fragment(), DataListener {
                 binding.color3Delete.visibility = View.VISIBLE
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // 프래그먼트 종료시 임시 저장 배치 종료
-        handler.removeCallbacks(tempSave)
     }
 }

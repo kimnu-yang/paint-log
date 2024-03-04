@@ -422,9 +422,9 @@ class DiaryInsertFragment : Fragment(), DataListener {
                     if(tag3 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 3, tag = tag3))
 
                     diaryColorViewModel.deleteDiaryColor(diaryId)
-                    if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorByString(color1), ratio = color1Percent.toInt()))
-                    if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorByString(color2), ratio = color2Percent.toInt()))
-                    if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorByString(color3), ratio = color3Percent.toInt()))
+                    if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorEnumsByString(color1), ratio = color1Percent.toInt()))
+                    if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorEnumsByString(color2), ratio = color2Percent.toInt()))
+                    if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorEnumsByString(color3), ratio = color3Percent.toInt()))
 
                     activity?.runOnUiThread {
                         val diaryBundle = Bundle()
@@ -503,9 +503,9 @@ class DiaryInsertFragment : Fragment(), DataListener {
                         if(tag3 != "") diaryTagViewModel.saveDiaryTag(DiaryTag(diaryId = diaryId, position = 3, tag = tag3))
 
                         diaryColorViewModel.deleteDiaryColor(diaryId)
-                        if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorByString(color1), ratio = color1Percent.toInt()))
-                        if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorByString(color2), ratio = color2Percent.toInt()))
-                        if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorByString(color3), ratio = color3Percent.toInt()))
+                        if(color1 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 1, color = Common.getColorEnumsByString(color1), ratio = color1Percent.toInt()))
+                        if(color2 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 2, color = Common.getColorEnumsByString(color2), ratio = color2Percent.toInt()))
+                        if(color3 != "") diaryColorViewModel.saveDiaryColor(DiaryColor(diaryId = diaryId, position = 3, color = Common.getColorEnumsByString(color3), ratio = color3Percent.toInt()))
                     }
                 }
                 handler.postDelayed(this, 5000)

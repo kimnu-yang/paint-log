@@ -7,6 +7,9 @@ import com.diary.paintlog.data.entities.DiaryColorCount
 import com.diary.paintlog.data.entities.DiaryWeatherCount
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class DiaryViewModel : ViewModel() {
 
@@ -15,6 +18,12 @@ class DiaryViewModel : ViewModel() {
 
     fun getDiaryAll(): List<DiaryWithTagAndColor> {
         return diaryDao.getAllDiaryWithTagAndColor()
+    }
+
+    fun getDiaryWeek(baseDate: LocalDate): List<DiaryWithTagAndColor> {
+        val startDate = baseDate.with(DayOfWeek.MONDAY).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val endDate = baseDate.with(DayOfWeek.SUNDAY).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        return diaryDao.getWeekDiaryByStartEndDate(startDate, endDate)
     }
 
     fun getDiaryMonth(date: CalendarDay): List<DiaryWithTagAndColor> {

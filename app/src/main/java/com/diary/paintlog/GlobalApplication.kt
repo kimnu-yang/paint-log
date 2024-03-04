@@ -51,10 +51,13 @@ class GlobalApplication : Application() {
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
 
         // 샘플 데이터 추가 (필요 할 때만 실행할 것)
-        // exampleSQL()
+//        exampleSQL()
 
         // 주제 샘플 데이터 (필요 할 때만 실행할 것)
-        // exampleTopic()
+//        exampleTopic()
+
+        // 그림 데이터 추가
+//        imageDataSQL()
     }
 
     private fun createNotificationChannel() {
@@ -184,6 +187,75 @@ class GlobalApplication : Application() {
             diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 1, 'RED', 60)"))
             diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'BLUE', 30)"))
             diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 3, 'VIOLET', 50)"))
+        }
+    }
+
+    private fun imageDataSQL(){
+        CoroutineScope(Dispatchers.Default).launch {
+            val artDao = database.artDao()
+
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0101','굴이 있는 정물화','귀스타브 카유보트','ffbfb3b3')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0102','발코니','귀스타브 카유보트','ff8d7364')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0103','보트 파티','귀스타브 카유보트','ff797869')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0104','예레스, 비','귀스타브 카유보트','ff776f57')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0105','오렌지 나무','귀스타브 카유보트','ff747162')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0106','유럽의 다리','귀스타브 카유보트','ff727a77')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0107','정원사','귀스타브 카유보트','ffaea692')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0108','창문 앞의 남자','귀스타브 카유보트','ff444640')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0109','트루빌의 빌라','귀스타브 카유보트','ffb4b2a1')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0110','파리의 거리, 비오는 날','귀스타브 카유보트','ff888980')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0201','안녕하십니까, 쿠르베 씨','귀스타브 쿠르베','ff959578')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0202','폭풍이 지나간 후의 에트르타 절벽','귀스타브 쿠르베','ff869193')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0203','프루동과 그의 아이들','귀스타브 쿠르베','ff555640')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0301','공원의 가로수길','빈센트 반 고흐','ff675c42')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0302','꽃 피는 아몬드 나무','빈센트 반 고흐','ff5f8d87')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0303','론강의 별이 빛나는 밤','빈센트 반 고흐','ff313b38')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0304','밀짚 모자를 쓴 자화상','빈센트 반 고흐','ffa49661')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0305','밤의 카페 테라스','빈센트 반 고흐','ff4e5143')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0306','별이 빛나는 밤','빈센트 반 고흐','ff495b6f')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0307','삼나무가 있는 밀 밭','빈센트 반 고흐','ff909a82')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0308','아를의 침실','빈센트 반 고흐','ff817f64')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0309','자화상','빈센트 반 고흐','ff869c8b')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0310','해바라기','빈센트 반 고흐','ffb7a845')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0311','회색 모자를 쓴 자화상','빈센트 반 고흐','ff5b6861')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0401','숲 속 작은길','아르망 기요맹','ff7d6f46')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0402','이브리의 석양','아르망 기요맹','ffb29156')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0403','일드 프랑스의 경치','아르망 기요맹','ff7c8e80')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0404','일드 프랑스의 풍경','아르망 기요맹','ff8e8c61')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0405','주앵빌 강에 있는 다리','아르망 기요맹','ff77724f')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0406','퓌드폼 풍경','아르망 기요맹','ff7c8989')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0501','루브시엔느의 눈','알프레드 시슬레','ffbbb8be')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0502','모레쉬르루앙의 포플러 나무 길','알프레드 시슬레','ff636c70')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0503','모레의 다리','알프레드 시슬레','ff748b97')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0504','빌뇌브라가렌의 다리','알프레드 시슬레','ff8d9ca1')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0505','새벽의 세느강','알프레드 시슬레','ff7b8883')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0506','생 마메스의 전망','알프레드 시슬레','ff939290')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0507','햄프턴 코트의 템스강','알프레드 시슬레','ff95936a')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0601','개구리 연못','오귀스트 르누아르','ff6c7265')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0602','그네','오귀스트 르누아르','ff606562')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0603','노젓는 사람들의 오찬','오귀스트 르누아르','ff49493d')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0604','물랭 드 라 갈레트의 무도회','오귀스트 르누아르','ff565955')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0701','그라비린 수로','조르주 쇠라','ffc6cfc7')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0702','그랑드자트섬의 일요일 오후','조르주 쇠라','ff686f59')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0703','아스니에르에서 물놀이하는 사람들','조르주 쇠라','ff909896')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0801','루브시엔느에서 베르사유로 가는 길','카미유 피사로','ff8e8c88')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0802','몽마르트 대로, 밤','카미유 피사로','ff403e47')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0803','몽마르트 대로, 오후','카미유 피사로','ff7f7459')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0804','베르사유 도로','카미유 피사로','ff818b84')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0805','에라니 마을의 전경','카미유 피사로','ff9a9574')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0806','에라의 농민주택','카미유 피사로','ff899f73')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0807','입구와 범선','카미유 피사로','ffaaab9f')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0808','잘라이스 언덕','카미유 피사로','ff6f775f')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('0901','안개 바다 위의 방랑자','카스파르 다비트 프리드리히','ff8d919d')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1001','개구리 연못','클로드 모네','ff616e56')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1002','까치','클로드 모네','ffa7adac')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1003','생 트아트레스 해변','클로드 모네','ff879693')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1004','수련','클로드 모네','ff4f6d4d')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1005','양귀비','클로드 모네','ffa5a690')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1006','지베르니 화가의 정원','클로드 모네','ff797361')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1007','파라솔을 든 여인','클로드 모네','ff6d7467')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1008','푸르빌의 절벽 산책로','클로드 모네','ff869898')"))
+            artDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO art (resource_id, title, artist, rgb) values ('1009','풀밭위의 점심식사','클로드 모네','ff6d6333')"))
         }
     }
 }

@@ -68,14 +68,13 @@ class CalendarDecorator(private val context: Context) {
     }
 
     /* 특정 일자 밑에 점을 추가*/
-    inner class HighlightDecorator(private val highlightedDays: Set<CalendarDay>) :
-        DayViewDecorator {
-        override fun shouldDecorate(day: CalendarDay): Boolean {
-            return highlightedDays.contains(day)
+    inner class ColorSpanDecorator(private val selectedDate: CalendarDay, private val color:Int) :
+        DayViewDecorator{
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            return day == selectedDate
         }
 
         override fun decorate(view: DayViewFacade) {
-            val color = ContextCompat.getColor(context, R.color.red)
             view.addSpan(DotSpan(5F, color)) // 날짜에 빨간색 동그라미 추가 (이 부분은 원하는 스타일로 수정 가능)
         }
     }

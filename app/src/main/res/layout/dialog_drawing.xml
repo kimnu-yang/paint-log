@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/week_drawing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:textColor="@color/deep"
+                android:text="@string/week_drawing"
+                android:textSize="@dimen/drawing_title"
+                android:textAlignment="center"
+                android:layout_marginHorizontal="@dimen/margin_large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/canvas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/canvas_big"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginHorizontal="@dimen/margin_large"
+                app:layout_constraintTop_toBottomOf="@id/week_drawing"/>
+
+            <ImageView
+                android:id="@+id/brush"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/brush"
+                android:layout_marginTop="@dimen/margin_xlarge"
+                android:layout_marginStart="@dimen/margin_xlarge"
+                app:layout_constraintTop_toTopOf="@id/canvas"
+                app:layout_constraintStart_toStartOf="@id/canvas"/>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/drawing_title"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@id/canvas"
+                app:layout_constraintStart_toStartOf="@id/canvas"
+                app:layout_constraintEnd_toEndOf="@id/canvas" />
+
+            <TextView
+                android:id="@+id/artist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:textColor="@color/deep"
+                android:textSize="@dimen/drawing_artist"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toStartOf="@id/canvas"
+                app:layout_constraintEnd_toEndOf="@id/canvas" />
+
+            <ImageButton
+                android:id="@+id/save_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/save_button_selector"
+                android:contentDescription="@string/diary_save"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/artist"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bm_yeon_sung"
+                android:text="@string/drawing_confirm"
+                android:textSize="@dimen/diary_title_small"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/save_button"
+                app:layout_constraintEnd_toEndOf="@id/save_button"
+                app:layout_constraintStart_toStartOf="@id/save_button"
+                app:layout_constraintTop_toTopOf="@id/save_button" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -109,7 +109,6 @@
                         android:layout_height="70dp"
                         android:layout_marginHorizontal="5dp"
                         android:rotation="-30"
-                        android:background="@drawable/paint_white"
                         app:layout_constraintTop_toTopOf="@id/monday_div"
                         app:layout_constraintBottom_toBottomOf="@id/monday_div"
                         app:layout_constraintStart_toStartOf="@id/monday_div"
@@ -121,7 +120,6 @@
                         android:layout_height="100dp"
                         android:background="@drawable/empty_page_selector"
                         android:layout_marginStart="15dp"
-                        android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="@id/monday_div"
                         app:layout_constraintBottom_toBottomOf="@id/monday_div"
                         app:layout_constraintStart_toEndOf="@id/monday_div"
@@ -184,7 +182,6 @@
                         android:layout_height="70dp"
                         android:layout_marginHorizontal="5dp"
                         android:rotation="-30"
-                        android:background="@drawable/paint_white"
                         app:layout_constraintTop_toTopOf="@id/tuesday_div"
                         app:layout_constraintBottom_toBottomOf="@id/tuesday_div"
                         app:layout_constraintStart_toStartOf="@id/tuesday_div"
@@ -196,7 +193,6 @@
                         android:layout_height="100dp"
                         android:background="@drawable/empty_page_selector"
                         android:layout_marginStart="15dp"
-                        android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="@id/tuesday_div"
                         app:layout_constraintBottom_toBottomOf="@id/tuesday_div"
                         app:layout_constraintStart_toEndOf="@id/tuesday_div"
@@ -259,7 +255,6 @@
                         android:layout_height="70dp"
                         android:layout_marginHorizontal="5dp"
                         android:rotation="-30"
-                        android:background="@drawable/paint_white"
                         app:layout_constraintTop_toTopOf="@id/wednesday_div"
                         app:layout_constraintBottom_toBottomOf="@id/wednesday_div"
                         app:layout_constraintStart_toStartOf="@id/wednesday_div"
@@ -271,7 +266,6 @@
                         android:layout_height="100dp"
                         android:background="@drawable/empty_page_selector"
                         android:layout_marginStart="15dp"
-                        android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="@id/wednesday_div"
                         app:layout_constraintBottom_toBottomOf="@id/wednesday_div"
                         app:layout_constraintStart_toEndOf="@id/wednesday_div"
@@ -334,7 +328,6 @@
                         android:layout_height="70dp"
                         android:layout_marginHorizontal="5dp"
                         android:rotation="-30"
-                        android:background="@drawable/paint_white"
                         app:layout_constraintTop_toTopOf="@id/thursday_div"
                         app:layout_constraintBottom_toBottomOf="@id/thursday_div"
                         app:layout_constraintStart_toStartOf="@id/thursday_div"
@@ -346,7 +339,6 @@
                         android:layout_height="100dp"
                         android:background="@drawable/empty_page_selector"
                         android:layout_marginStart="15dp"
-                        android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="@id/thursday_div"
                         app:layout_constraintBottom_toBottomOf="@id/thursday_div"
                         app:layout_constraintStart_toEndOf="@id/thursday_div"
@@ -409,7 +401,6 @@
                         android:layout_height="70dp"
                         android:layout_marginHorizontal="5dp"
                         android:rotation="-30"
-                        android:background="@drawable/paint_white"
                         app:layout_constraintTop_toTopOf="@id/friday_div"
                         app:layout_constraintBottom_toBottomOf="@id/friday_div"
                         app:layout_constraintStart_toStartOf="@id/friday_div"
@@ -421,7 +412,6 @@
                         android:layout_height="100dp"
                         android:background="@drawable/empty_page_selector"
                         android:layout_marginStart="15dp"
-                        android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="@id/friday_div"
                         app:layout_constraintBottom_toBottomOf="@id/friday_div"
                         app:layout_constraintStart_toEndOf="@id/friday_div"
@@ -484,7 +474,6 @@
                         android:layout_height="70dp"
                         android:layout_marginHorizontal="5dp"
                         android:rotation="-30"
-                        android:background="@drawable/paint_white"
                         app:layout_constraintTop_toTopOf="@id/saturday_div"
                         app:layout_constraintBottom_toBottomOf="@id/saturday_div"
                         app:layout_constraintStart_toStartOf="@id/saturday_div"
@@ -496,7 +485,6 @@
                         android:layout_height="100dp"
                         android:background="@drawable/empty_page_selector"
                         android:layout_marginStart="15dp"
-                        android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="@id/saturday_div"
                         app:layout_constraintBottom_toBottomOf="@id/saturday_div"
                         app:layout_constraintStart_toEndOf="@id/saturday_div"
@@ -559,7 +547,6 @@
                         android:layout_height="70dp"
                         android:layout_marginHorizontal="5dp"
                         android:rotation="-30"
-                        android:background="@drawable/paint_white"
                         app:layout_constraintTop_toTopOf="@id/sunday_div"
                         app:layout_constraintBottom_toBottomOf="@id/sunday_div"
                         app:layout_constraintStart_toStartOf="@id/sunday_div"
@@ -571,7 +558,6 @@
                         android:layout_height="100dp"
                         android:background="@drawable/empty_page_selector"
                         android:layout_marginStart="15dp"
-                        android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="@id/sunday_div"
                         app:layout_constraintBottom_toBottomOf="@id/sunday_div"
                         app:layout_constraintStart_toEndOf="@id/sunday_div"
@@ -595,18 +581,196 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/drawing_view"
+                android:id="@+id/color_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_large"
+                android:visibility="invisible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/week_view">
+
+                <TextView
+                    android:id="@+id/color_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/week_color"
+                    android:textSize="@dimen/week_diary_title"
+                    android:textColor="@color/deep"
+                    app:layout_constraintLeft_toLeftOf="@id/color_red"
+                    app:layout_constraintTop_toTopOf="@id/color_view" />
+
+                <ImageView
+                    android:id="@+id/color_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paint_red"
+                    android:tooltipText="RED"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.05"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/color_title" />
+
+                <TextView
+                    android:id="@+id/color_red_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/week_text"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/color_red"
+                    app:layout_constraintLeft_toLeftOf="@id/color_red"
+                    app:layout_constraintRight_toRightOf="@id/color_red"
+                    app:layout_constraintTop_toTopOf="@id/color_red" />
+
+                <ImageView
+                    android:id="@+id/color_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paint_orange"
+                    android:tooltipText="ORANGE"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.35"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/color_title" />
+
+                <TextView
+                    android:id="@+id/color_orange_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/week_text"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/color_orange"
+                    app:layout_constraintLeft_toLeftOf="@id/color_orange"
+                    app:layout_constraintRight_toRightOf="@id/color_orange"
+                    app:layout_constraintTop_toTopOf="@id/color_orange" />
+
+                <ImageView
+                    android:id="@+id/color_yellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paint_yellow"
+                    android:tooltipText="YELLOW"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.65"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/color_title" />
+
+                <TextView
+                    android:id="@+id/color_yellow_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/week_text"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/color_yellow"
+                    app:layout_constraintLeft_toLeftOf="@id/color_yellow"
+                    app:layout_constraintRight_toRightOf="@id/color_yellow"
+                    app:layout_constraintTop_toTopOf="@id/color_yellow" />
+
+                <ImageView
+                    android:id="@+id/color_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paint_green"
+                    android:tooltipText="GREEN"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.95"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/color_title" />
+
+                <TextView
+                    android:id="@+id/color_green_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/week_text"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/color_green"
+                    app:layout_constraintLeft_toLeftOf="@id/color_green"
+                    app:layout_constraintRight_toRightOf="@id/color_green"
+                    app:layout_constraintTop_toTopOf="@id/color_green" />
+
+                <ImageView
+                    android:id="@+id/color_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paint_blue"
+                    android:tooltipText="BLUE"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/color_red" />
+
+                <TextView
+                    android:id="@+id/color_blue_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/week_text"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/color_blue"
+                    app:layout_constraintLeft_toLeftOf="@id/color_blue"
+                    app:layout_constraintRight_toRightOf="@id/color_blue"
+                    app:layout_constraintTop_toTopOf="@id/color_blue" />
+
+                <ImageView
+                    android:id="@+id/color_navy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paint_navy"
+                    android:tooltipText="NAVY"
+                    app:layout_constraintEnd_toEndOf="@id/color_view"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@id/color_view"
+                    app:layout_constraintTop_toBottomOf="@id/color_red" />
+
+                <TextView
+                    android:id="@+id/color_navy_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/week_text"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/color_navy"
+                    app:layout_constraintLeft_toLeftOf="@id/color_navy"
+                    app:layout_constraintRight_toRightOf="@id/color_navy"
+                    app:layout_constraintTop_toTopOf="@id/color_navy" />
+
+                <ImageView
+                    android:id="@+id/color_violet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/paint_violet"
+                    android:tooltipText="VIOLET"
+                    app:layout_constraintEnd_toEndOf="@id/color_view"
+                    app:layout_constraintHorizontal_bias="0.8"
+                    app:layout_constraintStart_toStartOf="@id/color_view"
+                    app:layout_constraintTop_toBottomOf="@id/color_red" />
+
+                <TextView
+                    android:id="@+id/color_violet_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/week_text"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/color_violet"
+                    app:layout_constraintLeft_toLeftOf="@id/color_violet"
+                    app:layout_constraintRight_toRightOf="@id/color_violet"
+                    app:layout_constraintTop_toTopOf="@id/color_violet" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/drawing_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
                 app:layout_constraintTop_toBottomOf="@id/week_view"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <ImageButton
                     android:id="@+id/draw_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/draw_button_yet_selector"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -623,11 +787,24 @@
                     android:textColor="@color/deep"
                     android:textSize="@dimen/week_draw_button_text"/>
 
+                <TextView
+                    android:id="@+id/week_drawing_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/deep"
+                    android:textSize="@dimen/week_title"
+                    android:textAlignment="center"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    app:layout_constraintTop_toTopOf="@id/draw_button"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
                 <ImageView
                     android:id="@+id/drawing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/draw_button"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    app:layout_constraintTop_toBottomOf="@id/week_drawing_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -636,8 +813,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/deep"
+                    android:textSize="@dimen/week_drawing_title"
                     android:textAlignment="center"
+                    android:layout_marginTop="@dimen/margin_medium"
                     app:layout_constraintTop_toBottomOf="@id/drawing"
+                    app:layout_constraintStart_toStartOf="@id/drawing"
+                    app:layout_constraintEnd_toEndOf="@id/drawing"/>
+
+                <TextView
+                    android:id="@+id/drawing_artist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/deep"
+                    android:textSize="@dimen/week_drawing_artist"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/drawing_title"
                     app:layout_constraintStart_toStartOf="@id/drawing"
                     app:layout_constraintEnd_toEndOf="@id/drawing"/>
 
