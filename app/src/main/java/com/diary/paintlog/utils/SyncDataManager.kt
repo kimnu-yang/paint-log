@@ -2,6 +2,8 @@ package com.diary.paintlog.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.diary.paintlog.GlobalApplication
@@ -147,6 +149,8 @@ class SyncDataManager {
                                         }
 
                                     })
+                            } else {
+                                isEndUpload = true
                             }
                         }
 
@@ -170,6 +174,7 @@ class SyncDataManager {
                     }
 
                     override fun onFailure(call: Call<SyncResponse>, t: Throwable) {
+                        loading.dismiss()
                         Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
                     }
 
@@ -186,8 +191,13 @@ class SyncDataManager {
         if (binding != null) {
             // 한국 시간 포맷 지정
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-            binding.settingSyncSummary.text =
-                binding.root.context.getString(R.string.setting_sync_summary, now.format(formatter))
+            Handler(Looper.getMainLooper()).post {
+                binding.settingSyncSummary.text =
+                    binding.root.context.getString(
+                        R.string.setting_sync_summary,
+                        now.format(formatter)
+                    )
+            }
         }
     }
 
