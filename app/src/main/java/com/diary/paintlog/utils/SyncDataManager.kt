@@ -38,6 +38,8 @@ class SyncDataManager {
 
     private val settingsRepo = SettingsRepository()
 
+    private var loading: LoadingDialog? = null
+
     private fun getDiarySyncList(): List<DiaryOnlyDate> {
         return diaryDao.getAllDiaryRegisteredAt()
     }
@@ -79,8 +81,7 @@ class SyncDataManager {
     }
 
     fun syncData(context: Context, binding: FragmentSettingsBinding? = null) {
-        val isSettingsScreen = context != null
-        val loading = LoadingDialog(context)
+        val isSettingsScreen = binding != null
 
         // 인터넷 연결 확인
         val connectivityManager =
@@ -103,7 +104,11 @@ class SyncDataManager {
             return
         }
 
-        loading.show()
+        if (isSettingsScreen) {
+            loading = LoadingDialog(context)
+            loading?.show()
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             // app 저장 데이터 조회
             val appDiaryData = getDiarySyncList()
@@ -132,7 +137,7 @@ class SyncDataManager {
                                         ) {
                                             isEndUpload = true
                                             if (isEndDownload) {
-                                                loading.dismiss()
+                                                loading?.dismiss()
                                                 setSettingsSyncTime(binding)
                                             }
                                         }
@@ -143,7 +148,7 @@ class SyncDataManager {
                                             ).show()
                                             isEndUpload = true
                                             if (isEndDownload) {
-                                                loading.dismiss()
+                                                loading?.dismiss()
                                                 setSettingsSyncTime(binding)
                                             }
                                         }
@@ -160,7 +165,7 @@ class SyncDataManager {
                             saveDiary(downloadList)
                             isEndDownload = true
                             if (isEndUpload) {
-                                loading.dismiss()
+                                loading?.dismiss()
                                 setSettingsSyncTime(binding)
                             }
                         }
@@ -168,13 +173,13 @@ class SyncDataManager {
                         if (downloadList.isEmpty() && (response.body()?.data?.uploadList
                                 ?: listOf()).isEmpty()
                         ) {
-                            loading.dismiss()
+                            loading?.dismiss()
                             setSettingsSyncTime(binding)
                         }
                     }
 
                     override fun onFailure(call: Call<SyncResponse>, t: Throwable) {
-                        loading.dismiss()
+                        loading?.dismiss()
                         Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
                     }
 
