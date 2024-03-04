@@ -97,7 +97,9 @@ class SyncDataManager {
 
         if (networkCapabilities == null) {
             // 네트워크에 연결되어 있지 않음
-            Toast.makeText(context, "네트워크 연결 후 시도 바랍니다.", Toast.LENGTH_SHORT).show()
+            if (isSettingsScreen) {
+                Toast.makeText(context, "네트워크 연결 후 시도 바랍니다.", Toast.LENGTH_SHORT).show()
+            }
             return
         }
 
@@ -156,9 +158,11 @@ class SyncDataManager {
                                         }
 
                                         override fun onFailure(call: Call<Any>, t: Throwable) {
-                                            Toast.makeText(
-                                                context, t.localizedMessage, Toast.LENGTH_SHORT
-                                            ).show()
+                                            if (isSettingsScreen) {
+                                                Toast.makeText(
+                                                    context, t.localizedMessage, Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
                                             isEndUpload = true
                                             if (isEndDownload) {
                                                 loading?.dismiss()
@@ -192,7 +196,10 @@ class SyncDataManager {
 
                     override fun onFailure(call: Call<SyncResponse>, t: Throwable) {
                         loading?.dismiss()
-                        Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
+
+                        if (isSettingsScreen) {
+                            Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                 })
