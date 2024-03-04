@@ -21,6 +21,9 @@ interface DiaryTagDao {
     @Insert
     fun insertDiaryTag(diaryTag: DiaryTag)
 
+    @Insert
+    fun insertDiaryTagAll(diaryTagList: List<DiaryTag>)
+
     @Update
     fun updateDiaryTag(diaryTag: DiaryTag)
 
