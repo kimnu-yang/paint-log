@@ -56,7 +56,7 @@ class GlobalApplication : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             while (true) {
                 SyncDataManager().syncData(applicationContext)
-                delay(10000) // 10초마다 작업 실행
+                delay(30000) // 10초마다 작업 실행
             }
         }
 
