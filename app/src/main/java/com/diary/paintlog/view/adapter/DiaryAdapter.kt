@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.diary.paintlog.R
@@ -30,16 +31,12 @@ class DiaryAdapter(var data: MutableList<DiaryWithTagAndColor>) :
             binding.diarySearchListDate.text = data.diary.registeredAt
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd(E)", Locale.KOREA))
 
+            binding.diarySearchListColor.background = null
+            binding.diarySearchListColor.background = ContextCompat.getDrawable(binding.root.context, R.drawable.paint_gray)
             if (data.colors.isNotEmpty()) {
-                binding.diarySearchListColor.background =
-                    AppCompatResources.getDrawable(binding.root.context, R.drawable.paint_gray)
-
-                Common.imageSetTintWithAlpha(
-                    binding.root.context,
-                    binding.diarySearchListColor.background,
-                    data.colors.first().color.name,
-                    data.colors.first().ratio.toString()
-                )
+                binding.diarySearchListColor.background.setTint(Common.blendColors(binding.root.context, data.colors))
+            } else {
+                binding.diarySearchListColor.background.setTint(ContextCompat.getColor(binding.root.context, R.color.gray50))
             }
 
             data.tags.forEach { item ->
