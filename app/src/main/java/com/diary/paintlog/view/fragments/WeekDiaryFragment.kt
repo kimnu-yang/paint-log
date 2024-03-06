@@ -115,7 +115,7 @@ class WeekDiaryFragment : Fragment() {
             val myArt = myArtViewModel.getMyArtWeek(baseDate)
             if(myArt != null){
                 val width = (resources.displayMetrics.widthPixels * 0.8).toInt()
-                val resourceName = "drawing_${myArt.art[0].resourceId.substring(0, 2)}_${myArt.art[0].resourceId.substring(2, 4)}"
+                val resourceName = "drawing_${myArt.art.resourceId.substring(0, 2)}_${myArt.art.resourceId.substring(2, 4)}"
                 val resourceId = resources.getIdentifier(resourceName, "drawable", requireContext().packageName)
                 val scaledBitmap = Common.setScaleByWidth(resources, width, resourceId)
 
@@ -134,8 +134,8 @@ class WeekDiaryFragment : Fragment() {
 
                     binding.weekDrawingTitle.text = "한 주의 그림"
                     binding.drawing.setImageBitmap(scaledBitmap)
-                    binding.drawingTitle.text = myArt.art[0].title
-                    binding.drawingArtist.text = myArt.art[0].artist
+                    binding.drawingTitle.text = myArt.art.title
+                    binding.drawingArtist.text = myArt.art.artist
                 }
             } else {
                 if(diaryCnt > 4){
