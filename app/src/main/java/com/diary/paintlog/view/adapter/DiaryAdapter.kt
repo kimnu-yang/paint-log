@@ -13,10 +13,11 @@ import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.databinding.FragmentDiarySearchItemBinding
 import com.diary.paintlog.utils.Common
+import com.diary.paintlog.utils.DiaryIdListener
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class DiaryAdapter(var data: MutableList<DiaryWithTagAndColor>) :
+class DiaryAdapter(private val listener: DiaryIdListener, var data: MutableList<DiaryWithTagAndColor>) :
     RecyclerView.Adapter<DiaryAdapter.MyViewHolder>() {
 
     private val TAG = this.javaClass.simpleName
@@ -60,6 +61,7 @@ class DiaryAdapter(var data: MutableList<DiaryWithTagAndColor>) :
         holder.bind(data[position])
 
         holder.binding.diarySearchListView.setOnClickListener {
+            listener.onItemClick(data[position].diary.id)
             Log.i(
                 TAG,
                 "일기 클릭 [$position] [${data[position].diary.id}] [${data[position].diary.title}]"
@@ -68,26 +70,6 @@ class DiaryAdapter(var data: MutableList<DiaryWithTagAndColor>) :
     }
 
     override fun getItemCount() = data.size
-
-//    companion object {
-//        val diffUtil = object : DiffUtil.ItemCallback<DiaryWithTagAndColor>() {
-//            override fun areItemsTheSame(
-//                oldItem: DiaryWithTagAndColor,
-//                newItem: DiaryWithTagAndColor
-//            ): Boolean {
-//                Log.i("DIFF1", "${oldItem.diary.id} ${newItem.diary.id}")
-//                return oldItem.diary.id == newItem.diary.id
-//            }
-//
-//            override fun areContentsTheSame(
-//                oldItem: DiaryWithTagAndColor,
-//                newItem: DiaryWithTagAndColor
-//            ): Boolean {
-//                Log.i("DIFF2", "${oldItem} ${newItem}")
-//                return oldItem == newItem
-//            }
-//        }
-//    }
 
     private fun addTag(binding: FragmentDiarySearchItemBinding, tag: String) {
         // TextView 생성
