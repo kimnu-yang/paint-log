@@ -9,6 +9,9 @@ import com.diary.paintlog.data.entities.Topic
 @Dao
 interface TopicDao {
 
+    @Query("SELECT * FROM topic")
+    fun getAllTopic(): List<Topic>
+
     @Query("SELECT * FROM topic ORDER BY RANDOM() LIMIT 1")
     fun getRandomTopic(): Topic?
     @RawQuery

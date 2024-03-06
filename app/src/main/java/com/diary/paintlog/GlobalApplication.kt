@@ -53,11 +53,15 @@ class GlobalApplication : Application() {
         // 샘플 데이터 추가 (필요 할 때만 실행할 것)
 //        exampleSQL()
 
-        // 주제 샘플 데이터 (필요 할 때만 실행할 것)
-//        exampleTopic()
+        CoroutineScope(Dispatchers.Default).launch{
+            // 토픽 데이터
+            val topicCount = database.topicDao().getAllTopic().count()
+            if(topicCount == 0) topicDataSQL()
 
-        // 그림 데이터 추가
-//        imageDataSQL()
+            // 그림 데이터
+            val artCount = database.artDao().getAllArt().count()
+            if(artCount == 0) imageDataSQL()
+        }
     }
 
     private fun createNotificationChannel() {
@@ -79,28 +83,41 @@ class GlobalApplication : Application() {
         }
     }
 
-    private fun exampleTopic() {
+    private fun topicDataSQL() {
         CoroutineScope(Dispatchers.Default).launch {
             val topicDao = database.topicDao()
 
-            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 가장 좋아하는 음악은?')"))
-            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 가장 좋아하는 음식은?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 열정을 가지는 분야는?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 갖고 싶은 습관은?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('인생에서 가장 중요한것은?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나 스스로를 묘사한다면?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나는 지금 내가 꿈꾸던대로 살고 있나요?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('3년전 나에게 해주고 싶은 충고는?')"))
-            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('오늘 무엇때문에 바쁜가요? 이것이 1년 후, 3년 후, 5년 후에도 문제가 될까요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('오늘 무엇 때문에 바빴나요?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('앞으로 인생이 자유라면, 무엇을 하고 싶은가요?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('지금 인생의 가장 우선순위는?')"))
-            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('10억을 가지고 있다면, 무엇을 할것인지?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('10억을 가지고 있다면, 무엇을 할것인가요??')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('인생에서 가장 두려운 것은?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('없애고 싶은 나의 나쁜 습관은?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('더 키우고 싶은 나의 좋은 습관은?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 가장 많은 시간을 함께 보내는 5명')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나에게 가장 영감을 주는 사람은?')"))
             topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('세상에서 나에게 가장 중요한 사람(들)은?')"))
-            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('당신 인생의 멘토는 누구인지?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('당신 인생의 멘토는 누구인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('걱정 많은 천재와 팔자 좋은 바보 중 어떤 것을 선호하나요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나는 친구로 삼을 만한 사람인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나는 내 스스로 결정을 내리는편인가요?, 남이 내린 결정을 따르나요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('만약 내일 세상이 멸망한다면, 오늘 누구와 시간을 보내겠나요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 잘하는 것과 내가 좋아하는 것이 다르다면 뭘 선택할건가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('나는 말이 앞서는 사람인가요? 행동이 앞서는 사람인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 하고 싶지만 아직까지 이루지 못한 일은 무엇인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('살아가며 가장 행복했던 기억은 무엇인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('살아가며 가장 힘들었던 기억은 무엇인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('살아가며 가장 위로 되었던 말은 무엇인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('살아가며 가장 누군가를 상처줬던 말은 무엇인가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('한 가지 직업을 체험해 볼 수 있다면?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('어디든지 여행을 갈수 있다면 어디로 갈건가요?')"))
+            topicDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO topic(topic) VALUES ('내가 생각하는 성공의 기준을 무엇인가요?')"))
         }
     }
 
@@ -160,33 +177,29 @@ class GlobalApplication : Application() {
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 1, '태그1')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 2, '태그2')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 3, '태그3')"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 1, 'RED', 60)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'BLUE', 30)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 3, 'VIOLET', 50)"))
+            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 1, 'YELLOW', 100)"))
+            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'ORANGE', 40)"))
 
             diaryDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary(is_temp, title, content, weather, temp_now, temp_min, temp_max, registered_at) values ('N', '제목33', '내용33', 'CLOUDY', '20', '10', '25', '2024-02-14T11:09:11.332798')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 1, '태그1')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 2, '태그2')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 3, '태그3')"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 1, 'RED', 60)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'BLUE', 30)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 3, 'VIOLET', 50)"))
+            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'BLUE', 50)"))
+            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 3, 'GREEN', 90)"))
 
             diaryDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary(is_temp, title, content, weather, temp_now, temp_min, temp_max, registered_at) values ('N', '제목34', '내용34', 'RAINY', '20', '10', '25', '2024-02-15T11:09:11.332798')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 1, '태그1')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 2, '태그2')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 3, '태그3')"))
             diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 1, 'RED', 60)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'BLUE', 30)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 3, 'VIOLET', 50)"))
+            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'ORANGE', 70)"))
 
             diaryDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary(is_temp, title, content, weather, temp_now, temp_min, temp_max, registered_at) values ('N', '제목35', '내용35', 'RAINY', '20', '10', '25', '2024-02-16T11:09:11.332798')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 1, '태그1')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 2, '태그2')"))
             diaryTagDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_tag(diary_id, position, tag) values ((SELECT id FROM diary order by id desc limit 1), 3, '태그3')"))
             diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 1, 'RED', 60)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'BLUE', 30)"))
-            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 3, 'VIOLET', 50)"))
+            diaryColorDao.executeRawQuery(SimpleSQLiteQuery("INSERT INTO diary_color(diary_id, position, color, ratio) values ((SELECT id FROM diary order by id desc limit 1), 2, 'YELLOW', 30)"))
         }
     }
 
