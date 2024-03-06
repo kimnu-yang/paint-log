@@ -3,7 +3,6 @@ package com.diary.paintlog.view.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +18,7 @@ import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryTagCount
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.databinding.FragmentDiarySearchBinding
-import com.diary.paintlog.utils.DiaryIdListener
+import com.diary.paintlog.utils.listener.DiaryIdListener
 import com.diary.paintlog.view.adapter.DiaryAdapter
 import com.diary.paintlog.viewmodel.DiarySearchViewModel
 import kotlinx.coroutines.CoroutineScope

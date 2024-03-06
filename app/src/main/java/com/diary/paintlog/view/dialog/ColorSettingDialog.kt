@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
 import com.diary.paintlog.R
 import com.diary.paintlog.utils.Common
-import com.diary.paintlog.utils.DataListener
+import com.diary.paintlog.utils.listener.DataListener
 
 class ColorSettingDialog(private var colorNum: String): DialogFragment() {
 

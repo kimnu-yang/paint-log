@@ -1,11 +1,9 @@
 package com.diary.paintlog.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -13,7 +11,7 @@ import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.databinding.FragmentDiarySearchItemBinding
 import com.diary.paintlog.utils.Common
-import com.diary.paintlog.utils.DiaryIdListener
+import com.diary.paintlog.utils.listener.DiaryIdListener
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -62,10 +60,6 @@ class DiaryAdapter(private val listener: DiaryIdListener, var data: MutableList<
 
         holder.binding.diarySearchListView.setOnClickListener {
             listener.onItemClick(data[position].diary.id)
-            Log.i(
-                TAG,
-                "일기 클릭 [$position] [${data[position].diary.id}] [${data[position].diary.title}]"
-            )
         }
     }
 
