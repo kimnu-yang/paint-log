@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentActivity
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.Art
 import com.diary.paintlog.data.entities.DiaryColor
+import com.diary.paintlog.data.entities.MyArtWithInfo
 import com.diary.paintlog.data.entities.enums.Weather
 import okhttp3.internal.toHexString
 import java.time.DayOfWeek
@@ -277,7 +278,7 @@ object Common {
         return Color.rgb(r.toInt(),g.toInt(),b.toInt())
     }
 
-    private fun getColorByString(colorString: String): Int {
+    fun getColorByString(colorString: String): Int {
         return when (colorString) {
             "RED" -> R.color.red
             "ORANGE" -> R.color.orange
@@ -334,5 +335,27 @@ object Common {
         val green = color shr 8 and 0xFF
         val blue = color and 0xFF
         return intArrayOf(red, green, blue)
+    }
+
+    fun getMyArtWithInfoByRGB(data: MutableList<MyArtWithInfo>, color: Int): MutableList<MyArtWithInfo> {
+        val res = mutableListOf<MyArtWithInfo>()
+
+        val hexString = color.toHexString()
+        val r = Integer.parseInt(hexString.substring(2, 4), 16)
+        val g = Integer.parseInt(hexString.substring(4, 6), 16)
+        val b = Integer.parseInt(hexString.substring(6, 8), 16)
+
+
+        for (myArt in data){
+            val artRgb = myArt.art.rgb
+            val artR = Integer.parseInt(artRgb.substring(2, 4), 16)
+            val artG = Integer.parseInt(artRgb.substring(2, 4), 16)
+            val artB = Integer.parseInt(artRgb.substring(2, 4), 16)
+
+            val totalDiff = abs(artR - r) + abs(artG - g) + abs(artB - b)
+            if(totalDiff < 150) res.add(myArt)
+        }
+
+        return res
     }
 }

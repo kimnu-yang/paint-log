@@ -23,8 +23,11 @@
     <dimen name="margin_medium_twice">32dp</dimen>
     <dimen name="margin_large_twice">40dp</dimen>
 
-    <dimen name="artwork_title">20sp</dimen>
-    <dimen name="artwork_summary">16sp</dimen>
+    <dimen name="artwork_title">24sp</dimen>
+    <dimen name="artwork_artist">20sp</dimen>
+    <dimen name="artwork_base_date">16sp</dimen>
+    <dimen name="artwork_created_date">16sp</dimen>
+
     <dimen name="drawing_title">24sp</dimen>
     <dimen name="drawing_artist">20sp</dimen>
 
