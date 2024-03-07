@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 import com.diary.paintlog.data.entities.enums.Color
 
 @Entity(tableName = "diary_color")
-data class DiaryColor (
+data class DiaryColor(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo(name = "diary_id") val diaryId: Long,
+    @ColumnInfo(name = "diary_id") var diaryId: Long,
     @ColumnInfo(name = "position") val position: Int,
     @ColumnInfo(name = "color") val color: Color,
     @ColumnInfo(name = "ratio") val ratio: Int

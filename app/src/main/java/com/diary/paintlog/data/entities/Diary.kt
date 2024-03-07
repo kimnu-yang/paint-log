@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 @Entity(tableName = "diary")
 data class Diary(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) var id: Long = 0,
     @ColumnInfo(name = "is_temp") var isTemp: TempStatus = TempStatus.Y,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "content") var content: String,

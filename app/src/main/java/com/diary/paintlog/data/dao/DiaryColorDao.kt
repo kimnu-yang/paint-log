@@ -20,6 +20,9 @@ interface DiaryColorDao {
     @Insert
     fun insertDiaryColor(diaryColor: DiaryColor)
 
+    @Insert
+    fun insertDiaryColorAll(diaryColorList: List<DiaryColor>)
+
     @Update
     fun updateDiaryColor(diaryColor: DiaryColor)
 

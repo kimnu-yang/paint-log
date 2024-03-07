@@ -16,6 +16,7 @@ import com.diary.paintlog.databinding.FragmentSettingsBinding
 import com.diary.paintlog.model.repository.SettingsRepository
 import com.diary.paintlog.utils.Kakao
 import com.diary.paintlog.utils.NotifyManager
+import com.diary.paintlog.utils.SyncDataManager
 import com.diary.paintlog.utils.retrofit.ApiServerClient
 import com.diary.paintlog.utils.retrofit.model.ApiLoginResponse
 import com.diary.paintlog.view.dialog.LoadingDialog
@@ -40,8 +41,7 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // 초기화
         _binding = FragmentSettingsBinding.inflate(inflater, container, false) // 바인딩 객체 초기화
@@ -59,8 +59,7 @@ class SettingsFragment : Fragment() {
         }
 
         val timePickerDialog = TimePickerDialog(
-            context,
-            { _, selectedHour, selectedMinute ->
+            context, { _, selectedHour, selectedMinute ->
                 runBlocking { settingsRepo.saveTime(selectedHour, selectedMinute) }
                 binding.settingAlarmSummary.text =
                     setTimeMsg(SettingsRepository.Time(selectedHour, selectedMinute))
@@ -70,10 +69,7 @@ class SettingsFragment : Fragment() {
                 } else {
                     binding.settingAlarmSwitch.isChecked = true
                 }
-            },
-            storeTime.hour,
-            storeTime.minute,
-            true
+            }, storeTime.hour, storeTime.minute, true
         )
 
         binding.settingAlarmView.setOnClickListener {
@@ -135,10 +131,7 @@ class SettingsFragment : Fragment() {
 
         binding.settingSyncSummary.text = syncText
         binding.settingSyncButton.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                settingsRepo.saveSyncTime(LocalDateTime.now())
-                reloadFragment()
-            }
+            SyncDataManager().syncData(requireContext(), binding)
         }
         /////
 
@@ -172,62 +165,58 @@ class SettingsFragment : Fragment() {
                 AuthApiClient.instance.tokenManagerProvider.manager.getToken()?.accessToken ?: ""
             if (kakaoToken == "") {
                 Toast.makeText(
-                    context,
-                    getString(R.string.setting_unregist_error_retry),
-                    Toast.LENGTH_SHORT
+                    context, getString(R.string.setting_unregist_error_retry), Toast.LENGTH_SHORT
                 ).show()
             } else {
                 showConfirmationDialog(
-                    requireContext(),
-                    getString(R.string.setting_unregist_confirm)
+                    requireContext(), getString(R.string.setting_unregist_confirm)
                 ) {
                     loading.show()
 
-                    ApiServerClient.api.unregistKakaoUser(kakaoToken).enqueue(object :
-                        Callback<ApiLoginResponse> {
-                        override fun onResponse(
-                            call: Call<ApiLoginResponse>,
-                            response: Response<ApiLoginResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                Log.i(TAG, "${response.body()}")
+                    ApiServerClient.api.unregistKakaoUser(kakaoToken)
+                        .enqueue(object : Callback<ApiLoginResponse> {
+                            override fun onResponse(
+                                call: Call<ApiLoginResponse>, response: Response<ApiLoginResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    Log.i(TAG, "${response.body()}")
 
-                                // 카카오 연결 끊기
-                                UserApiClient.instance.unlink { error ->
-                                    if (error != null) {
-                                        Log.e(TAG, "연결 끊기 실패", error)
-                                    } else {
-                                        Log.i(TAG, "연결 끊기 성공. SDK에서 토큰 삭제 됨")
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            settingsRepo.delSyncTime()
+                                    // 카카오 연결 끊기
+                                    UserApiClient.instance.unlink { error ->
+                                        if (error != null) {
+                                            Log.e(TAG, "연결 끊기 실패", error)
+                                        } else {
+                                            Log.i(TAG, "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                                            CoroutineScope(Dispatchers.IO).launch {
+                                                settingsRepo.delSyncTime()
+                                            }
+                                            reloadFragment()
                                         }
-                                        reloadFragment()
                                     }
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        getString(R.string.setting_unregist_error, "-1"),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.i(TAG, response.toString())
                                 }
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    getString(R.string.setting_unregist_error, "-1"),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Log.i(TAG, response.toString())
+
+                                loading.dismiss()
                             }
 
-                            loading.dismiss()
-                        }
+                            override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.setting_unregist_error, "0"),
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
-                        override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.setting_unregist_error, "0"),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
 
-                            Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
-
-                            loading.dismiss()
-                        }
-                    })
+                                loading.dismiss()
+                            }
+                        })
                 }
             }
         }
@@ -259,18 +248,14 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showConfirmationDialog(context: Context, message: String, onConfirmed: () -> Unit) {
-        AlertDialog.Builder(context)
-            .setMessage(message)
-            .setPositiveButton("확인") { dialog, _ ->
+        AlertDialog.Builder(context).setMessage(message).setPositiveButton("확인") { dialog, _ ->
                 // "확인" 버튼을 클릭하면 onConfirmed 함수를 호출합니다.
                 onConfirmed()
                 dialog.dismiss()
-            }
-            .setNegativeButton("취소") { dialog, _ ->
+            }.setNegativeButton("취소") { dialog, _ ->
                 // "취소" 버튼을 클릭하면 대화 상자를 닫습니다.
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     override fun onDestroyView() {

@@ -203,7 +203,7 @@ class GlobalApplication : Application() {
         }
     }
 
-    private fun imageDataSQL(){
+    private fun imageDataSQL() {
         CoroutineScope(Dispatchers.Default).launch {
             val artDao = database.artDao()
 
