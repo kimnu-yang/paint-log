@@ -52,8 +52,9 @@
 
         <TextView
             android:id="@+id/color_red_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -76,8 +77,9 @@
 
         <TextView
             android:id="@+id/color_orange_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -100,8 +102,9 @@
 
         <TextView
             android:id="@+id/color_yellow_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -124,8 +127,9 @@
 
         <TextView
             android:id="@+id/color_green_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -147,8 +151,9 @@
 
         <TextView
             android:id="@+id/color_blue_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -170,8 +175,9 @@
 
         <TextView
             android:id="@+id/color_navy_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -193,8 +199,9 @@
 
         <TextView
             android:id="@+id/color_violet_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
             android:textColor="@color/white"
             android:textSize="18sp"
