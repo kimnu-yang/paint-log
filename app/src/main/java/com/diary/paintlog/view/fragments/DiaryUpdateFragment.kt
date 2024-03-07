@@ -20,7 +20,7 @@ import com.diary.paintlog.data.entities.enums.TempStatus
 import com.diary.paintlog.data.entities.enums.Weather
 import com.diary.paintlog.databinding.FragmentDiaryBinding
 import com.diary.paintlog.utils.Common
-import com.diary.paintlog.utils.DataListener
+import com.diary.paintlog.utils.listener.DataListener
 import com.diary.paintlog.utils.retrofit.WeatherServerClient
 import com.diary.paintlog.utils.retrofit.model.WeatherResponse
 import com.diary.paintlog.view.dialog.ColorSettingDialog

@@ -8,18 +8,22 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diary.paintlog.R
 import com.diary.paintlog.databinding.FragmentArtWorkBinding
 import com.diary.paintlog.utils.Common
+import com.diary.paintlog.utils.listener.BaseDateListener
 import com.diary.paintlog.view.adapter.ArtWorkAdapter
 import com.diary.paintlog.viewmodel.MyArtViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
-class ArtWorkFragment : Fragment() {
+class ArtWorkFragment : Fragment(), BaseDateListener {
 
     data class Artwork(
         var title: String,
@@ -54,7 +58,7 @@ class ArtWorkFragment : Fragment() {
                     binding.artworkListEmpty.visibility = View.GONE
 
                     // set adapter
-                    val adapter = ArtWorkAdapter(data, resources, requireContext())
+                    val adapter = ArtWorkAdapter(this@ArtWorkFragment, data, resources, requireContext())
                     binding.artworkCount.text = getString(R.string.artwork_count, data.size.toString())
                     binding.artworkList.layoutManager = LinearLayoutManager(requireContext())
                     binding.artworkList.adapter = adapter
@@ -70,7 +74,7 @@ class ArtWorkFragment : Fragment() {
                         color.alpha = 0.5f
                     }
 
-                    val adapter = ArtWorkAdapter(data, resources, requireContext())
+                    val adapter = ArtWorkAdapter(this@ArtWorkFragment, data, resources, requireContext())
                     binding.artworkCount.text = getString(R.string.artwork_count, data.size.toString())
                     binding.artworkList.layoutManager = LinearLayoutManager(requireContext())
                     binding.artworkList.adapter = adapter
@@ -104,7 +108,7 @@ class ArtWorkFragment : Fragment() {
 
                         binding.artworkList.adapter = null
                         if(newData.size > 0){
-                            val adapter = ArtWorkAdapter(newData, resources, requireContext())
+                            val adapter = ArtWorkAdapter(this@ArtWorkFragment, newData, resources, requireContext())
                             binding.artworkCount.text = getString(R.string.artwork_count, newData.size.toString())
                             binding.artworkList.layoutManager = LinearLayoutManager(requireContext())
                             binding.artworkList.adapter = adapter
@@ -124,5 +128,11 @@ class ArtWorkFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onItemClick(baseDate: LocalDateTime) {
+        val dateBundle = Bundle()
+        dateBundle.putString("date", baseDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+        findNavController().navigate(R.id.fragment_week_diary, dateBundle)
     }
 }

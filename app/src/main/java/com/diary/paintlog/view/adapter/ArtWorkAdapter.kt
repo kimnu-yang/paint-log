@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.diary.paintlog.data.entities.MyArtWithInfo
 import com.diary.paintlog.databinding.ArtworkItemLayoutBinding
 import com.diary.paintlog.utils.Common
+import com.diary.paintlog.utils.listener.BaseDateListener
 import com.diary.paintlog.view.fragments.ArtWorkFragment
 import java.time.format.DateTimeFormatter
 
-class ArtWorkAdapter(var data: MutableList<MyArtWithInfo>, var resources: Resources, var context: Context) :
+class ArtWorkAdapter(val listener: BaseDateListener, var data: MutableList<MyArtWithInfo>, var resources: Resources, var context: Context) :
     ListAdapter<ArtWorkFragment.Artwork, ArtWorkAdapter.MyViewHolder>(diffUtil) {
 
     private val TAG = this.javaClass.simpleName
@@ -54,8 +55,7 @@ class ArtWorkAdapter(var data: MutableList<MyArtWithInfo>, var resources: Resour
         holder.bind(data[position])
 
         holder.binding.artworkView.setOnClickListener {
-            Log.i(TAG, "작품 클릭 [$position] [${data[position].art.title}] [${data[position].art.artist}]")
-            Log.i(TAG, "${holder.binding.artworkTitle.text}")
+            listener.onItemClick(data[position].myArt.baseDate)
         }
     }
 

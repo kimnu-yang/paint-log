@@ -12,18 +12,20 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryTagCount
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.databinding.FragmentDiarySearchBinding
+import com.diary.paintlog.utils.listener.DiaryIdListener
 import com.diary.paintlog.view.adapter.DiaryAdapter
 import com.diary.paintlog.viewmodel.DiarySearchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DiarySearchFragment : Fragment() {
+class DiarySearchFragment : Fragment(), DiaryIdListener {
 
     val TAG = this.javaClass.simpleName
 
@@ -65,7 +67,7 @@ class DiarySearchFragment : Fragment() {
 
                 // 리스트 목록 세팅
                 setListCount()
-                adapter = DiaryAdapter(data)
+                adapter = DiaryAdapter(this@DiarySearchFragment, data)
 
                 if (data.size == 0) {
                     binding.diarySearchEmptyView.visibility = View.VISIBLE
@@ -153,5 +155,11 @@ class DiarySearchFragment : Fragment() {
 
     private fun setListCount() {
         binding.diarySearchCount.text = getString(R.string.artwork_count, data.size.toString())
+    }
+
+    override fun onItemClick(diaryId: Long) {
+        val diaryBundle = Bundle()
+        diaryBundle.putLong("diaryId", diaryId)
+        findNavController().navigate(R.id.fragment_diary_view, diaryBundle)
     }
 }

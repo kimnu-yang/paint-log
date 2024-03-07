@@ -1,21 +1,21 @@
 package com.diary.paintlog.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
 import com.diary.paintlog.databinding.FragmentDiarySearchItemBinding
 import com.diary.paintlog.utils.Common
+import com.diary.paintlog.utils.listener.DiaryIdListener
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class DiaryAdapter(var data: MutableList<DiaryWithTagAndColor>) :
+class DiaryAdapter(private val listener: DiaryIdListener, var data: MutableList<DiaryWithTagAndColor>) :
     RecyclerView.Adapter<DiaryAdapter.MyViewHolder>() {
 
     private val TAG = this.javaClass.simpleName
@@ -30,16 +30,12 @@ class DiaryAdapter(var data: MutableList<DiaryWithTagAndColor>) :
             binding.diarySearchListDate.text = data.diary.registeredAt
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd(E)", Locale.KOREA))
 
+            binding.diarySearchListColor.background = null
+            binding.diarySearchListColor.background = ContextCompat.getDrawable(binding.root.context, R.drawable.paint_gray)
             if (data.colors.isNotEmpty()) {
-                binding.diarySearchListColor.background =
-                    AppCompatResources.getDrawable(binding.root.context, R.drawable.paint_gray)
-
-                Common.imageSetTintWithAlpha(
-                    binding.root.context,
-                    binding.diarySearchListColor.background,
-                    data.colors.first().color.name,
-                    data.colors.first().ratio.toString()
-                )
+                binding.diarySearchListColor.background.setTint(Common.blendColors(binding.root.context, data.colors))
+            } else {
+                binding.diarySearchListColor.background.setTint(ContextCompat.getColor(binding.root.context, R.color.gray50))
             }
 
             data.tags.forEach { item ->
@@ -63,34 +59,11 @@ class DiaryAdapter(var data: MutableList<DiaryWithTagAndColor>) :
         holder.bind(data[position])
 
         holder.binding.diarySearchListView.setOnClickListener {
-            Log.i(
-                TAG,
-                "일기 클릭 [$position] [${data[position].diary.id}] [${data[position].diary.title}]"
-            )
+            listener.onItemClick(data[position].diary.id)
         }
     }
 
     override fun getItemCount() = data.size
-
-//    companion object {
-//        val diffUtil = object : DiffUtil.ItemCallback<DiaryWithTagAndColor>() {
-//            override fun areItemsTheSame(
-//                oldItem: DiaryWithTagAndColor,
-//                newItem: DiaryWithTagAndColor
-//            ): Boolean {
-//                Log.i("DIFF1", "${oldItem.diary.id} ${newItem.diary.id}")
-//                return oldItem.diary.id == newItem.diary.id
-//            }
-//
-//            override fun areContentsTheSame(
-//                oldItem: DiaryWithTagAndColor,
-//                newItem: DiaryWithTagAndColor
-//            ): Boolean {
-//                Log.i("DIFF2", "${oldItem} ${newItem}")
-//                return oldItem == newItem
-//            }
-//        }
-//    }
 
     private fun addTag(binding: FragmentDiarySearchItemBinding, tag: String) {
         // TextView 생성

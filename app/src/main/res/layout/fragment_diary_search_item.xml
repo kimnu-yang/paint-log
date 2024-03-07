@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_small"
-    android:background="#FFF9E3"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
@@ -20,7 +19,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="제목"
             android:textSize="20sp"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@id/diary_search_list_content"
@@ -31,26 +29,15 @@
 
         <ImageView
             android:id="@+id/diary_search_list_color"
-            android:layout_width="78dp"
-            android:layout_height="26dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/paint_gray"
             android:contentDescription="@string/diary_desc_color"
             app:layout_constraintBaseline_toBaselineOf="@id/diary_search_list_title"
             app:layout_constraintBottom_toTopOf="@id/diary_search_list_content"
-            app:layout_constraintHorizontal_bias="0.99"
             app:layout_constraintLeft_toRightOf="@id/diary_search_list_title"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/diary_search_list_color"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:src="@drawable/weather_cloudy"-->
-        <!--            app:layout_constraintBaseline_toBaselineOf="@id/diary_search_list_title"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/diary_search_list_content"-->
-        <!--            app:layout_constraintRight_toRightOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/diary_search_list_content"
