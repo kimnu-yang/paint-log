@@ -1,6 +1,7 @@
 package com.diary.paintlog.utils.retrofit.model
 
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
+import com.diary.paintlog.data.entities.MyArt
 import com.google.gson.annotations.SerializedName
 
 data class SyncResponse(
@@ -9,6 +10,7 @@ data class SyncResponse(
 ) {
     data class Body(
         @SerializedName("uploadList") val uploadList: List<Long>,
-        @SerializedName("downloadList") val downloadList: List<DiaryWithTagAndColor>
+        @SerializedName("downloadList") val downloadList: List<DiaryWithTagAndColor>,
+        @SerializedName("myArtDownloadList") val myArtDownloadList: List<MyArt>
     )
 }

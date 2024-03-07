@@ -10,6 +10,7 @@ import com.diary.paintlog.GlobalApplication
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.DiaryOnlyDate
 import com.diary.paintlog.data.entities.DiaryWithTagAndColor
+import com.diary.paintlog.data.entities.MyArt
 import com.diary.paintlog.data.entities.enums.TempStatus
 import com.diary.paintlog.databinding.FragmentSettingsBinding
 import com.diary.paintlog.model.repository.SettingsRepository
@@ -38,6 +39,8 @@ class SyncDataManager {
     private val diaryTagDao = GlobalApplication.database.diaryTagDao()
     private val diaryColorDao = GlobalApplication.database.diaryColorDao()
 
+    private val myArtDao = GlobalApplication.database.myArtDao()
+
     private val settingsRepo = SettingsRepository()
 
     private var loading: LoadingDialog? = null
@@ -47,6 +50,14 @@ class SyncDataManager {
             diaryDao.getAllDiaryRegisteredAt()
         } else {
             diaryDao.getAllDiaryRegisteredAt(LocalDateTime.parse(lastSyncTime))
+        }
+    }
+
+    private fun getMyArtSyncList(lastSyncTime: String): List<MyArt> {
+        return if (lastSyncTime == "") {
+            myArtDao.getMyArt()
+        } else {
+            myArtDao.getMyArtByRegisteredDate(LocalDateTime.parse(lastSyncTime))
         }
     }
 
@@ -86,6 +97,26 @@ class SyncDataManager {
         }
     }
 
+    private fun saveMyArt(myArtList: List<MyArt>) {
+        myArtList.forEach {
+            val oldMyArtId =
+                myArtDao.getMyArtIdByBaseDate(
+                    it.baseDate.format(
+                        DateTimeFormatter.ofPattern(
+                            "yyyy-MM-dd"
+                        )
+                    ) + "%"
+                )
+
+            if (oldMyArtId != null) {
+                it.id = oldMyArtId
+                myArtDao.updateMyArt(it)
+            } else {
+                myArtDao.insertMyArt(it)
+            }
+        }
+    }
+
     fun syncData(context: Context, binding: FragmentSettingsBinding? = null) {
         val isSettingsScreen = binding != null
 
@@ -103,9 +134,6 @@ class SyncDataManager {
             return
         }
 
-        // 카카오 토큰 갱신
-        UserApiClient.instance.accessTokenInfo { _, _ -> }
-
         // 카카오 토큰이 없는 경우는 return
         if (!AuthApiClient.instance.hasToken()) {
             Log.d(TAG, "토큰 오류")
@@ -117,6 +145,9 @@ class SyncDataManager {
             loading?.show()
         }
 
+        // 카카오 트큰이 존재하는 경우 토큰 갱신 먼저 진행 (API 서버에서 조회할 때 필요)
+        UserApiClient.instance.accessTokenInfo { _, _ -> }
+
         CoroutineScope(Dispatchers.IO).launch {
             // app 저장 데이터 조회
             // 설정 화면에서 누르는 경우 전체 전송
@@ -126,15 +157,23 @@ class SyncDataManager {
                 runBlocking { settingsRepo.getSyncTime() }
             }
             val appDiaryData = getDiarySyncList(lastSyncTime)
+            val myArtData = getMyArtSyncList(lastSyncTime)
             val kakaoToken =
                 AuthApiClient.instance.tokenManagerProvider.manager.getToken()?.accessToken ?: ""
-            val checkSyncDataRequest = CheckSyncDataRequest(lastSyncTime, appDiaryData)
+            val checkSyncDataRequest = CheckSyncDataRequest(lastSyncTime, appDiaryData, myArtData)
 
             ApiServerClient.api.syncDataCheck(kakaoToken, checkSyncDataRequest)
                 .enqueue(object : Callback<SyncResponse> {
                     override fun onResponse(
                         call: Call<SyncResponse>, response: Response<SyncResponse>
                     ) {
+                        if (response.code() == 500) {
+                            if (isSettingsScreen) {
+                                Toast.makeText(binding?.root?.context, "서버 오류", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+
                         var isEndUpload = false
                         var isEndDownload = false
 
@@ -172,25 +211,24 @@ class SyncDataManager {
                                     })
                             } else {
                                 isEndUpload = true
+                                if (isEndDownload) {
+                                    loading?.dismiss()
+                                    setSettingsSyncTime(binding)
+                                }
                             }
                         }
 
                         // 다운로드할 데이터
                         val downloadList = response.body()?.data?.downloadList ?: listOf()
+                        val myArtDownloadList = response.body()?.data?.myArtDownloadList ?: listOf()
                         CoroutineScope(Dispatchers.IO).launch {
                             saveDiary(downloadList)
+                            saveMyArt(myArtDownloadList)
                             isEndDownload = true
                             if (isEndUpload) {
                                 loading?.dismiss()
                                 setSettingsSyncTime(binding)
                             }
-                        }
-
-                        if (downloadList.isEmpty() && (response.body()?.data?.uploadList
-                                ?: listOf()).isEmpty()
-                        ) {
-                            loading?.dismiss()
-                            setSettingsSyncTime(binding)
                         }
                     }
 

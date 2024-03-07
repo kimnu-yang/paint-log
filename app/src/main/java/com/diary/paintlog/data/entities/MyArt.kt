@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity(tableName = "my_art")
 data class MyArt(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) var id: Long = 0,
     @ColumnInfo(name = "art_id") val artId: Long,
     @ColumnInfo(name = "base_date") val baseDate: LocalDateTime,
     @ColumnInfo(name = "registered_at") val registeredAt: LocalDateTime = LocalDateTime.now()
