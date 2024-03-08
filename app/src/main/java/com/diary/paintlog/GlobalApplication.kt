@@ -50,7 +50,7 @@ class GlobalApplication : Application() {
         // Kakao SDK 초기화
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
 
-        // 샘플 데이터 추가 (필요 할 때만 실행할 것)
+        // 샘플 데이터 추가
 //        exampleSQL()
 
         CoroutineScope(Dispatchers.Default).launch{

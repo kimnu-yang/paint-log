@@ -18,7 +18,7 @@ import org.threeten.bp.DayOfWeek
 class CalendarDecorator(private val context: Context) {
 
     /* 오늘 날짜의 색상을 설정 */
-    inner class TodayDecorator() : DayViewDecorator {
+    inner class TodayDecorator : DayViewDecorator {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             return day == CalendarDay.today()
         }
@@ -31,7 +31,7 @@ class CalendarDecorator(private val context: Context) {
     }
 
     /* 토요일 색상을 설정 */
-    inner class SaturdayDecorator() : DayViewDecorator {
+    inner class SaturdayDecorator : DayViewDecorator {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             val dayOfWeek = day.date.dayOfWeek.value // 1 (월요일) ~ 7 (일요일)
             return dayOfWeek == 6 // 토요일
@@ -44,7 +44,7 @@ class CalendarDecorator(private val context: Context) {
     }
 
     /* 일요일 색상을 설정 */
-    inner class SundayDecorator() : DayViewDecorator {
+    inner class SundayDecorator : DayViewDecorator {
         override fun shouldDecorate(day: CalendarDay): Boolean {
             val dayOfWeek = day.date.dayOfWeek.value // 1 (월요일) ~ 7 (일요일)
             return dayOfWeek == 7 // 일요일

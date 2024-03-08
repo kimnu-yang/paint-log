@@ -33,7 +33,7 @@ import java.util.Locale
 
 class SyncDataManager {
 
-    private val TAG = this.javaClass.simpleName
+    private val tag = this.javaClass.simpleName
 
     private val diaryDao = GlobalApplication.database.diaryDao()
     private val diaryTagDao = GlobalApplication.database.diaryTagDao()
@@ -136,7 +136,7 @@ class SyncDataManager {
 
         // 카카오 토큰이 없는 경우는 return
         if (!AuthApiClient.instance.hasToken()) {
-            Log.d(TAG, "토큰 오류")
+            Log.d(tag, "토큰 오류")
             return
         }
 
@@ -218,7 +218,7 @@ class SyncDataManager {
                             }
                         }
 
-                        // 다운로드할 데이터
+                        // 다운로드 할 데이터
                         val downloadList = response.body()?.data?.downloadList ?: listOf()
                         val myArtDownloadList = response.body()?.data?.myArtDownloadList ?: listOf()
                         CoroutineScope(Dispatchers.IO).launch {

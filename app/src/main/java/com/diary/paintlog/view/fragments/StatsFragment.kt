@@ -20,12 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class StatsFragment : Fragment() {
-
-    val TAG = this.javaClass.simpleName
-
     private var _binding: FragmentStatsBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -255,7 +251,7 @@ class StatsFragment : Fragment() {
                 }
             } else {
                 binding.calendarView.selectedDate = null
-                val unSelectedDateDecorator = calendarDecorator.UnSelectedDateDecorator(selectDate)
+                val unSelectedDateDecorator = calendarDecorator.UnSelectedDateDecorator(null)
                 activity?.runOnUiThread {
                     binding.calendarView.addDecorators(
                         todayDecorator,

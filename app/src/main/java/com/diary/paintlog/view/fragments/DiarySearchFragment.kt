@@ -26,9 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DiarySearchFragment : Fragment(), DiaryIdListener {
-
-    val TAG = this.javaClass.simpleName
-
     private var _binding: FragmentDiarySearchBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
 

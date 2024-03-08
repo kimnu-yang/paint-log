@@ -17,9 +17,6 @@ import java.util.Locale
 
 class DiaryAdapter(private val listener: DiaryIdListener, var data: MutableList<DiaryWithTagAndColor>) :
     RecyclerView.Adapter<DiaryAdapter.MyViewHolder>() {
-
-    private val TAG = this.javaClass.simpleName
-
     inner class MyViewHolder(val binding: FragmentDiarySearchItemBinding) :
         ViewHolder(binding.root) {
         fun bind(data: DiaryWithTagAndColor) {

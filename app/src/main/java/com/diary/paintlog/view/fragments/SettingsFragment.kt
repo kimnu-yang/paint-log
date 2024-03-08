@@ -35,7 +35,7 @@ import java.util.Locale
 
 class SettingsFragment : Fragment() {
 
-    private val TAG = this.javaClass.simpleName
+    private val tag = this.javaClass.simpleName
 
     private var _binding: FragmentSettingsBinding? = null // 바인딩 객체 선언
     private val binding get() = _binding!! // 바인딩 객체 접근용 getter
@@ -179,14 +179,11 @@ class SettingsFragment : Fragment() {
                                 call: Call<ApiLoginResponse>, response: Response<ApiLoginResponse>
                             ) {
                                 if (response.isSuccessful) {
-                                    Log.i(TAG, "${response.body()}")
-
                                     // 카카오 연결 끊기
                                     UserApiClient.instance.unlink { error ->
                                         if (error != null) {
-                                            Log.e(TAG, "연결 끊기 실패", error)
+                                            Log.e(tag, "연결 끊기 실패", error)
                                         } else {
-                                            Log.i(TAG, "연결 끊기 성공. SDK에서 토큰 삭제 됨")
                                             CoroutineScope(Dispatchers.IO).launch {
                                                 settingsRepo.delSyncTime()
                                             }
@@ -199,7 +196,6 @@ class SettingsFragment : Fragment() {
                                         getString(R.string.setting_unregist_error, "-1"),
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    Log.i(TAG, response.toString())
                                 }
 
                                 loading.dismiss()
@@ -211,9 +207,6 @@ class SettingsFragment : Fragment() {
                                     getString(R.string.setting_unregist_error, "0"),
                                     Toast.LENGTH_SHORT
                                 ).show()
-
-                                Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
-
                                 loading.dismiss()
                             }
                         })

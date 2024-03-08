@@ -66,7 +66,7 @@ class ColorSettingDialog(private var colorNum: String): DialogFragment() {
         saveButton.setOnClickListener {
 
             if(colorSelect == "" || colorPercent == ""){
-                context?.let { it -> Common.showToast(it, "모든 항목을 선택 해 주세요") }
+                context?.let { Common.showToast(it, "모든 항목을 선택 해 주세요") }
             } else {
                 val data = mapOf(
                     "colorNum" to colorNum,

@@ -251,7 +251,6 @@ class DiaryUpdateFragment : Fragment(), DataListener {
         // 추천 주제 버튼 클릭시 응답
         binding.newTopicBtn.setOnClickListener {
 
-            // TODO: 추천 주제 데이터베이스 연동
             val topic = "오늘 있었던 일은?"
             // 이미 작성된 제목이 있을 때는 확인 후 실행
             if(binding.title.text.toString() != "") {
@@ -449,7 +448,7 @@ class DiaryUpdateFragment : Fragment(), DataListener {
                                                 "네트워크 연결 상태를 확인 해 주세요"
                                             )
                                             t.localizedMessage?.let {
-                                                Log.i("Weather Network Error", it)
+                                                Log.e("Weather Network Error", it)
                                             }
                                         }
                                     })
