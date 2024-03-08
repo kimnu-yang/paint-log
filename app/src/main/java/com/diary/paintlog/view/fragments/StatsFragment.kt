@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.diary.paintlog.R
-import com.diary.paintlog.data.entities.enums.Color
 import com.diary.paintlog.data.entities.enums.Weather
 import com.diary.paintlog.databinding.FragmentStatsBinding
 import com.diary.paintlog.utils.Common
@@ -158,62 +157,58 @@ class StatsFragment : Fragment() {
         )
 
         CoroutineScope(Dispatchers.IO).launch {
-            val colorCountList = diaryViewModel.getColorCount(selectDate ?: CalendarDay.today())
+            val diaryList = diaryViewModel.getDiaryMonth(selectDate ?: CalendarDay.today())
 
-            val color = HashMap<String, Int>()
-            var allCount = 0
-            colorCountList.forEach {
-                color[it.color] = it.count
-                allCount += it.count
-            }
+            var diaryCnt = 0
+            var totalPopulation = 0
+            var red = 0F
+            var orange = 0F
+            var yellow = 0F
+            var green = 0F
+            var blue = 0F
+            var navy = 0F
+            var violet = 0F
 
-            Color.entries.forEach {
-                var colorPercentageView: TextView? = null
-                var percentage = Double.NaN
-
-                when (it.name) {
-                    "RED" -> {
-                        colorPercentageView = binding.colorRedPercent
-                        percentage = ((color["RED"] ?: 0).toDouble() / allCount.toDouble() * 100)
-                    }
-
-                    "ORANGE" -> {
-                        colorPercentageView = binding.colorOrangePercent
-                        percentage = ((color["ORANGE"] ?: 0).toDouble() / allCount.toDouble() * 100)
-                    }
-
-                    "YELLOW" -> {
-                        colorPercentageView = binding.colorYellowPercent
-                        percentage = ((color["YELLOW"] ?: 0).toDouble() / allCount.toDouble() * 100)
-                    }
-
-                    "GREEN" -> {
-                        colorPercentageView = binding.colorGreenPercent
-                        percentage = ((color["GREEN"] ?: 0).toDouble() / allCount.toDouble() * 100)
-                    }
-
-                    "BLUE" -> {
-                        colorPercentageView = binding.colorBluePercent
-                        percentage = ((color["BLUE"] ?: 0).toDouble() / allCount.toDouble() * 100)
-                    }
-
-                    "NAVY" -> {
-                        colorPercentageView = binding.colorNavyPercent
-                        percentage = ((color["NAVY"] ?: 0).toDouble() / allCount.toDouble() * 100)
-                    }
-
-                    "VIOLET" -> {
-                        colorPercentageView = binding.colorVioletPercent
-                        percentage = ((color["VIOLET"] ?: 0).toDouble() / allCount.toDouble() * 100)
+            for (diary in diaryList) {
+                if (diary.colors.isNotEmpty()) {
+                    for (color in diary.colors) {
+                        when (color.color.toString()) {
+                            "RED" -> red += color.ratio
+                            "ORANGE" -> orange += color.ratio
+                            "YELLOW" -> yellow += color.ratio
+                            "GREEN" -> green += color.ratio
+                            "BLUE" -> blue += color.ratio
+                            "NAVY" -> navy += color.ratio
+                            "VIOLET" -> violet += color.ratio
+                        }
+                        totalPopulation += color.ratio
                     }
                 }
-
-                if (colorPercentageView != null) {
-                    if (percentage.isNaN()) percentage = 0.0
-                    (colorPercentageView).text =
-                        getString(R.string.stats_percent, String.format("%.1f", percentage))
-                }
+                diaryCnt += 1
             }
+
+            if (red > 0.0) red /= totalPopulation
+            if (orange > 0.0) orange /= totalPopulation
+            if (yellow > 0.0) yellow /= totalPopulation
+            if (green > 0.0) green /= totalPopulation
+            if (blue > 0.0) blue /= totalPopulation
+            if (navy > 0.0) navy /= totalPopulation
+            if (violet > 0.0) violet /= totalPopulation
+
+            binding.colorRedPercent.text =
+                getString(R.string.stats_percent, String.format("%.1f", red * 100))
+            binding.colorOrangePercent.text =
+                getString(R.string.stats_percent, String.format("%.1f", orange * 100))
+            binding.colorYellowPercent.text =
+                getString(R.string.stats_percent, String.format("%.1f", yellow * 100))
+            binding.colorGreenPercent.text =
+                getString(R.string.stats_percent, String.format("%.1f", green * 100F))
+            binding.colorBluePercent.text =
+                getString(R.string.stats_percent, String.format("%.1f", blue * 100F))
+            binding.colorNavyPercent.text =
+                getString(R.string.stats_percent, String.format("%.1f", navy * 100F))
+            binding.colorVioletPercent.text =
+                getString(R.string.stats_percent, String.format("%.1f", violet * 100F))
         }
     }
 
@@ -236,7 +231,7 @@ class StatsFragment : Fragment() {
             for (data in diaryViewModel.getDiaryMonth(selectDate ?: CalendarDay.today())) {
                 val date = data.diary.registeredAt
                 val diaryDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
-                val color = if(data.colors.isNotEmpty()){
+                val color = if (data.colors.isNotEmpty()) {
                     Common.blendColors(requireContext(), data.colors)
                 } else {
                     ContextCompat.getColor(requireContext(), R.color.gray)

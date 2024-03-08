@@ -38,12 +38,12 @@
             app:layout_constraintLeft_toLeftOf="@id/color_red"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/color_red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
-            android:background="@drawable/paint_red_selector"
+            android:background="@drawable/paint_red"
             android:tooltipText="RED"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.05"
@@ -52,21 +52,23 @@
 
         <TextView
             android:id="@+id/color_red_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/color_red"
             app:layout_constraintLeft_toLeftOf="@id/color_red"
             app:layout_constraintRight_toRightOf="@id/color_red"
             app:layout_constraintTop_toTopOf="@id/color_red" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/color_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
-            android:background="@drawable/paint_orange_selector"
+            android:background="@drawable/paint_orange"
             android:tooltipText="ORANGE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.35"
@@ -75,21 +77,23 @@
 
         <TextView
             android:id="@+id/color_orange_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/color_orange"
             app:layout_constraintLeft_toLeftOf="@id/color_orange"
             app:layout_constraintRight_toRightOf="@id/color_orange"
             app:layout_constraintTop_toTopOf="@id/color_orange" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/color_yellow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
-            android:background="@drawable/paint_yellow_selector"
+            android:background="@drawable/paint_yellow"
             android:tooltipText="YELLOW"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.65"
@@ -98,21 +102,23 @@
 
         <TextView
             android:id="@+id/color_yellow_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/color_yellow"
             app:layout_constraintLeft_toLeftOf="@id/color_yellow"
             app:layout_constraintRight_toRightOf="@id/color_yellow"
             app:layout_constraintTop_toTopOf="@id/color_yellow" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/color_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
-            android:background="@drawable/paint_green_selector"
+            android:background="@drawable/paint_green"
             android:tooltipText="GREEN"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"
@@ -121,20 +127,22 @@
 
         <TextView
             android:id="@+id/color_green_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/color_green"
             app:layout_constraintLeft_toLeftOf="@id/color_green"
             app:layout_constraintRight_toRightOf="@id/color_green"
             app:layout_constraintTop_toTopOf="@id/color_green" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/color_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/paint_blue_selector"
+            android:background="@drawable/paint_blue"
             android:tooltipText="BLUE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.2"
@@ -143,20 +151,22 @@
 
         <TextView
             android:id="@+id/color_blue_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/color_blue"
             app:layout_constraintLeft_toLeftOf="@id/color_blue"
             app:layout_constraintRight_toRightOf="@id/color_blue"
             app:layout_constraintTop_toTopOf="@id/color_blue" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/color_navy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/paint_navy_selector"
+            android:background="@drawable/paint_navy"
             android:tooltipText="NAVY"
             app:layout_constraintEnd_toEndOf="@id/stats_color_layout"
             app:layout_constraintHorizontal_bias="0.5"
@@ -165,20 +175,22 @@
 
         <TextView
             android:id="@+id/color_navy_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/color_navy"
             app:layout_constraintLeft_toLeftOf="@id/color_navy"
             app:layout_constraintRight_toRightOf="@id/color_navy"
             app:layout_constraintTop_toTopOf="@id/color_navy" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/color_violet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/paint_violet_selector"
+            android:background="@drawable/paint_violet"
             android:tooltipText="VIOLET"
             app:layout_constraintEnd_toEndOf="@id/stats_color_layout"
             app:layout_constraintHorizontal_bias="0.8"
@@ -187,9 +199,11 @@
 
         <TextView
             android:id="@+id/color_violet_percent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/stats_percent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/color_violet"
             app:layout_constraintLeft_toLeftOf="@id/color_violet"
