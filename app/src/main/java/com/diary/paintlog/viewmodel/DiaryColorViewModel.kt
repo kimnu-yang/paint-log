@@ -8,19 +8,11 @@ class DiaryColorViewModel: ViewModel() {
 
     private val diaryColorDao = GlobalApplication.database.diaryColorDao()
 
-    fun getDiaryColor(diaryId: Long, position: Int): DiaryColor? {
-        return diaryColorDao.getAllDiaryColorByDiaryIdAndPosition(diaryId, position)
-    }
-
     fun saveDiaryColor(diaryColor: DiaryColor) {
         return diaryColorDao.insertDiaryColor(diaryColor)
     }
 
     fun deleteDiaryColor(diaryId: Long){
         diaryColorDao.deleteDiaryColorByDiaryId(diaryId)
-    }
-
-    fun deleteDiaryColor(diaryId: Long, position: Int) {
-        diaryColorDao.deleteDiaryColorByDiaryIdAndPosition(diaryId, position)
     }
 }

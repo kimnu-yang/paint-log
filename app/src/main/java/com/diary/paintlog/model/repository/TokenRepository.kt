@@ -6,7 +6,7 @@ import com.diary.paintlog.GlobalApplication
 import com.diary.paintlog.model.ApiToken
 import kotlinx.coroutines.flow.first
 
-class TokenRepository() {
+class TokenRepository {
     private val dataStore = GlobalApplication.getInstance().dataStore
 
     companion object DataKeys {

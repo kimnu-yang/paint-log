@@ -8,15 +8,14 @@ import com.diary.paintlog.R
 
 
 class NotificationReceiver : BroadcastReceiver() {
-    private val TAG = this.javaClass.simpleName
+    private val tag = this.javaClass.simpleName
 
     companion object {
-        val notificationAction = "alarmNotification"
+        const val notificationAction = "alarmNotification"
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action == notificationAction) {
-            Log.i(TAG, "Alarm Triggered! [${intent.action}]")
             if (context != null) {
                 NotifyManager.notify(
                     context,
@@ -26,10 +25,8 @@ class NotificationReceiver : BroadcastReceiver() {
 
                 NotifyManager.setAlarm(context, true)
             } else {
-                Log.e(TAG, "context is null")
+                Log.e(tag, "context is null")
             }
-        } else {
-            Log.i(TAG, "Alarm Triggered?? [${intent?.action}]")
         }
     }
 }

@@ -134,9 +134,7 @@ object Common {
         val XO = 43.0 // 기준점 X좌표(GRID)
         val YO = 136.0 // 기1준점 Y좌표(GRID)
 
-        //
         // LCC DFS 좌표변환 ( code : "TO_GRID"(위경도->좌표, lat_X:위도,  lng_Y:경도), "TO_GPS"(좌표->위경도,  lat_X:x, lng_Y:y) )
-        //
         val DEGRAD = Math.PI / 180.0
         val RADDEG = 180.0 / Math.PI
         val re = RE / GRID
@@ -177,7 +175,7 @@ object Common {
             }
             var alat = (re * sf / ra).pow(1.0 / sn)
             alat = 2.0 * atan(alat) - Math.PI * 0.5
-            var theta = 0.0
+            var theta: Double
             if (abs(xn) <= 0.0) {
                 theta = 0.0
             } else {
@@ -245,7 +243,7 @@ object Common {
         val firstDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth())
         val dayOfWeekFirst = firstDayOfMonth.dayOfWeek.value
 
-        // 기준 월의 첫 요일이 금, 토 일때(일요일인 경우 weekOfMonth에서 한주로 계산되지 않음)
+        // 기준 월의 첫 요일이 금, 토 일때(일요일인 경우 weekOfMonth 에서 한주로 계산되지 않음)
         if(dayOfWeekFirst in 5..6) weekMap["week"] = weekMap["week"]!! - 1
 
         return weekMap

@@ -323,7 +323,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
                                             "네트워크 연결 상태를 확인 해 주세요"
                                         )
                                         t.localizedMessage?.let {
-                                            Log.i("Weather Network Error", it)
+                                            Log.e("Weather Network Error", it)
                                         }
                                     }
                                 })
@@ -612,24 +612,6 @@ class DiaryInsertFragment : Fragment(), DataListener {
 
             dialog.show()
         }
-    }
-
-    private fun showChangeTitleDialog(context: Context, topic: String) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("확인")
-        builder.setMessage("제목이 추천 주제로 변경됩니다.")
-
-        // "확인" 버튼 클릭 시 동작 설정
-        builder.setPositiveButton("확인") { _, _ ->
-            binding.title.setText(topic)
-        }
-
-        // "취소" 버튼 클릭 시 동작 설정
-        builder.setNegativeButton("취소") { _, _ ->
-        }
-
-        val dialog = builder.create()
-        dialog.show()
     }
 
     override fun onPause() {

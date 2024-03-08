@@ -18,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object Kakao {
-    private val TAG = this.javaClass.simpleName
+    private val tag = this.javaClass.simpleName
 
     fun openKakaoLogin(context: Context, callbackFunc: () -> Unit = {}) {
 
@@ -32,9 +32,8 @@ object Kakao {
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
-                Log.e(TAG, "카카오계정으로 로그인 실패", error)
+                Log.e(tag, "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
-                Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
                 apiKakaoLogin(
                     context,
                     token.accessToken,
@@ -47,7 +46,7 @@ object Kakao {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {
-                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
+                    Log.e(tag, "카카오톡으로 로그인 실패", error)
 
                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
                     // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
@@ -58,8 +57,6 @@ object Kakao {
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
-                    Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-
                     apiKakaoLogin(
                         context,
                         token.accessToken,
@@ -79,12 +76,7 @@ object Kakao {
 
         // 로그아웃
         UserApiClient.instance.logout { error ->
-            if (error != null) {
-                Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
-            } else {
-                Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨")
-            }
-
+            if (error != null) Log.e(tag, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
             callback()
         }
     }
@@ -119,10 +111,8 @@ object Kakao {
                 response: Response<ApiLoginResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.i(TAG, "${response.body()}")
                     callbackFunc()
                 } else {
-                    Log.i(TAG, response.toString())
                     kakaoLogout(context)
                     Toast.makeText(
                         context,
@@ -135,7 +125,6 @@ object Kakao {
             }
 
             override fun onFailure(call: Call<ApiLoginResponse>, t: Throwable) {
-                Log.i(TAG, t.localizedMessage?.toString() ?: "ERROR")
                 Toast.makeText(
                     context,
                     context.getString(R.string.setting_kakao_login_error, "1"),

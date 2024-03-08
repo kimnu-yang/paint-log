@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -532,7 +531,6 @@ class MainFragment : Fragment() {
                     val avgB = b / totalPopulation
 
                     val color = Color.rgb(avgR.toInt(),avgG.toInt(),avgB.toInt())
-                    Log.i("Color", "${resources.getResourceEntryName(drawableId)}, ${color.toHexString()}")
                 }
             }
         }

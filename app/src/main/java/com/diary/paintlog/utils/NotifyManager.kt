@@ -28,7 +28,7 @@ import java.util.Locale
 object NotifyManager {
 
     private val TAG = this.javaClass.simpleName
-    const val requestCode = 0
+    private const val requestCode = 0
     private const val requestId = 0
 
     private fun checkNotifyPermission(context: Context): Boolean {

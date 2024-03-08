@@ -3,7 +3,6 @@ package com.diary.paintlog.view.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -18,8 +17,6 @@ import java.time.format.DateTimeFormatter
 
 class ArtWorkAdapter(val listener: BaseDateListener, var data: MutableList<MyArtWithInfo>, var resources: Resources, var context: Context) :
     ListAdapter<ArtWorkFragment.Artwork, ArtWorkAdapter.MyViewHolder>(diffUtil) {
-
-    private val TAG = this.javaClass.simpleName
 
     inner class MyViewHolder(val binding: ArtworkItemLayoutBinding) :
         ViewHolder(binding.root) {
@@ -51,9 +48,7 @@ class ArtWorkAdapter(val listener: BaseDateListener, var data: MutableList<MyArt
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Log.i(TAG, "$position ${data[position]} ${data.size} ")
         holder.bind(data[position])
-
         holder.binding.artworkView.setOnClickListener {
             listener.onItemClick(data[position].myArt.baseDate)
         }

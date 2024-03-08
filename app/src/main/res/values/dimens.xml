@@ -1,5 +1,4 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="calendar_height_per_week">18dp</dimen>
 
     <!--  Diary  -->
@@ -18,10 +17,6 @@
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">20dp</dimen>
     <dimen name="margin_xlarge">30dp</dimen>
-
-    <dimen name="margin_small_twice">24dp</dimen>
-    <dimen name="margin_medium_twice">32dp</dimen>
-    <dimen name="margin_large_twice">40dp</dimen>
 
     <dimen name="artwork_title">24sp</dimen>
     <dimen name="artwork_artist">20sp</dimen>

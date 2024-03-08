@@ -8,19 +8,11 @@ class DiaryTagViewModel: ViewModel() {
 
     private val diaryTagDao = GlobalApplication.database.diaryTagDao()
 
-    fun getDiaryTag(diaryId: Long, position: Int): DiaryTag? {
-        return diaryTagDao.getAllDiaryTagByDiaryIdAndPosition(diaryId, position)
-    }
-
     fun saveDiaryTag(diaryTag: DiaryTag) {
         diaryTagDao.insertDiaryTag(diaryTag)
     }
 
     fun deleteDiaryTag(diaryId: Long) {
         diaryTagDao.deleteDiaryTagByDiaryId(diaryId)
-    }
-
-    fun deleteDiaryTag(diaryId: Long, position: Int) {
-        diaryTagDao.deleteDiaryTagByDiaryIdAndPosition(diaryId, position)
     }
 }

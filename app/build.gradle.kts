@@ -35,11 +35,11 @@ dependencies {
     implementation("androidx.palette:palette-ktx:1.0.0")
 
     // Room
-    val room_version = "2.6.1"
+    val roomVersion = "2.6.1"
 
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     implementation("com.github.prolificinteractive:material-calendarview:2.0.0")
     implementation("com.jakewharton.threetenabp:threetenabp:1.1.1")

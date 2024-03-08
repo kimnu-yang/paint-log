@@ -8,7 +8,7 @@ import com.diary.paintlog.GlobalApplication
 import kotlinx.coroutines.flow.first
 import java.time.LocalDateTime
 
-class SettingsRepository() {
+class SettingsRepository {
 
     private val dataStore = GlobalApplication.getInstance().dataStore
 
