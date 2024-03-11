@@ -43,7 +43,7 @@ interface DiaryDao {
     fun getDiaryId(date: String): Long?
 
     @Transaction
-    @Query("SELECT * FROM diary WHERE deleted_at IS NULL AND is_temp = 'N' AND registered_at BETWEEN :startDate AND :endDate ORDER BY registered_at")
+    @Query("SELECT * FROM diary WHERE deleted_at IS NULL AND is_temp = 'N' AND date(registered_at) BETWEEN :startDate AND :endDate ORDER BY registered_at")
     fun getWeekDiaryByStartEndDate(startDate: String, endDate: String): List<DiaryWithTagAndColor>
 
     @Transaction
