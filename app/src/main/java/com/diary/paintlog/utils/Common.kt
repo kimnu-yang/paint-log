@@ -369,7 +369,6 @@ object Common {
         val secretKey = SecretKeySpec(BuildConfig.ENCRYPT_KEY.toByteArray(), "AES")
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
         val encryptedBytes = cipher.doFinal(text.toByteArray())
-        Log.i("TEST", "실행됨")
         return Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
     }
 
