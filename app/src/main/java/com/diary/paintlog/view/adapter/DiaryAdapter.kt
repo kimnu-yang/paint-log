@@ -23,7 +23,7 @@ class DiaryAdapter(private val listener: DiaryIdListener, var data: MutableList<
             binding.diarySearchListTagLayout.removeAllViews()
 
             binding.diarySearchListTitle.text = data.diary.title
-            binding.diarySearchListContent.text = data.diary.content
+            binding.diarySearchListContent.text = Common.decrypt(data.diary.content)
             binding.diarySearchListDate.text = data.diary.registeredAt
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd(E)", Locale.KOREA))
 

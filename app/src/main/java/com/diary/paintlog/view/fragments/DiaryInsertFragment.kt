@@ -389,7 +389,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
                         diaryId = diary.id
                         diary.isTemp = TempStatus.N
                         diary.title = title
-                        diary.content = content
+                        diary.content = Common.encrypt(content)
                         diary.updatedAt = LocalDateTime.now()
 
                         if(weather != null) {
@@ -405,7 +405,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
                         val diary = Diary(
                             isTemp = TempStatus.N,
                             title = title,
-                            content = content
+                            content = Common.encrypt(content)
                         )
                         if (weather != null) {
                             diary.weather = weather
@@ -469,7 +469,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
                             val diary = data.diary
                             diaryId = diary.id
                             diary.title = title
-                            diary.content = content
+                            diary.content = Common.encrypt(content)
                             diary.updatedAt = LocalDateTime.now()
 
                             if(weather != null) {
@@ -484,7 +484,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
                             val diary = Diary(
                                 isTemp = TempStatus.Y,
                                 title = title,
-                                content = content,
+                                content = Common.encrypt(content),
                             )
 
                             if(weather != null) {
@@ -551,7 +551,7 @@ class DiaryInsertFragment : Fragment(), DataListener {
             // "확인" 버튼 클릭 시 동작 설정
             builder.setPositiveButton("확인") { _, _ ->
                 binding.title.setText(diaryData.diary.title)
-                binding.content.setText(diaryData.diary.content)
+                binding.content.setText(Common.decrypt(diaryData.diary.content))
 
                 val tag1 = diaryData.tags.filter { it.position == 1 }
                 if(tag1.isNotEmpty()) binding.tag1.setText(tag1[0].tag)

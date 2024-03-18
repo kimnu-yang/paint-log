@@ -111,7 +111,7 @@ class DiaryUpdateFragment : Fragment(), DataListener {
                         binding.date.text = date
 
                         binding.title.setText(diaryData.diary.title)
-                        binding.content.setText(diaryData.diary.content)
+                        binding.content.setText(Common.decrypt(diaryData.diary.content))
                     }
 
                     val tag1 = diaryData?.tags?.filter { it.position == 1 }
@@ -208,7 +208,7 @@ class DiaryUpdateFragment : Fragment(), DataListener {
                                 val diary = diaryData.diary
                                 diary.isTemp = TempStatus.N
                                 diary.title = title
-                                diary.content = content
+                                diary.content = Common.encrypt(content)
                                 diary.updatedAt = LocalDateTime.now()
 
                                 if(weather != null) {
