@@ -54,7 +54,7 @@ android {
         applicationId = "com.diary.paintlog"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
+        versionCode = 4
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -64,6 +64,7 @@ android {
         buildConfigField("String", "API_SERVER_ADDRESS", getLocalProperties("API_SERVER_ADDRESS"))
         buildConfigField("String", "KAKAO_NATIVE_KEY", getLocalProperties("KAKAO_NATIVE_KEY"))
         buildConfigField("String", "WEATHER_KEY", getLocalProperties("WEATHER_KEY"))
+        buildConfigField("String", "ENCRYPT_KEY", getLocalProperties("ENCRYPT_KEY"))
 
         manifestPlaceholders["KAKAO_NATIVE_KEY"] =
             getLocalProperties("KAKAO_NATIVE_KEY").replace("\"", "")
