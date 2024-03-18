@@ -127,7 +127,7 @@ object NotifyManager {
         )
 
         val builder = NotificationCompat.Builder(context, GlobalApplication.CHANNEL_ID)
-            .setSmallIcon(androidx.core.R.drawable.notification_icon_background)
+            .setSmallIcon(R.drawable.paint_navy)
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
