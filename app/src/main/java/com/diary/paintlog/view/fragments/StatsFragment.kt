@@ -138,8 +138,11 @@ class StatsFragment : Fragment() {
 
                 if (weatherPercentageView != null) {
                     if (percentage.isNaN()) percentage = 0.0
-                    (weatherPercentageView).text =
-                        getString(R.string.stats_percent, String.format("%.1f", percentage))
+
+                    activity?.runOnUiThread {
+                        (weatherPercentageView).text = getString(R.string.stats_percent, String.format("%.1f", percentage))
+
+                    }
                 }
             }
         }
