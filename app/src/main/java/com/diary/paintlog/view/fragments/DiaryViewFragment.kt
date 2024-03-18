@@ -53,7 +53,7 @@ class DiaryViewFragment : Fragment() {
                 if (diaryData != null) {
                     activity?.runOnUiThread {
                         binding.title.text = diaryData.diary.title
-                        binding.content.text = diaryData.diary.content
+                        binding.content.text = Common.decrypt(diaryData.diary.content)
 
                         val tag1 = diaryData.tags.filter { it.position == 1 }
                         if(tag1.isNotEmpty()){

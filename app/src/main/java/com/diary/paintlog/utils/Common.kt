@@ -1,5 +1,6 @@
 package com.diary.paintlog.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -8,6 +9,8 @@ import android.graphics.Color
 import com.diary.paintlog.data.entities.enums.Color as ColorEnum
 import android.graphics.drawable.Drawable
 import android.location.LocationManager
+import android.util.Base64
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.blue
@@ -15,6 +18,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.fragment.app.FragmentActivity
+import com.diary.paintlog.BuildConfig
 import com.diary.paintlog.R
 import com.diary.paintlog.data.entities.Art
 import com.diary.paintlog.data.entities.DiaryColor
@@ -28,6 +32,8 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.Locale
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 import kotlin.math.abs
 import kotlin.math.atan
 import kotlin.math.atan2
@@ -356,4 +362,25 @@ object Common {
 
         return res
     }
+
+    @SuppressLint("GetInstance")
+    fun encrypt(text: String): String {
+        val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+        val secretKey = SecretKeySpec(BuildConfig.ENCRYPT_KEY.toByteArray(), "AES")
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+        val encryptedBytes = cipher.doFinal(text.toByteArray())
+        Log.i("TEST", "실행됨")
+        return Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
+    }
+
+    @SuppressLint("GetInstance")
+    fun decrypt(encryptedText: String): String {
+        val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+        val secretKey = SecretKeySpec(BuildConfig.ENCRYPT_KEY.toByteArray(), "AES")
+        cipher.init(Cipher.DECRYPT_MODE, secretKey)
+        val encryptedBytes = Base64.decode(encryptedText, Base64.DEFAULT)
+        val decryptedBytes = cipher.doFinal(encryptedBytes)
+        return String(decryptedBytes)
+    }
+
 }

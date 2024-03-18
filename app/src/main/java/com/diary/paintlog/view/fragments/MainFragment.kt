@@ -184,7 +184,7 @@ class MainFragment : Fragment() {
                             dynamicLayout.findViewById<TextView>(R.id.title).text =
                                 diaryData.diary.title
                             dynamicLayout.findViewById<TextView>(R.id.content).text =
-                                diaryData.diary.content
+                                Common.decrypt(diaryData.diary.content)
 
                             val tag1 = diaryData.tags.filter { it.position == 1 }
                             if (tag1.isNotEmpty()) {
