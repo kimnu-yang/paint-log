@@ -117,25 +117,25 @@ class DiaryInsertFragment : Fragment(), DataListener {
                     showTempDiaryDialog(requireContext(), tempDiary)
                 }
             }
-        }
 
-        // 홈에서 받아온 주제가 있으면 제목으로 설정
-        val topicBundle = arguments
-        val topic = topicBundle?.getString("topic")
-        if(topic != null) binding.title.setText(topic)
+            // 홈에서 받아온 주제가 있으면 제목으로 설정
+            val topicBundle = arguments
+            val topic = topicBundle?.getString("topic")
+            if(topic != null) binding.title.setText(topic)
 
-        val today = LocalDateTime.now()
-        val weekOfDay = today.dayOfWeek.value
-        val date = today.format(DateTimeFormatter.ofPattern("yyyy. MM. dd(${Common.getDayOfWeekName(weekOfDay)})"))
-        binding.date.text = date
+            val today = LocalDateTime.now()
+            val weekOfDay = today.dayOfWeek.value
+            val date = today.format(DateTimeFormatter.ofPattern("yyyy. MM. dd(${Common.getDayOfWeekName(weekOfDay)})"))
+            binding.date.text = date
 
-        // 추천 주제 버튼 클릭시 응답
-        binding.newTopicBtn.setOnClickListener {
+            // 추천 주제 버튼 클릭시 응답
+            binding.newTopicBtn.setOnClickListener {
 
-            topicViewModel = ViewModelProvider(this)[TopicViewModel::class.java]
-            val topicData = topicViewModel.getRandomTopic()
-            activity?.runOnUiThread {
-                if(topicData != null) binding.title.setText(topicData.topic)
+                topicViewModel = ViewModelProvider(this@DiaryInsertFragment)[TopicViewModel::class.java]
+                val topicData = topicViewModel.getRandomTopic()
+                activity?.runOnUiThread {
+                    if(topicData != null) binding.title.setText(topicData.topic)
+                }
             }
         }
 
