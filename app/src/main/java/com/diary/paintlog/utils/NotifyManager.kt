@@ -148,7 +148,7 @@ object NotifyManager {
         }
     }
 
-    fun setAlarm(context: Context, isRepeat: Boolean = false) {
+    fun setAlarm(context: Context, isRepeat: Boolean = false): Boolean {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val pendingIntent = getAlarm(context)
 
@@ -173,6 +173,11 @@ object NotifyManager {
                 calendar.add(Calendar.DAY_OF_MONTH, 1)
             }
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+                Log.e(TAG, "Android 14 알람 권한 오류")
+                return false
+            }
+
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
@@ -184,8 +189,12 @@ object NotifyManager {
                     millisToHourMinuteSecond(calendar.timeInMillis)
                 }]"
             )
+
+            return true
         } else {
             Log.e(TAG, "알람 설정 status off [hour: ${alarmTime.hour}, checked: ${alarmChecked}]")
+
+            return false
         }
     }
 
