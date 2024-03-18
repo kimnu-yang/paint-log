@@ -43,7 +43,7 @@ class ColorSettingDialog(private var colorNum: String): DialogFragment() {
                     val color = view.findViewById<ImageButton>(colorId)
                     color.isSelected = false
                 }
-                colorSelect = color.tooltipText.toString()
+                colorSelect = color.contentDescription.toString()
                 color.isSelected = true
             }
         }
@@ -57,7 +57,7 @@ class ColorSettingDialog(private var colorNum: String): DialogFragment() {
                     val percent = view.findViewById<ImageButton>(percentId)
                     percent.isSelected = false
                 }
-                colorPercent = percent.tooltipText.toString()
+                colorPercent = percent.contentDescription.toString()
                 percent.isSelected = true
             }
         }
