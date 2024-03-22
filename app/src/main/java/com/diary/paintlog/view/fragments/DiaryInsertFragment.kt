@@ -126,15 +126,19 @@ class DiaryInsertFragment : Fragment(), DataListener {
             val today = LocalDateTime.now()
             val weekOfDay = today.dayOfWeek.value
             val date = today.format(DateTimeFormatter.ofPattern("yyyy. MM. dd(${Common.getDayOfWeekName(weekOfDay)})"))
-            binding.date.text = date
+            activity?.runOnUiThread {
+                binding.date.text = date
+            }
 
             // 추천 주제 버튼 클릭시 응답
             binding.newTopicBtn.setOnClickListener {
 
                 topicViewModel = ViewModelProvider(this@DiaryInsertFragment)[TopicViewModel::class.java]
-                val topicData = topicViewModel.getRandomTopic()
-                activity?.runOnUiThread {
-                    if(topicData != null) binding.title.setText(topicData.topic)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val topicData = topicViewModel.getRandomTopic()
+                    activity?.runOnUiThread {
+                        if(topicData != null) binding.title.setText(topicData.topic)
+                    }
                 }
             }
         }
