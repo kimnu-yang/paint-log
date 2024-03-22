@@ -94,5 +94,5 @@ android {
 
 // local.properties에 정의된 값을 가져오는 함수
 fun getLocalProperties(propertyKey: String): String {
-    return gradleLocalProperties(rootDir).getProperty(propertyKey)
+    return gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
 }
