@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -60,6 +62,25 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var backPressedTime: Long = 0L
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.diaryView.visibility == View.VISIBLE) {
+                    getBackDiary()
+                } else {
+                    if (System.currentTimeMillis() - backPressedTime >= 2000L) {
+                        backPressedTime = System.currentTimeMillis()
+                        Toast.makeText(binding.root.context, "한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        requireActivity().finish()
+                    }
+                }
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         // 원하는 이미지를 리스트에 넣어서 평균 RGB값을 구함
 //        getAvgRGB()
@@ -396,7 +417,7 @@ class MainFragment : Fragment() {
             for (data in diaryViewModel.getDiaryAll()) {
                 val date = data.diary.registeredAt
                 val diaryDate = CalendarDay.from(date.year, date.monthValue, date.dayOfMonth)
-                val color = if(data.colors.isNotEmpty()){
+                val color = if (data.colors.isNotEmpty()) {
                     Common.blendColors(requireContext(), data.colors)
                 } else {
                     ContextCompat.getColor(requireContext(), R.color.gray)
@@ -437,7 +458,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun getAvgRGB(){
+    private fun getAvgRGB() {
         val drawableList = listOf(
             R.drawable.drawing_01_01,
             R.drawable.drawing_01_02,
@@ -503,7 +524,7 @@ class MainFragment : Fragment() {
             R.drawable.drawing_10_09,
         )
 
-        for(drawableId in drawableList){
+        for (drawableId in drawableList) {
             val drawable = ContextCompat.getDrawable(requireContext(), drawableId)
             val bitmap = (drawable as BitmapDrawable).bitmap
             Palette.from(bitmap).generate { palette ->
@@ -530,7 +551,7 @@ class MainFragment : Fragment() {
                     val avgG = g / totalPopulation
                     val avgB = b / totalPopulation
 
-                    val color = Color.rgb(avgR.toInt(),avgG.toInt(),avgB.toInt())
+                    val color = Color.rgb(avgR.toInt(), avgG.toInt(), avgB.toInt())
                 }
             }
         }
