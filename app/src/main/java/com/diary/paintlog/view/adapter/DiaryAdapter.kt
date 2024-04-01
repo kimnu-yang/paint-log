@@ -3,7 +3,6 @@ package com.diary.paintlog.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -67,12 +66,10 @@ class DiaryAdapter(private val listener: DiaryIdListener, var data: MutableList<
         val textView = TextView(binding.root.context)
         textView.setBackgroundResource(R.drawable.diary_search_tag_sm_button)
         textView.layoutParams = binding.diarySearchListTagView.layoutParams
+        textView.setPadding(30, 0, 30, 0)
         textView.text = tag
         textView.gravity = binding.diarySearchListTagView.gravity
         textView.textSize = 12f
-        textView.setOnClickListener {
-            Toast.makeText(binding.root.context, "$tag Click!", Toast.LENGTH_SHORT).show()
-        }
 
         binding.diarySearchListTagLayout.addView(textView)
     }

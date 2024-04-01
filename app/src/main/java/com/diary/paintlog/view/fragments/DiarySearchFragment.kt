@@ -100,7 +100,7 @@ class DiarySearchFragment : Fragment(), DiaryIdListener {
         textView.layoutParams = layoutParams
         textView.gravity = Gravity.CENTER
         textView.textSize = 16f
-        textView.maxLines = 2
+        textView.setPadding(30, 0, 30, 0)
         textView.maxWidth = ViewGroup.LayoutParams.MATCH_PARENT
         textView.text = tagMessage
         textView.setBackgroundResource(R.drawable.diary_search_tag_button)
